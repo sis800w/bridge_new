@@ -7,7 +7,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no" />
 	<meta name="format-detection" content="telephone=no" />
-	<link rel="icon" href="img/favicon.svg">
+	<link rel="icon" href="img/favicon.svg"/>
+	<link rel="stylesheet" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
 	<style type="text/css">
 		@font-face {
 			font-family: Ubuntu;
@@ -24,7 +25,7 @@
 			outline: none;
 		}
 		
-		/* Bridge框架 */
+		/* bridge frame */
 		.div_full {
 			padding: 0 10px;
 			color: #fff;
@@ -46,7 +47,7 @@
 			border-radius: 20px;
 		}
 		
-		/* Swap框架 */
+		/* swap frame */
 		.div_content {
 			margin-top: .1rem;
 			background-color: #212429;
@@ -56,12 +57,12 @@
 			padding: .4rem 0;
 		}
 		.div_content label {
-			margin: .4rem 0 10px 14px;
+			margin: .4rem 14px 10px 14px;
 			font-size: 14px;
 			font-weight: 600;
 		}
 		
-		/* From & To框架 */
+		/* from & to frame */
 		.div_item {
 			flex-direction: column;
 			height: 9rem;
@@ -85,7 +86,44 @@
 			display: flex;
 		}
 		
-		/* 图标栏 */
+		/* qrcode frame */
+		.div_tabs {
+			border-bottom: 1px solid rgba(0,0,0,.1);
+			margin-bottom: 10px;
+		}
+		.div_tabs nav {
+			padding: .5rem 1rem;
+		}
+		.div_tabs div {
+			display: flex;
+			flex-direction: row!important;
+		}
+		.div_tabs a {
+			padding: .5rem .2rem;
+			color: #6c7284!important;
+			font-size: 17px;
+			margin-left: 10px;
+			text-decoration: none;
+		}
+		.div_tabs a.active {
+			color: #fff!important;
+		}
+		
+		/* qrcode frame */
+		#div_qrcode_window {
+		
+		}
+		#div_qrcode_window input{
+			width: 100%;
+			padding: 0;
+			background-color: transparent;
+			border: 0;
+			resize: none;
+			font: inherit;
+			color: #fff;
+		}
+		
+		/* logo column */
 		.div_item_coin > div {
 			margin-left: .4rem;
 			padding: .4rem;
@@ -110,7 +148,7 @@
 			margin-left: -13px;
 		}
 		
-		/* 金额栏 */
+		/* amount column */
 		.div_item_coin input {
 			color: #fff;
 			font: inherit;
@@ -130,13 +168,13 @@
 			color: #999;
 		}
 		
-		/* 地址栏 */
+		/* address column */
 		.div_item_address {
 			width: 100%;
 			border-top: 1px solid rgba(71,89,101,.3);
 			padding: .4rem .8rem;
 			box-sizing: border-box;
-			font-size: 14px;
+			font-size: .8rem;
 			line-height: 24px;
 		}
 		.div_item_address input {
@@ -147,13 +185,13 @@
 			border: 0;
 			resize: none;
 			font: inherit;
+			color: #fff;
 		}
 		.div_item_address input::-webkit-input-placeholder{
 			color:#c8c9cc;
-			font-size: .8rem;
 		}
 		
-		/* 箭头栏 */
+		/* exchange arrow column */
 		.div_exchange {
 			margin: 5px 0;
 			text-align: center;
@@ -166,7 +204,7 @@
 			fill: #32b1f5;
 		}
 		
-		/** 按钮 */
+		/** submit button */
 		.btn_submit {
 			margin: 20px auto;
 			width: calc(100% - 20px);
@@ -179,7 +217,7 @@
 			font-size: 20px;
 		}
 		
-		/* 页脚 */
+		/* footer */
 		.div_footer {
 			padding: 50px 25px 20px 25px;
 			margin-top: -30px;
@@ -199,12 +237,115 @@
 			text-align: right;
 			font-weight: 500;
 		}
+		
+		/* select window */
+		.div_overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,.7);
+			z-index: 2000;
+		}
+		.div_select {
+			background-color: #2c313b;
+			border-radius: 16px 16px 0 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			width: 100%;
+			position: fixed;
+			z-index: 2001;
+			max-width: 450px;
+			margin: auto;
+		}
+		.div_select_header {
+			font-size: 20px;
+			color: #fff;
+			line-height: 1.5;
+			text-align: left;
+			border-bottom: 1px solid rgba(71,89,101,.3);
+			padding: 1rem;
+		}
+		.div_select_header i {
+			top: 1rem;
+			position: absolute;
+			right: 0;
+			padding: 0 16px;
+			color: #c8c9cc;
+			font-size: 22px;
+			line-height: inherit;
+		}
+		.div_select_item {
+			color: #fff;
+			padding: 10px 16px;
+			line-height: 24px;
+			display: flex;
+		}
+		.div_select_item_selected {
+			background: rgba(167,170,175,.26);
+		}
+		.div_select_item img {
+			width: 40px;
+			height: 40px;
+			border-radius: 50px;
+			border: 1px solid #6c7284;
+			box-shadow: 1px 1px 9px -3px #fff;
+		}
+		.div_select_item .min-img {
+			width: 16px;
+			height: 16px;
+			position: absolute;
+			border-radius: 50%;
+			margin-top: 25px;
+			margin-left: 32px;
+			box-shadow: 1px 1px 9px -3px #fff;
+			background: #fff;
+		}
+		.div_select_item > div {
+			margin-left: 15px;
+			font-size: 14px;
+		}
+		.div_select_item .chain {
+			color: #6c7284;
+			font-size: .7rem!important;
+		}
+		
+		/* loading */
+		.div_loading {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			margin-left: -59px;
+			margin-top: -60px;
+			width: 88px;
+			padding: 15px;
+			color: #fff;
+			font-size: 14px;
+			line-height: 20px;
+			text-align: center;
+			background-color: rgba(0,0,0,.7);
+			border-radius: 8px;
+			z-index: 2001;
+		}
+		.div_loading > div {
+			margin-top: 8px;
+		}
 	</style>
 </head>
 
 <body>
 	<div class="div_full">
 		<div class="div_title">Ekta Bridge</div>
+		<div class="div_tabs">
+			<nav>
+				<div class="">
+					<a href="#" class="active">Bridge</a>
+					<a href="#/bsc/farm">Staking</a>
+				</div>
+			</nav>
+		</div>
 		<div class="div_main">
 			<div class="div_content">
 				<label>Swap</label>
@@ -213,16 +354,16 @@
 					
 					<div class="div_item_coin">
 						<div>
-							<div>
-								<img src="img/loD.394f1bf8.svg"/>
-								<img src="data:image/png;base64,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" class="min-img">
+							<div class="div_from_btn">
+								<img id="img_from"/>
+								<img id="img_from_chain" class="min-img">
 							</div>
 						</div>
-						<input type="text" inputmode="decimal" placeholder="0.0"/>
+						<input id="input_from_amount" type="text" inputmode="decimal" placeholder="0.0"/>
 					</div>
 					
 					<div class="div_item_address">
-						<input type="text" disabled="disabled" placeholder="0xb1212021f60cd24b2a40d9f9a052539d88fcf958" />
+						<input id="input_from_addr" type="text" placeholder="from address" />
 					</div>
 				</div>
 				
@@ -244,16 +385,16 @@
 					
 					<div class="div_item_coin">
 						<div>
-							<div>
-								<img src="img/loD.394f1bf8.svg"/>
-								<img src="data:image/png;base64,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" class="min-img">
+							<div class="div_to_btn">
+								<img id="img_to"/>
+								<img id="img_to_chain" class="min-img">
 							</div>
 						</div>
-						<input type="text" inputmode="decimal" placeholder="0.0"/>
+						<input id="input_to_amount" type="text" disabled="disabled" inputmode="decimal" placeholder="0.0"/>
 					</div>
 					
 					<div class="div_item_address">
-						<input type="text" disabled="disabled" placeholder="0xb1212021f60cd24b2a40d9f9a052539d88fcf958" />
+						<input id="input_to_addr" type="text" placeholder="to address" />
 					</div>
 				</div>
 				
@@ -271,11 +412,445 @@
 				</div>
 			</div>
 		</div>
-	<div>
+		
+		<div class="div_overlay" style="display: none;"></div>
+		<div class="div_select" id="div_from_select" style="display: none;"></div>
+		<div class="div_select" id="div_to_select" style="display: none;"></div>
+		<div class="div_select" id="div_qrcode_window" style="display: none;"></div>
+	</div>
+	<div class="div_loading" style="display: none;">
+		<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+		<div>Connect BSC Wallet...</div>
+	</div>
+	
+	<textarea id="from_select_template" style="display:none;">
+		<div class="div_select_header">Swap from ...<i class="fa fa-times" aria-hidden="true"></i></div>
+		{#foreach $T.coins as coin}
+			<div coin="{$T.coin}" class="div_select_item {#if $T.coin == $T.swapCoin}div_select_item_selected{#/if}">
+				<img src="img/coin/{$T.coin}.png"/>
+				{#if $T.coin != $T.fromChain.coin}
+					<img src="img/coin/{$T.fromChain.coin}.png" class="min-img"/>
+				{#/if}
+				<div>
+					<div>{$T.coin}</div>
+					{#if $T.coin != $T.fromChain.coin}
+						<div class="chain">{$T.fromChain.chain}</div>
+					{#else}
+						<div class="chain">Native</div>
+					{#/if}
+				</div>
+			</div>
+		{#/for}
+	</textarea>
+	<textarea id="to_select_template" style="display:none;">
+		<div class="div_select_header">Swap to ...<i class="fa fa-times" aria-hidden="true"></i></div>
+		{#foreach $T.chains as chain}
+			{#if $T.chain.coin != $T.fromChain.coin && $T.chain.addresses[$T.swapCoin] != null}
+				<div coin="{$T.chain.coin}" class="div_select_item {#if $T.chain.coin == $T.toChain.coin}div_select_item_selected{#/if}">
+					<img src="img/coin/{$T.swapCoin}.png"/>
+					{#if $T.chain.coin != $T.swapCoin}
+						<img src="img/coin/{$T.chain.coin}.png" class="min-img"/>
+					{#/if}
+					<div>
+						<div>{$T.swapCoin}</div>
+						{#if $T.chain.coin != $T.swapCoin}
+							<div class="chain">{$T.chain.chain}</div>
+						{#else}
+							<div class="chain">Native</div>
+						{#/if}
+					</div>
+				</div>
+			{#/if}
+		{#/for}
+	</textarea>
+	<textarea id="qrcode_window_template" style="display:none;">
+		<div class="div_select_header">Scanning QR code ...<i class="fa fa-times" aria-hidden="true"></i></div>
+		<div style="width:150px; margin: auto; margin-top: 30px; text-align: center;">
+			<div id="address_qr"></div>
+		</div>
+		<div class="" style="width: 290px; margin: auto; margin-top: 15px;">
+			<div class="">
+				<input id="input_paymentAddr" type="text" name="lp" class="" value=""/>
+			</div>
+		</div>
+		<div class="" style="width: 30px; margin: 10px auto 15px auto;">
+			<button data-clipboard-target="#input_paymentAddr" class="btn_copy"><span>Copy</span></button>
+		</div>
+	</textarea>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.4/dist/web3.min.js"></script>
 	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-	<script type="text/javascript" >
-		
+	<script type="text/javascript" src="js/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="js/jquery.qrcode.min.js"></script>
+	<script type="text/javascript" src="js/clipboard.min.js" ></script>
+	<script type="text/javascript">
+		$(function () {
+			// config
+			var config = {
+				chains : [
+					{chain: "Smart Chain", coin: "BNB", chainId: "0x38", addresses: {
+						BNB: "",
+						DOGE: "0xba2ae424d960c26247dd6c32edc70b295c744c43",
+						USDT: "0x55d398326f99059ff775485246999027b3197955"
+					}},
+					{chain: "Ethereum", coin: "ETH", chainId: "0x1", addresses: {
+						BNB: "",
+						DOGE: "",
+						USDT: ""
+					}},
+					{chain: "Doge Blockchain", coin: "DOGE", addresses: {
+						DOGE: "",
+						BNB: "",
+						USDT: ""
+					}},
+					{chain: "DeFi Chain", coin: "DFC", chainId: "", addresses: {
+						BNB: "",
+						DOGE: "",
+						USDT: ""
+					}},
+				]
+			};
+			
+			// base
+			$.getParam = function (name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null) {
+					return decodeURI(r[2]);	//url解码
+				} else {
+					return "";
+				}
+			};
+			$.dialog = function(msg, ms, lodding) {
+				$(".div_loading div").text(msg);
+				if (lodding) {
+					$(".div_loading i").show();
+				} else {
+					$(".div_loading i").hide();
+				}
+				$(".div_loading").show();
+				setTimeout(function () {
+					$(".div_loading").hide();
+				}, ms);
+			};
+			$.copy = function(selecter, successCallback) {
+				if ($(selecter).length == 0) {
+					return;
+				}
+				var clipboard = new ClipboardJS(selecter);
+				clipboard.on('success', function(e) {
+					$.dialog("Copy success", 1000);
+					e.clearSelection();
+				});
+				clipboard.on('error', function(e) {
+					$.dialog("Copy error", 1000);
+				});
+			};
+			$.logo = function(coin){
+				return "img/coin/" + coin + ".png";
+			};
+			$.closeWindow = function(){
+				$(".div_overlay").hide();
+				$("#div_from_select").hide();
+				$("#div_to_select").hide();
+				$("#div_qrcode_window").hide();
+			};
+			$(".div_from_btn").on('click', function(){
+				$(".div_overlay").show();
+				$("#div_from_select").show();
+			});
+			$(".div_to_btn").on('click', function(){
+				$(".div_overlay").show();
+				$("#div_to_select").show();
+			});
+			$(".div_overlay").on('click', function(){
+				$(".div_select_header i").click();
+			});
+			var rate = 1;
+			$("#input_from_amount").on('input', function(){
+				$("#input_to_amount").val($(this).val() * rate);
+			});
+			
+			// default chain and coin
+			var fromChain = $.getParam("fromChain");
+			if (fromChain) {
+				for (var chain of config.chains) {
+					if (fromChain == chain.coin) {
+						config.fromChain = chain;
+						break;
+					}
+				}
+			} else {
+				config.fromChain = config.chains[0];
+			}
+			var addrs = config.fromChain.addresses;
+			config.coins = addrs == null ? [] : Object.keys(addrs);
+			config.swapCoin = config.coins[0];
+			for (var chain of config.chains) {
+				if (chain.coin != config.fromChain.coin && chain.addresses[config.swapCoin] != null) {
+					config.toChain = chain;
+					break;
+				}
+			}
+			
+			// init
+			$.init = function() {
+				// logo
+				$("#img_from").attr("src", $.logo(config.swapCoin));
+				if (config.swapCoin == config.fromChain.coin) {
+					$("#img_from_chain").hide();
+				} else {
+					$("#img_from_chain").show();
+					$("#img_from_chain").attr("src", $.logo(config.fromChain.coin));
+				}
+				$("#img_to").attr("src", $.logo(config.swapCoin));
+				if (config.swapCoin == config.toChain.coin) {
+					$("#img_to_chain").hide();
+				} else {
+					$("#img_to_chain").show();
+					$("#img_to_chain").attr("src", $.logo(config.toChain.coin));
+				}
+				
+				// show select window
+				$("#div_from_select").setTemplateElement("from_select_template");
+				$("#div_from_select").processTemplate(config);
+				$("#div_to_select").setTemplateElement("to_select_template");
+				$("#div_to_select").processTemplate(config);
+				$(".div_select_header i").on('click', $.closeWindow);
+				
+				// click select window
+				$("#div_from_select .div_select_item").each(function(){
+					var that = $(this);
+					that.on('click', function(){
+						for (var coin of config.coins) {
+							if (coin == that.attr("coin")) {
+								config.swapCoin = coin;
+								$.init();
+								$(".div_select_header i").click();
+								break;
+							}	
+						}
+					});
+				});
+				$("#div_to_select .div_select_item").each(function(){
+					var that = $(this);
+					that.on('click', function(){
+						for (var chain of config.chains) {
+							if (chain.coin == that.attr("coin")) {
+								config.toChain = chain;
+								$.init();
+								if (config.toChain.chainId == null) {
+									$("#input_to_addr").attr("placeholder", "to address");
+									$("#input_to_addr").removeAttr("disabled");
+								} else {
+									$("#input_to_addr").attr("placeholder", walletAddress);
+									$("#input_to_addr").attr("disabled", "disabled");
+								}
+								$(".div_select_header i").click();
+								break;
+							}
+						}
+					});
+				});
+			};
+			$.init();
+			
+			// verify chainId
+			$.verifyChainId = async function(chainId, callback, errorCallback) {
+				const currChainId = await window.ethereum.request({ method: 'eth_chainId' });
+				if (chainId == currChainId) {
+					if (callback) callback();
+				} else {
+					if (errorCallback) errorCallback();
+				}
+			}
+			
+			// switch wallet
+			var web3;
+			var walletAddress;
+			$.switchWallet = function(address) {
+				walletAddress = address;
+				$("#input_from_addr").attr("placeholder", walletAddress);
+				$("#input_from_addr").attr("disabled", "disabled");
+				if (config.toChain.chainId != null) {
+					$("#input_to_addr").attr("placeholder", walletAddress);
+					$("#input_to_addr").attr("disabled", "disabled");
+				}
+			};
+			
+			// waitForReceipt
+			$.waitForReceipt = async function(tx_hash, max_try, cb) {
+				if (max_try <= 0) {
+					$.dialog("waitForReceipt timeout", 1000);
+					return;
+				}
+				let receipt = await web3.eth.getTransactionReceipt(tx_hash);
+				if (receipt != null) {
+					cb(receipt);
+				} else {
+					await $.sleep(1500);
+					$.waitForReceipt(tx_hash, max_try - 1, cb);
+				}
+			};
+			$.sleep = function(ms) {
+				return new Promise((resolve) => {
+					setTimeout(resolve, ms);
+				});
+			};
+			
+			// access contract
+			const ERC20_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}];
+			const ETH_USDT_ABI = [{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+			$.transfer = function(paymentAddr, amount) {
+				if (config.swapCoin == config.fromChain.coin) {
+					var message = {from: walletAddress, to: paymentAddr, value: web3.utils.toWei(amount, 'ether')};
+					web3.eth.sendTransaction(message, (err, res) => {
+				        if (err) {
+				        	$.dialog("error", 1000);
+				        } else {
+				        	$.submit(paymentAddr, amount);
+				        }
+				    });
+				} else {
+					var isEthUsdt = config.swapCoin == "USDT" && config.fromChain.coin == "ETH" ? true : false;
+					var contractAddr = config.fromChain.addresses[config.swapCoin];
+					var contract = new web3.eth.Contract(isEthUsdt ? ETH_USDT_ABI : ERC20_ABI, contractAddr);
+					contract.methods
+						.transfer(paymentAddr, web3.utils.toWei(amount, isEthUsdt ? "Mwei" : "ether"))
+						.send({from: walletAddress})
+						.then((tx) => {
+							$.waitForReceipt(tx.transactionHash, 6, (receipt) => {
+								$.submit(paymentAddr, amount);
+							});
+						});
+				}
+			};
+			
+			// not connect submit
+			$.notConnect = function() {
+				$(".btn_submit").on('click', function(){
+					$.queryPaymentAddr(function(paymentAddr){
+						$("#div_qrcode_window").setTemplateElement("qrcode_window_template");
+						$("#div_qrcode_window").processTemplate(config);
+						$(".div_select_header i").on('click', $.closeWindow);
+						
+						var addressQr = $('#address_qr');
+						if (addressQr.length > 0) {
+							addressQr.html("");
+							addressQr.qrcode({
+								text: paymentAddr,
+								width: 150,
+								height: 150,
+								correctLevel: 0,
+								background: "#ffffff",
+							    foreground: "#32b1f5"
+							});
+							$("#input_paymentAddr").val(paymentAddr);
+							$.copy('.btn_copy');
+						}
+						
+						$(".div_overlay").show();
+						$("#div_qrcode_window").show();
+					});
+				});
+			};
+			
+			// request
+			$.queryPaymentAddr = function(callback){
+				callback("0xe5Bd21f0F3F35F1FF34ccC22AB84AFaFA30028B3");
+				
+				// $.ajax({
+				// 	type: "get",
+				// 	url: "/api/paymentAddr",
+				// 	data: {chain: "BNB"},
+				// 	dataType : "jsonp",
+				// 	traditional: true,
+				// 	success: function(paymentAddr){
+				// 		callback(paymentAddr);
+				// 	}
+				// });
+			};
+			$.submit = function(paymentAddr, amount) {
+				// from address
+				var fromAddr;
+				if (walletAddress == null) {
+					var addrFrom = $("#input_from_addr").val();
+					if (! addrFrom) {
+						$.dialog("No from address entered", 1000);
+						return;
+					}
+					fromAddr = addrFrom;
+				} else {
+					fromAddr = walletAddress;
+				}
+				
+				// to address
+				var toAddr;
+				if (walletAddress == null) {
+					var addrTo = $("#input_to_addr").val();
+					if (! addrTo) {
+						$.dialog("No to address entered", 1000);
+						return;
+					}
+					toAddr = addrTo;
+				} else {
+					toAddr = walletAddress;
+				}
+				
+				// request
+				$.ajax({
+					type: "post",
+					url: "/api/save",
+					data: {
+						fromChain: config.fromChain.coin, 
+						fromAddr: fromAddr,
+						paymentAddr: paymentAddr,
+						toChain: config.toChain.coin,
+						toAddr: toAddr,
+						amount: amount},
+					dataType : "jsonp",
+					traditional: true,
+					success: function(msg){
+					}
+				});
+			};
+			
+			// connect wallet
+			if (window.ethereum) {
+				try {
+					window.ethereum.enable().then(accounts => {
+						$.verifyChainId(config.fromChain.chainId, function(){
+							web3 = new Web3(window.ethereum);
+							window.ethereum.on("accountsChanged", function(accounts) {
+								$.switchWallet(accounts[0]);
+							});
+							$.switchWallet(accounts[0]);
+							
+							// event
+							$(".btn_submit").on('click', function() {
+								var amount = $("#input_from_amount").val();
+								if (! amount) {
+									$.dialog('No amount entered', 1000);
+									return;
+								}
+								var addrTo = $("#input_to_addr").val();
+								if (! addrTo) {
+									$.dialog("No to address entered", 1000);
+									return;
+								} 
+								$.queryPaymentAddr(function(paymentAddr){
+									$.transfer(paymentAddr, amount);
+								});
+							});
+						}, $.notConnect);
+					});
+				} catch (error) {
+					$.dialog(error, 1000);
+					$.notConnect();
+				}
+			} else {
+				$.notConnect();
+			}
+		});
 	</script>
 </body>
 </html>
