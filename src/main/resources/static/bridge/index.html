@@ -8,331 +8,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no" />
 	<meta name="format-detection" content="telephone=no" />
 	<link rel="icon" href="img/favicon.svg"/>
-	<link rel="stylesheet" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
-	<style type="text/css">
-		@font-face {
-			font-family: Ubuntu;
-			src: url(fonts/Ubuntu-M.785d8031.ttf);
-			font-weight: 400;
-			font-style: normal
-		}
-		body {
-			max-width: 450px;
-			min-height: 100vh;
-			margin: 0 auto; 
-		}
-		input:focus {
-			outline: none;
-		}
-		
-		/* bridge frame */
-		.div_full {
-			padding: 0 10px;
-			color: #fff;
-			font-size: 12px;
-			font-family: Ubuntu,Roboto,sans-serif;
-			background-color: #2c313b!important;
-			min-height: 100vh;
-		}
-		.div_title {
-			font-size: 1rem;
-			height: 2.5rem;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-		.div_main {
-			background: rgba(33,36,41,.5);
-			margin-bottom: 2rem;
-			border-radius: 20px;
-		}
-		
-		/* swap frame */
-		.div_content {
-			margin-top: .1rem;
-			background-color: #212429;
-			border-radius: 20px;
-			display: flex;
-			flex-direction: column;
-			padding: .4rem 0;
-		}
-		.div_content label {
-			margin: .4rem 14px 10px 14px;
-			font-size: 14px;
-			font-weight: 600;
-		}
-		
-		/* from & to frame */
-		.div_item {
-			flex-direction: column;
-			height: 9rem;
-			width: 90%;
-			padding: .6rem 0 0 0;
-			margin: 0 auto;
-			border: 1px solid rgba(71,89,101,.3);
-			border-radius: 1rem;
-			display: flex;
-			justify-content: center;
-		}
-		.div_item_title {
-			width: 80px;
-			margin-bottom: .4rem;
-			text-align: center;
-			color: #c3c5cb;
-			font-weight: 600;
-		}
-		.div_item_coin {
-			margin-bottom: 1rem;
-			display: flex;
-		}
-		
-		/* qrcode frame */
-		.div_tabs {
-			border-bottom: 1px solid rgba(0,0,0,.1);
-			margin-bottom: 10px;
-		}
-		.div_tabs nav {
-			padding: .5rem 1rem;
-		}
-		.div_tabs div {
-			display: flex;
-			flex-direction: row!important;
-		}
-		.div_tabs a {
-			padding: .5rem .2rem;
-			color: #6c7284!important;
-			font-size: 17px;
-			margin-left: 10px;
-			text-decoration: none;
-		}
-		.div_tabs a.active {
-			color: #fff!important;
-		}
-		
-		/* qrcode frame */
-		#div_qrcode_window {
-		
-		}
-		#div_qrcode_window input{
-			width: 100%;
-			padding: 0;
-			background-color: transparent;
-			border: 0;
-			resize: none;
-			font: inherit;
-			color: #fff;
-		}
-		
-		/* logo column */
-		.div_item_coin > div {
-			margin-left: .4rem;
-			padding: .4rem;
-		}
-		.div_item_coin > div > div{
-			display: flex;
-			align-items: center;
-			width: 3.1rem;
-			height: 3.1rem;
-			margin-right: .4rem;
-			border-radius: 50%;
-			box-shadow: 1px 1px 9px -3px #ededed;
-		}
-		.div_item_coin img {
-			width: 3rem;
-			border: 1px solid transparent;
-			border-radius: 50px;
-		}
-		.div_item_coin .min-img {
-			width: 1.2rem;
-			margin-top: 29px;
-			margin-left: -13px;
-		}
-		
-		/* amount column */
-		.div_item_coin input {
-			color: #fff;
-			font: inherit;
-			font-size: 1.4rem;
-			font-weight: 600;
-			text-align: right;
-			width: 11rem;
-			background-color: transparent;
-			border: 0;
-			resize: none;
-			margin-left: auto;
-			margin-right: .8rem;
-			margin-top: 1rem;
-			padding: .4rem;
-		}
-		.div_item_coin input::-webkit-input-placeholder {
-			color: #999;
-		}
-		
-		/* address column */
-		.div_item_address {
-			width: 100%;
-			border-top: 1px solid rgba(71,89,101,.3);
-			padding: .4rem .8rem;
-			box-sizing: border-box;
-			font-size: .8rem;
-			line-height: 24px;
-		}
-		.div_item_address input {
-			text-align: right;
-			width: 100%;
-			padding: 0;
-			background-color: transparent;
-			border: 0;
-			resize: none;
-			font: inherit;
-			color: #fff;
-		}
-		.div_item_address input::-webkit-input-placeholder{
-			color:#c8c9cc;
-		}
-		
-		/* exchange arrow column */
-		.div_exchange {
-			margin: 5px 0;
-			text-align: center;
-		}
-		.div_exchange span {
-			width: 1rem;
-			display: inline-block;
-		}
-		.div_exchange svg {
-			fill: #32b1f5;
-		}
-		
-		/** submit button */
-		.btn_submit {
-			margin: 20px auto;
-			width: calc(100% - 20px);
-			color: #fff;
-			background: #32b1f5;
-			border: 0;
-			border-radius: 20px;
-			height: 60px;
-			font: inherit;
-			font-size: 20px;
-		}
-		
-		/* footer */
-		.div_footer {
-			padding: 50px 25px 20px 25px;
-			margin-top: -30px;
-			box-sizing: border-box;
-		}
-		.div_footer > div {
-			display: flex;
-			margin: 0 -15px;
-		}
-		.div_footer .left {
-			flex: 0 0 66.666667%;
-			text-align: left;
-			font-weight: 300;
-		}
-		.div_footer .right {
-			flex: 0 0 33.333333%;
-			text-align: right;
-			font-weight: 500;
-		}
-		
-		/* select window */
-		.div_overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0,0,0,.7);
-			z-index: 2000;
-		}
-		.div_select {
-			background-color: #2c313b;
-			border-radius: 16px 16px 0 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			width: 100%;
-			position: fixed;
-			z-index: 2001;
-			max-width: 450px;
-			margin: auto;
-		}
-		.div_select_header {
-			font-size: 20px;
-			color: #fff;
-			line-height: 1.5;
-			text-align: left;
-			border-bottom: 1px solid rgba(71,89,101,.3);
-			padding: 1rem;
-		}
-		.div_select_header i {
-			top: 1rem;
-			position: absolute;
-			right: 0;
-			padding: 0 16px;
-			color: #c8c9cc;
-			font-size: 22px;
-			line-height: inherit;
-		}
-		.div_select_item {
-			color: #fff;
-			padding: 10px 16px;
-			line-height: 24px;
-			display: flex;
-		}
-		.div_select_item_selected {
-			background: rgba(167,170,175,.26);
-		}
-		.div_select_item img {
-			width: 40px;
-			height: 40px;
-			border-radius: 50px;
-			border: 1px solid #6c7284;
-			box-shadow: 1px 1px 9px -3px #fff;
-		}
-		.div_select_item .min-img {
-			width: 16px;
-			height: 16px;
-			position: absolute;
-			border-radius: 50%;
-			margin-top: 25px;
-			margin-left: 32px;
-			box-shadow: 1px 1px 9px -3px #fff;
-			background: #fff;
-		}
-		.div_select_item > div {
-			margin-left: 15px;
-			font-size: 14px;
-		}
-		.div_select_item .chain {
-			color: #6c7284;
-			font-size: .7rem!important;
-		}
-		
-		/* loading */
-		.div_loading {
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			margin-left: -59px;
-			margin-top: -60px;
-			width: 88px;
-			padding: 15px;
-			color: #fff;
-			font-size: 14px;
-			line-height: 20px;
-			text-align: center;
-			background-color: rgba(0,0,0,.7);
-			border-radius: 8px;
-			z-index: 2001;
-		}
-		.div_loading > div {
-			margin-top: 8px;
-		}
-	</style>
+	<link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="css/index.css" />
 </head>
 
 <body>
@@ -414,9 +91,9 @@
 		</div>
 		
 		<div class="div_overlay" style="display: none;"></div>
-		<div class="div_select" id="div_from_select" style="display: none;"></div>
-		<div class="div_select" id="div_to_select" style="display: none;"></div>
-		<div class="div_select" id="div_qrcode_window" style="display: none;"></div>
+		<div class="div_window" id="div_from_select" style="display: none;"></div>
+		<div class="div_window" id="div_to_select" style="display: none;"></div>
+		<div class="div_window" id="div_qrcode_window" style="display: none;"></div>
 	</div>
 	<div class="div_loading" style="display: none;">
 		<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
@@ -424,7 +101,7 @@
 	</div>
 	
 	<textarea id="from_select_template" style="display:none;">
-		<div class="div_select_header">Swap from ...<i class="fa fa-times" aria-hidden="true"></i></div>
+		<div class="div_window_header">Swap from ...<i class="fa fa-times" aria-hidden="true"></i></div>
 		{#foreach $T.coins as coin}
 			<div coin="{$T.coin}" class="div_select_item {#if $T.coin == $T.swapCoin}div_select_item_selected{#/if}">
 				<img src="img/coin/{$T.coin}.png"/>
@@ -443,7 +120,7 @@
 		{#/for}
 	</textarea>
 	<textarea id="to_select_template" style="display:none;">
-		<div class="div_select_header">Swap to ...<i class="fa fa-times" aria-hidden="true"></i></div>
+		<div class="div_window_header">Swap to ...<i class="fa fa-times" aria-hidden="true"></i></div>
 		{#foreach $T.chains as chain}
 			{#if $T.chain.coin != $T.fromChain.coin && $T.chain.addresses[$T.swapCoin] != null}
 				<div coin="{$T.chain.coin}" class="div_select_item {#if $T.chain.coin == $T.toChain.coin}div_select_item_selected{#/if}">
@@ -464,7 +141,7 @@
 		{#/for}
 	</textarea>
 	<textarea id="qrcode_window_template" style="display:none;">
-		<div class="div_select_header">Scanning QR code ...<i class="fa fa-times" aria-hidden="true"></i></div>
+		<div class="div_window_header">Scanning QR code ...<i class="fa fa-times" aria-hidden="true"></i></div>
 		<div style="width:150px; margin: auto; margin-top: 30px; text-align: center;">
 			<div id="address_qr"></div>
 		</div>
@@ -482,77 +159,13 @@
 	<script type="text/javascript" src="js/jquery-jtemplates.js"></script>
 	<script type="text/javascript" src="js/jquery.qrcode.min.js"></script>
 	<script type="text/javascript" src="js/clipboard.min.js" ></script>
+	<script type="text/javascript" src="js/base.js" ></script>
+	<script type="text/javascript" src="js/config.js" ></script>
 	<script type="text/javascript">
 		$(function () {
-			// config
-			var config = {
-				chains : [
-					{chain: "Smart Chain", coin: "BNB", chainId: "0x38", addresses: {
-						BNB: "",
-						DOGE: "0xba2ae424d960c26247dd6c32edc70b295c744c43",
-						USDT: "0x55d398326f99059ff775485246999027b3197955"
-					}},
-					{chain: "Ethereum", coin: "ETH", chainId: "0x1", addresses: {
-						BNB: "",
-						DOGE: "",
-						USDT: ""
-					}},
-					{chain: "Doge Blockchain", coin: "DOGE", addresses: {
-						DOGE: "",
-						BNB: "",
-						USDT: ""
-					}},
-					{chain: "DeFi Chain", coin: "DFC", chainId: "", addresses: {
-						BNB: "",
-						DOGE: "",
-						USDT: ""
-					}},
-				]
-			};
-			
-			// base
-			$.getParam = function (name) {
-				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
-				var r = window.location.search.substr(1).match(reg);
-				if (r != null) {
-					return decodeURI(r[2]);	//url解码
-				} else {
-					return "";
-				}
-			};
-			$.dialog = function(msg, ms, lodding) {
-				$(".div_loading div").text(msg);
-				if (lodding) {
-					$(".div_loading i").show();
-				} else {
-					$(".div_loading i").hide();
-				}
-				$(".div_loading").show();
-				setTimeout(function () {
-					$(".div_loading").hide();
-				}, ms);
-			};
-			$.copy = function(selecter, successCallback) {
-				if ($(selecter).length == 0) {
-					return;
-				}
-				var clipboard = new ClipboardJS(selecter);
-				clipboard.on('success', function(e) {
-					$.dialog("Copy success", 1000);
-					e.clearSelection();
-				});
-				clipboard.on('error', function(e) {
-					$.dialog("Copy error", 1000);
-				});
-			};
-			$.logo = function(coin){
-				return "img/coin/" + coin + ".png";
-			};
 			$.closeWindow = function(){
 				$(".div_overlay").hide();
-				$("#div_from_select").hide();
-				$("#div_to_select").hide();
-				$("#div_qrcode_window").hide();
+				$(".div_window").hide();
 			};
 			$(".div_from_btn").on('click', function(){
 				$(".div_overlay").show();
@@ -563,69 +176,55 @@
 				$("#div_to_select").show();
 			});
 			$(".div_overlay").on('click', function(){
-				$(".div_select_header i").click();
+				$(".div_window_header i").click();
 			});
 			var rate = 1;
 			$("#input_from_amount").on('input', function(){
 				$("#input_to_amount").val($(this).val() * rate);
 			});
+			$("#input_from_addr").on('input', function(){
+				if ($.config.fromChain.chainId != null && $.config.toChain.chainId != null) {
+					$("#input_to_addr").val($(this).val());
+					$("#input_to_addr").attr("disabled", "disabled");
+				}
+			});
 			
-			// default chain and coin
-			var fromChain = $.getParam("fromChain");
-			if (fromChain) {
-				for (var chain of config.chains) {
-					if (fromChain == chain.coin) {
-						config.fromChain = chain;
-						break;
-					}
-				}
-			} else {
-				config.fromChain = config.chains[0];
-			}
-			var addrs = config.fromChain.addresses;
-			config.coins = addrs == null ? [] : Object.keys(addrs);
-			config.swapCoin = config.coins[0];
-			for (var chain of config.chains) {
-				if (chain.coin != config.fromChain.coin && chain.addresses[config.swapCoin] != null) {
-					config.toChain = chain;
-					break;
-				}
-			}
+			
 			
 			// init
 			$.init = function() {
 				// logo
-				$("#img_from").attr("src", $.logo(config.swapCoin));
-				if (config.swapCoin == config.fromChain.coin) {
+				$("#img_from").attr("src", $.logo($.config.swapCoin));
+				if ($.config.swapCoin == $.config.fromChain.coin) {
 					$("#img_from_chain").hide();
 				} else {
 					$("#img_from_chain").show();
-					$("#img_from_chain").attr("src", $.logo(config.fromChain.coin));
+					$("#img_from_chain").attr("src", $.logo($.config.fromChain.coin));
 				}
-				$("#img_to").attr("src", $.logo(config.swapCoin));
-				if (config.swapCoin == config.toChain.coin) {
+				$("#img_to").attr("src", $.logo($.config.swapCoin));
+				if ($.config.swapCoin == $.config.toChain.coin) {
 					$("#img_to_chain").hide();
 				} else {
 					$("#img_to_chain").show();
-					$("#img_to_chain").attr("src", $.logo(config.toChain.coin));
+					$("#img_to_chain").attr("src", $.logo($.config.toChain.coin));
 				}
 				
 				// show select window
 				$("#div_from_select").setTemplateElement("from_select_template");
-				$("#div_from_select").processTemplate(config);
+				$("#div_from_select").processTemplate($.config);
 				$("#div_to_select").setTemplateElement("to_select_template");
-				$("#div_to_select").processTemplate(config);
-				$(".div_select_header i").on('click', $.closeWindow);
+				$("#div_to_select").processTemplate($.config);
+				$(".div_window_header i").on('click', $.closeWindow);
 				
 				// click select window
 				$("#div_from_select .div_select_item").each(function(){
 					var that = $(this);
 					that.on('click', function(){
-						for (var coin of config.coins) {
+						for (var coin of $.config.coins) {
 							if (coin == that.attr("coin")) {
-								config.swapCoin = coin;
+								$.config.swapCoin = coin;
 								$.init();
-								$(".div_select_header i").click();
+								$(".div_window_header i").click();
 								break;
 							}	
 						}
@@ -634,18 +233,18 @@
 				$("#div_to_select .div_select_item").each(function(){
 					var that = $(this);
 					that.on('click', function(){
-						for (var chain of config.chains) {
+						for (var chain of $.config.chains) {
 							if (chain.coin == that.attr("coin")) {
-								config.toChain = chain;
+								$.config.toChain = chain;
 								$.init();
-								if (config.toChain.chainId == null) {
-									$("#input_to_addr").attr("placeholder", "to address");
+								if ($.config.toChain.chainId == null) {
+									$("#input_to_addr").val("");
 									$("#input_to_addr").removeAttr("disabled");
-								} else {
-									$("#input_to_addr").attr("placeholder", walletAddress);
+								} else if ($.config.fromChain.chainId != null) {
+									$("#input_to_addr").val($("#input_from_addr").val());
 									$("#input_to_addr").attr("disabled", "disabled");
 								}
-								$(".div_select_header i").click();
+								$(".div_window_header i").click();
 								break;
 							}
 						}
@@ -669,10 +268,10 @@
 			var walletAddress;
 			$.switchWallet = function(address) {
 				walletAddress = address;
-				$("#input_from_addr").attr("placeholder", walletAddress);
+				$("#input_from_addr").val(walletAddress);
 				$("#input_from_addr").attr("disabled", "disabled");
-				if (config.toChain.chainId != null) {
-					$("#input_to_addr").attr("placeholder", walletAddress);
+				if ($.config.toChain.chainId != null) {
+					$("#input_to_addr").val(walletAddress);
 					$("#input_to_addr").attr("disabled", "disabled");
 				}
 			};
@@ -700,26 +299,26 @@
 			// access contract
 			const ERC20_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}];
 			const ETH_USDT_ABI = [{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"}];
-			$.transfer = function(paymentAddr, amount) {
-				if (config.swapCoin == config.fromChain.coin) {
-					var message = {from: walletAddress, to: paymentAddr, value: web3.utils.toWei(amount, 'ether')};
+			$.transfer = function(data) {
+				if ($.config.swapCoin == $.config.fromChain.coin) {
+					var message = {from: walletAddress, to: data.paymentAddr, value: web3.utils.toWei(data.fromAmount, 'ether')};
 					web3.eth.sendTransaction(message, (err, res) => {
 				        if (err) {
 				        	$.dialog("error", 1000);
 				        } else {
-				        	$.submit(paymentAddr, amount);
+				        	$.submit(data);
 				        }
 				    });
 				} else {
-					var isEthUsdt = config.swapCoin == "USDT" && config.fromChain.coin == "ETH" ? true : false;
-					var contractAddr = config.fromChain.addresses[config.swapCoin];
+					var isEthUsdt = $.config.swapCoin == "USDT" && $.config.fromChain.coin == "ETH" ? true : false;
+					var contractAddr = $.config.fromChain.addresses[$.config.swapCoin];
 					var contract = new web3.eth.Contract(isEthUsdt ? ETH_USDT_ABI : ERC20_ABI, contractAddr);
 					contract.methods
-						.transfer(paymentAddr, web3.utils.toWei(amount, isEthUsdt ? "Mwei" : "ether"))
+						.transfer(data.paymentAddr, web3.utils.toWei(data.fromAmount, isEthUsdt ? "Mwei" : "ether"))
 						.send({from: walletAddress})
 						.then((tx) => {
 							$.waitForReceipt(tx.transactionHash, 6, (receipt) => {
-								$.submit(paymentAddr, amount);
+								$.submit(data);
 							});
 						});
 				}
@@ -730,8 +329,8 @@
 				$(".btn_submit").on('click', function(){
 					$.queryPaymentAddr(function(paymentAddr){
 						$("#div_qrcode_window").setTemplateElement("qrcode_window_template");
-						$("#div_qrcode_window").processTemplate(config);
-						$(".div_select_header i").on('click', $.closeWindow);
+						$("#div_qrcode_window").processTemplate($.config);
+						$(".div_window_header i").on('click', $.closeWindow);
 						
 						var addressQr = $('#address_qr');
 						if (addressQr.length > 0) {
@@ -755,6 +354,58 @@
 			};
 			
 			// request
+			$.getSubmitData = function(paymentAddr) {
+				// from address
+				var fromAmount = $("#input_from_amount").val();
+				if (! fromAmount) {
+					$.dialog('No from amount entered', 1000);
+					return null;
+				}
+				
+				// to address
+				var toAmount = $("#input_to_amount").val();
+				if (! toAmount) {
+					$.dialog('No to amount entered', 1000);
+					return null;
+				}
+				
+				// from address
+				var fromAddr = $("#input_from_addr").val();
+				if (! fromAddr) {
+					$.dialog("No from address entered", 1000);
+					return null;
+				}
+				
+				// to address
+				var toAddr = $("#input_to_addr").val();
+				if (! toAddr) {
+					$.dialog("No to address entered", 1000);
+					return null;
+				}
+				
+				// data
+				var data = {
+						paymentAddr: paymentAddr,
+						fromChain: $.config.fromChain.coin, 
+						toChain: $.config.toChain.coin,
+						fromAmount: fromAmount,
+						toAmount: toAmount,
+						fromAddr: fromAddr,
+						toAddr: toAddr
+				};
+				return data;
+			};
+			$.submit = function(data) {
+				$.ajax({
+					type: "post",
+					url: "/api/save",
+					data: data,
+					dataType : "jsonp",
+					traditional: true,
+					success: function(msg){
+					}
+				});
+			};
 			$.queryPaymentAddr = function(callback){
 				callback("0xe5Bd21f0F3F35F1FF34ccC22AB84AFaFA30028B3");
 				
@@ -769,56 +420,12 @@
 				// 	}
 				// });
 			};
-			$.submit = function(paymentAddr, amount) {
-				// from address
-				var fromAddr;
-				if (walletAddress == null) {
-					var addrFrom = $("#input_from_addr").val();
-					if (! addrFrom) {
-						$.dialog("No from address entered", 1000);
-						return;
-					}
-					fromAddr = addrFrom;
-				} else {
-					fromAddr = walletAddress;
-				}
-				
-				// to address
-				var toAddr;
-				if (walletAddress == null) {
-					var addrTo = $("#input_to_addr").val();
-					if (! addrTo) {
-						$.dialog("No to address entered", 1000);
-						return;
-					}
-					toAddr = addrTo;
-				} else {
-					toAddr = walletAddress;
-				}
-				
-				// request
-				$.ajax({
-					type: "post",
-					url: "/api/save",
-					data: {
-						fromChain: config.fromChain.coin, 
-						fromAddr: fromAddr,
-						paymentAddr: paymentAddr,
-						toChain: config.toChain.coin,
-						toAddr: toAddr,
-						amount: amount},
-					dataType : "jsonp",
-					traditional: true,
-					success: function(msg){
-					}
-				});
-			};
 			
 			// connect wallet
 			if (window.ethereum) {
 				try {
 					window.ethereum.enable().then(accounts => {
-						$.verifyChainId(config.fromChain.chainId, function(){
+						$.verifyChainId($.config.fromChain.chainId, function(){
 							web3 = new Web3(window.ethereum);
 							window.ethereum.on("accountsChanged", function(accounts) {
 								$.switchWallet(accounts[0]);
@@ -827,18 +434,10 @@
 							
 							// event
 							$(".btn_submit").on('click', function() {
-								var amount = $("#input_from_amount").val();
-								if (! amount) {
-									$.dialog('No amount entered', 1000);
-									return;
-								}
-								var addrTo = $("#input_to_addr").val();
-								if (! addrTo) {
-									$.dialog("No to address entered", 1000);
-									return;
-								} 
 								$.queryPaymentAddr(function(paymentAddr){
-									$.transfer(paymentAddr, amount);
+									var data = $.getSubmitData(paymentAddr);
+									if (! data) return;
+									$.transfer(data);
 								});
 							});
 						}, $.notConnect);
