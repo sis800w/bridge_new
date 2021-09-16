@@ -163,9 +163,11 @@
 	<script type="text/javascript" src="js/config.js" ></script>
 	<script type="text/javascript">
 		$(function () {
-			$.closeWindow = function(){
-				$(".div_overlay").hide();
-				$(".div_window").hide();
+			$.bindCloseWindowEvent = function(){
+				$(".div_window_header i").on('click', function(){
+					$(".div_overlay").hide();
+					$(".div_window").hide();
+				});
 			};
 			$(".div_from_btn").on('click', function(){
 				$(".div_overlay").show();
@@ -188,8 +190,6 @@
 					$("#input_to_addr").attr("disabled", "disabled");
 				}
 			});
-			
-			
 			
 			// init
 			$.init = function() {
@@ -214,7 +214,7 @@
 				$("#div_from_select").processTemplate($.config);
 				$("#div_to_select").setTemplateElement("to_select_template");
 				$("#div_to_select").processTemplate($.config);
-				$(".div_window_header i").on('click', $.closeWindow);
+				$.bindCloseWindowEvent();
 				
 				// click select window
 				$("#div_from_select .div_select_item").each(function(){
@@ -330,7 +330,7 @@
 					$.queryPaymentAddr(function(paymentAddr){
 						$("#div_qrcode_window").setTemplateElement("qrcode_window_template");
 						$("#div_qrcode_window").processTemplate($.config);
-						$(".div_window_header i").on('click', $.closeWindow);
+						$.bindCloseWindowEvent();
 						
 						var addressQr = $('#address_qr');
 						if (addressQr.length > 0) {
