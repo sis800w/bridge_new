@@ -20,8 +20,13 @@ $(function () {
 	
 	// input event
 	var rate = 1;
-	$("#input_from_amount").on('input', function(){
-		$("#input_to_amount").val($(this).val() * rate);
+	$("#input_from_amount").on('input', function() {
+		var value = $(this).val().replace(/[^\d.]/g, '');			// clear not number & points
+		value = value.replace(/\.{2,}/g,".");						// clear excess points
+		value = value.replace(/^(\-)*(\d+)\.(\d{6}).*$/, '$1$2.$3');// decimals limit
+		value = value == "." ? "" : value;
+		$(this).val(value);
+		$("#input_to_amount").val(value * rate);
 	});
 	$.inputFromAddrUpdate = function(walletAddress) {
 		var inputFromAddr = $("#input_from_addr");
