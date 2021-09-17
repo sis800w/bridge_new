@@ -2,22 +2,22 @@ $(function () {
 	// config
 	$.config = {
 		chains : [
-			{chain: "Smart Chain", coin: "BNB", chainId: "0x38", coins: {
+			{chain: "Smart Chain", coin: "BNB", chainId: 56, coins: {
 				BNB: {},
 				DOGE: {address: "0xba2ae424d960c26247dd6c32edc70b295c744c43", decimals: 8},
 				USDT: {address: "0x55d398326f99059ff775485246999027b3197955"}
 			}},
-			{chain: "Ethereum", coin: "ETH", chainId: "0x1", coins: {
+			{chain: "Ethereum", coin: "ETH", chainId: 1, coins: {
 				BNB: {},
 				DOGE: {},
 				USDT: {}
 			}},
-			{chain: "Doge Blockchain", coin: "DOGE", coins: {
+			{chain: "Doge Blockchain", coin: "DOGE", chainId: -3, coins: {
 				DOGE: {},
 				BNB: {},
 				USDT: {}
 			}},
-			{chain: "DeFi Chain", coin: "DFC", chainId: "", coins: {
+			{chain: "DeFi Chain", coin: "DFC", chainId: 518, coins: {
 				BNB: {},
 				DOGE: {},
 				USDT: {}

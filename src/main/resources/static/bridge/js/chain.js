@@ -6,7 +6,14 @@ $(function(){
 	
 	// 1.verify chainId
 	$.verifyChainId = async function(chainId, callback, errorCallback) {
-		const currChainId = await window.ethereum.request({ method: 'eth_chainId' });
+		const currChainIdHex = await window.ethereum.request({ method: 'eth_chainId' });
+		var currChainId;
+		switch (currChainIdHex) {
+			case "0x1" : currChainId = 1; break;
+			case "0x38" : currChainId = 56; break;		// BNB
+			case "0x206" : currChainId = 518; break;	// DFC
+			case "0x3e6" : currChainId = 998; break;	// EKTA
+		}
 		if (chainId == currChainId) {
 			$.hideDialog();
 			if (callback) callback();
@@ -86,7 +93,7 @@ $(function(){
 	
 	
 	// start
-	if ($.config.fromChain.chainId != null) {
+	if ($.config.fromChain.chainId > 0) {
 		if (window.ethereum) {
 			try {
 				$.dialog("Connect Wallet...", 0, true);

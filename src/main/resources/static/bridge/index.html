@@ -181,7 +181,7 @@
 				inputFromAddr.change();
 			};
 			$.inputFromAddrChange = function() {
-				if ($.config.fromChain.chainId != null && $.config.toChain.chainId != null) {
+				if ($.config.fromChain.chainId > 0 && $.config.toChain.chainId > 0) {
 					$("#input_to_addr").val($(this).val());
 					$("#input_to_addr").attr("disabled", "disabled");
 				}
@@ -220,10 +220,10 @@
 								if (chain.coin == that.attr("coin")) {
 									$.config.toChain = chain;
 									$.init();
-									if ($.config.toChain.chainId == null) {
+									if ($.config.toChain.chainId <= 0) {
 										$("#input_to_addr").val("");
 										$("#input_to_addr").removeAttr("disabled");
-									} else if ($.config.fromChain.chainId != null) {
+									} else if ($.config.fromChain.chainId > 0) {
 										$("#input_to_addr").val($("#input_from_addr").val());
 										$("#input_to_addr").attr("disabled", "disabled");
 									}
