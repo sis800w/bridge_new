@@ -9,7 +9,9 @@
 body {
 	max-width: 450px;
 	min-height: 100vh;
-	margin: 0 auto; 
+	margin: 0 auto;
+	background-color: #2c313b!important;
+	background-image: radial-gradient(50% 50% at 50% 50%,rgba(255,0,0,.1) 10%,hsla(0,0%,100%,0) 100%);
 }
 input:focus {
 	outline: none;
