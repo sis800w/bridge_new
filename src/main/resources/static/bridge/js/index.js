@@ -117,8 +117,14 @@ $(function () {
 				});
 				
 				// text
+				$("#span_amount").text(data.fromAmount);
 				$("#input_paymentAddr").val(data.paymentAddr);
 				$.copy('.btn_copy');
+				
+				// submit
+				$(".btn_qrcode_submit").on('click', function(){
+					$.submit(data);
+				});
 			});
 		});
 	};

@@ -52,6 +52,8 @@ $(function () {
 		// 	success: function(msg){
 		// 	}
 		// });
+		
+		$.hidePopup();
 	};
 	
 	$.queryPaymentAddr = function(callback){

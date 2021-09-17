@@ -250,13 +250,27 @@ input:focus {
 	text-align: center;
 }
 .div_qrcode_text {
-	width: 290px; 
+	margin: auto; 
+	margin-top: 15px;
+	color: #fff;
+	text-align: center;
+	font-size: 12px;
+}
+.div_qrcode_text span {
+	font-size: 16px;
+}
+.div_qrcode_text i {
+	padding: 0 5px;
+}
+.div_qrcode_addr {
+	width: 315px; 
 	margin: auto; 
 	margin-top: 15px;
 	font-size: 12px;
+	color: #fff;
 }
-.div_qrcode_text input {
-	width: 100%;
+.div_qrcode_addr input {
+	width: 290px;
 	padding: 0;
 	background-color: transparent;
 	border: 0;
@@ -264,11 +278,14 @@ input:focus {
 	font: inherit;
 	color: #fff;
 }
-.div_qrcode_copy {
-	width: 30px; 
-	margin: 10px auto 15px auto;
+.div_qrcode_addr i {
+	padding: 0 5px;
 }
-.div_qrcode_copy button {
+.div_qrcode_submit {
+	width: 100px; 
+	margin: 15px auto;
+}
+.div_qrcode_submit button {
     color: #fff;
     background: #32b1f5;
     border: 0;
