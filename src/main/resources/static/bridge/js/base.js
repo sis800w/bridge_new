@@ -1,5 +1,4 @@
 $(function(){
-	// base
 	$.getParam = function (name) {
 		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
 		var r = window.location.search.substr(1).match(reg);
@@ -207,47 +206,4 @@ $(function(){
 		$(".class_div_popup").hide();
 	};
 	
-	/* *********************** page ************************* */
-	
-	$.bindSubmitEvent = function(callback) {
-		$(".btn_submit").on('click', function() {
-			$.queryPaymentAddr(function(paymentAddr){
-				var data = $.getSubmitData(paymentAddr);
-				if (! data) return;
-				callback(data);
-			});
-		});
-	};
-	
-	$.bindQrcodeWindow = function() {
-		$.bindSubmitEvent(function(data){
-			$.showPopup("Scanning QR code ...", function(content) {
-				content.setTemplateElement("qrcode_window_template");
-				content.processTemplate($.config);
-				
-				// qrcode
-				var addressQr = $('#address_qr');
-				addressQr.html("");
-				addressQr.qrcode({
-					text: data.paymentAddr,
-					width: 150,
-					height: 150,
-					correctLevel: 0,
-					background: "rgba(71, 89, 101)",
-				    foreground: "#32b1f5"
-				});
-				
-				// text
-				$("#input_paymentAddr").val(data.paymentAddr);
-				$.copy('.btn_copy');
-			});
-		});
-	};
-	
-	$.inputFromAddrUpdate = function(walletAddress) {
-		var inputFromAddr = $("#input_from_addr");
-		inputFromAddr.val(walletAddress);
-		inputFromAddr.attr("disabled", "disabled");
-		inputFromAddr.change();
-	};
 });
