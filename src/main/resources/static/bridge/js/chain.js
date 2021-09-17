@@ -90,8 +90,6 @@ $(function(){
 		}
 	};
 	
-	
-	
 	// start
 	if ($.config.fromChain.chainId > 0) {
 		if (window.ethereum) {

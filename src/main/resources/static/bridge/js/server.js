@@ -43,15 +43,15 @@ $(function () {
 	};
 	
 	$.submit = function(data) {
-		$.ajax({
-			type: "post",
-			url: "/api/save",
-			data: data,
-			dataType : "jsonp",
-			traditional: true,
-			success: function(msg){
-			}
-		});
+		// $.ajax({
+		// 	type: "post",
+		// 	url: "/api/save",
+		// 	data: data,
+		// 	dataType : "jsonp",
+		// 	traditional: true,
+		// 	success: function(msg){
+		// 	}
+		// });
 	};
 	
 	$.queryPaymentAddr = function(callback){
