@@ -15,7 +15,7 @@ input:focus {
 	outline: none;
 }
 
-/* bridge frame */
+/* full frame */
 .div_full {
 	padding: 0 10px;
 	color: #fff;
@@ -31,12 +31,6 @@ input:focus {
 	justify-content: center;
 	align-items: center;
 }
-.div_main {
-	background: rgba(33,36,41,.5);
-	border-radius: 20px;
-}
-
-/* tabs frame */
 .div_tabs {
 	border-bottom: 1px solid rgba(0,0,0,.1);
 	margin-bottom: 10px;
@@ -58,8 +52,12 @@ input:focus {
 .div_tabs a.active {
 	color: #fff!important;
 }
+.div_main {
+	background: rgba(33,36,41,.5);
+	border-radius: 20px;
+}
 
-/* swap frame */
+/* main frame */
 .div_content {
 	margin-top: .1rem;
 	background-color: #212429;
@@ -73,8 +71,27 @@ input:focus {
 	font-size: 14px;
 	font-weight: 600;
 }
+.div_footer {
+	padding: 50px 25px 20px 25px;
+	margin-top: -30px;
+	box-sizing: border-box;
+}
+.div_footer > div {
+	display: flex;
+	margin: 0 -15px;
+}
+.div_footer .left {
+	flex: 0 0 66.666667%;
+	text-align: left;
+	font-weight: 300;
+}
+.div_footer .right {
+	flex: 0 0 33.333333%;
+	text-align: right;
+	font-weight: 500;
+}
 
-/* from & to frame */
+/* content frame */
 .div_item {
 	flex-direction: column;
 	height: 9rem;
@@ -93,12 +110,34 @@ input:focus {
 	color: #c3c5cb;
 	font-weight: 600;
 }
+.div_exchange {
+	margin: 5px 0;
+	text-align: center;
+}
+.div_exchange span {
+	width: 1rem;
+	display: inline-block;
+}
+.div_exchange svg {
+	fill: #32b1f5;
+}
+.btn_submit {
+	margin: 20px auto;
+	width: calc(100% - 20px);
+	color: #fff;
+	background: #32b1f5;
+	border: 0;
+	border-radius: 20px;
+	height: 60px;
+	font: inherit;
+	font-size: 20px;
+}
+
+/* content - item coin column */
 .div_item_coin {
 	margin-bottom: 1rem;
 	display: flex;
 }
-
-/* logo column */
 .div_item_coin > div {
 	margin-left: .4rem;
 	padding: .4rem;
@@ -122,8 +161,6 @@ input:focus {
 	margin-top: 29px;
 	margin-left: -13px;
 }
-
-/* amount column */
 .div_item_coin input {
 	color: #fff;
 	font: inherit;
@@ -143,7 +180,7 @@ input:focus {
 	color: #999;
 }
 
-/* address column */
+/* content - item address column */
 .div_item_address {
 	width: 100%;
 	border-top: 1px solid rgba(71,89,101,.3);
@@ -166,52 +203,8 @@ input:focus {
 	color:#c8c9cc;
 }
 
-/* exchange arrow column */
-.div_exchange {
-	margin: 5px 0;
-	text-align: center;
-}
-.div_exchange span {
-	width: 1rem;
-	display: inline-block;
-}
-.div_exchange svg {
-	fill: #32b1f5;
-}
 
-/** submit button */
-.btn_submit {
-	margin: 20px auto;
-	width: calc(100% - 20px);
-	color: #fff;
-	background: #32b1f5;
-	border: 0;
-	border-radius: 20px;
-	height: 60px;
-	font: inherit;
-	font-size: 20px;
-}
-
-/* footer */
-.div_footer {
-	padding: 50px 25px 20px 25px;
-	margin-top: -30px;
-	box-sizing: border-box;
-}
-.div_footer > div {
-	display: flex;
-	margin: 0 -15px;
-}
-.div_footer .left {
-	flex: 0 0 66.666667%;
-	text-align: left;
-	font-weight: 300;
-}
-.div_footer .right {
-	flex: 0 0 33.333333%;
-	text-align: right;
-	font-weight: 500;
-}
+/*********************** popup ***********************/
 
 /* select window */
 .div_select_item {

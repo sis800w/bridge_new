@@ -8,8 +8,10 @@ $(function(){
 	$.verifyChainId = async function(chainId, callback, errorCallback) {
 		const currChainId = await window.ethereum.request({ method: 'eth_chainId' });
 		if (chainId == currChainId) {
+			$.hideDialog();
 			if (callback) callback();
 		} else {
+			$.dialog("Not in " + $.config.fromChain.chain.toLowerCase() + " network, please transfer by scanning QR code", 3000);
 			if (errorCallback) errorCallback();
 		}
 	}
@@ -69,7 +71,7 @@ $(function(){
 	// 6.wait for receipt
 	$.waitForReceipt = async function(tx_hash, max_try, callback) {
 		if (max_try <= 0) {
-			$.dialog("waitForReceipt timeout", 1000);
+			$.dialog("Wait for receipt timeout", 2000);
 			return;
 		}
 		let receipt = await web3.eth.getTransactionReceipt(tx_hash);
@@ -84,23 +86,30 @@ $(function(){
 	
 	
 	// start
-	if (window.ethereum) {
-		try {
-			window.ethereum.enable().then(accounts => {
-				$.verifyChainId($.config.fromChain.chainId, function(){
-					web3 = new Web3(window.ethereum);
-					window.ethereum.on("accountsChanged", function(accounts) {
+	if ($.config.fromChain.chainId != null) {
+		if (window.ethereum) {
+			try {
+				$.dialog("Connect Wallet...", 0, true);
+				window.ethereum.enable().then(accounts => {
+					$.verifyChainId($.config.fromChain.chainId, function(){
+						web3 = new Web3(window.ethereum);
+						window.ethereum.on("accountsChanged", function(accounts) {
+							$.connectWallet(accounts[0]);
+						});
 						$.connectWallet(accounts[0]);
-					});
-					$.connectWallet(accounts[0]);
-					$.bindSubmitEvent($.transfer);
-				}, $.bindQrcodeWindow);
-			});
-		} catch (error) {
-			$.dialog(error, 1000);
+						$.bindSubmitEvent($.transfer);
+					}, $.bindQrcodeWindow);
+				});
+			} catch (error) {
+				$.dialog(error + ", please transfer by scanning QR code", 3000);
+				$.bindQrcodeWindow();
+			}
+		} else {
+			$.dialog("Not in dapp browser, please transfer by scanning QR code", 3000);
 			$.bindQrcodeWindow();
 		}
 	} else {
+		$.dialog("The current chain only supports transfer by scanning QR code", 3000);
 		$.bindQrcodeWindow();
 	}
 	

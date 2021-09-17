@@ -46,6 +46,7 @@ $(function(){
 	};
 	
 	$.dialog = function(msg, ms, lodding) {
+		$.hideDialog();
 		var id = "id_div_dialog";
 		var dialog = $('#' + id);
 		if (dialog.text().length == 0) {
@@ -96,9 +97,15 @@ $(function(){
 		} else {
 			dialog.find("i").hide();
 		}
-		setTimeout(function () {
-			dialog.hide();
-		}, ms);
+		if (ms > 0) {
+			setTimeout(function () {
+				dialog.hide();
+			}, ms);
+		}
+	};
+	
+	$.hideDialog = function() {
+		$('#id_div_dialog').hide();
 	};
 	
 	$.showOverlay = function() {
