@@ -91,6 +91,9 @@ $(function(){
 			try {
 				$.dialog("Connect Wallet...", 0, true);
 				window.ethereum.enable().then(accounts => {
+					window.ethereum.on("networkChanged", function (networkId) {
+						location.reload();
+					});
 					$.verifyChainId($.config.fromChain.chainId, function(){
 						web3 = new Web3(window.ethereum);
 						window.ethereum.on("accountsChanged", function(accounts) {
