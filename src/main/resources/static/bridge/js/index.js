@@ -91,11 +91,7 @@ $(function () {
 	});
 	$.bindSubmitEvent = function(callback) {
 		$(".btn_submit").on('click', function() {
-			$.queryPaymentAddr(function(paymentAddr){
-				var data = $.getSubmitData(paymentAddr);
-				if (! data) return;
-				callback(data);
-			});
+			$.applyPayment(callback);
 		});
 	};
 	$.bindQrcodeWindow = function() {
@@ -123,7 +119,7 @@ $(function () {
 				
 				// submit
 				$(".btn_qrcode_submit").on('click', function(){
-					$.submit(data);
+					$.confirmPayment(data.key);
 				});
 			});
 		});

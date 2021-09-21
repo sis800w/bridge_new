@@ -37,7 +37,7 @@ $(function(){
 				$.errorProcess(error);
 		    }).then(function(tx) {
 				$.resultProcess(tx, function(){
-					$.submit(data);
+					$.confirmPayment(data.key);
 				});
 			});
 		} else {
@@ -53,10 +53,11 @@ $(function(){
 				})
 				.then(function(tx) {
 					$.resultProcess(tx, function(){
-						$.submit(data);
+						$.confirmPayment(data.key);
 					});
 				});
 		}
+		$.dialog("Already submitted, waiting for confirmation.", 0);
 	};
 	
 	// 4.error process
