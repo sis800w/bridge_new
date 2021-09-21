@@ -114,7 +114,7 @@ $(function () {
 				
 				// text
 				$("#span_amount").text(data.fromAmount);
-				$("#input_paymentAddr").val(data.paymentAddr);
+				$("#span_paymentAddr").text(data.paymentAddr);
 				$.copy('.btn_copy');
 				
 				// submit
