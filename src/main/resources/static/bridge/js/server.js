@@ -39,8 +39,8 @@ $(function () {
 		
 		// data
 		var data = {
-				fromChain: $.config.fromChain.coin, 
-				toChain: $.config.toChain.coin,
+				fromChain: $.config.fromChain.chainId, 
+				toChain: $.config.toChain.chainId,
 				fromAmount: fromAmount,
 				toAmount: toAmount,
 				fromAddr: fromAddr,
@@ -72,11 +72,14 @@ $(function () {
 		//});
 	};
 	
-	$.confirmPayment = function(key) {
+	$.confirmPayment = function(key, txHash) {
 		var data = {
 			key: key,
 			confirmTime: new Date().getTime()
 		};
+		if (txHash) {
+			data.txHash = txHash; 
+		}
 		
 		// 去掉注释后删除
 		$.hidePopup();

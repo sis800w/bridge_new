@@ -37,7 +37,7 @@ $(function(){
 				$.errorProcess(error);
 		    }).then(function(tx) {
 				$.resultProcess(tx, function(){
-					$.confirmPayment(data.key);
+					$.confirmPayment(data.key, tx.transactionHash);
 				});
 			});
 		} else {
@@ -53,7 +53,7 @@ $(function(){
 				})
 				.then(function(tx) {
 					$.resultProcess(tx, function(){
-						$.confirmPayment(data.key);
+						$.confirmPayment(data.key, tx.transactionHash);
 					});
 				});
 		}
