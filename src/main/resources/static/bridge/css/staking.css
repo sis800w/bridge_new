@@ -1,0 +1,49 @@
+@charset "utf-8";
+
+/* main frame */
+.div_content {
+	margin-top: .1rem;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	padding: .4rem 0;
+}
+.div_content label {
+	margin: .4rem 14px 10px 14px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #4ed8de;
+	text-shadow: 0 0 12px #4ed8de;
+}
+
+/* content frame */
+.div_item {
+	flex-direction: column;
+	width: 90%;
+	padding: .6rem;
+	margin: 0 auto;
+	margin-bottom: 10px;
+	border: 1px solid rgba(71,89,101,.3);
+	border-radius: 1rem;
+	display: flex;
+	justify-content: center;
+	background-color: #212429;
+}
+
+/* content - item coin column */
+.div_item_title {
+	color: #e66799;	/* #c3c5cb; */
+	font-weight: 600;
+	font-size: .8rem;
+}
+.div_item_title img {
+	width: 1rem!important;
+}
+.div_item_content {
+	margin-top: .4rem;
+}
+.div_item_content span:last-child {
+	float: right;
+	color: #4ed8de;
+	text-shadow: 0 0 12px #4ed8de;
+}
