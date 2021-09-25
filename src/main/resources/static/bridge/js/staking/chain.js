@@ -28,21 +28,21 @@ $(function () {
 			obj.rewardBalance = Number($.fromWei(result[5]), $.project.reward.decimals);
 		}
 		callback(obj);
-	}
+	};
 	
 	$.approve = function(obj, project) {
 		if (obj.stakedAllowance == 0) {
 			var contract = $.getStakeTokenContract(project);
 			contract.methods
-					.approve(project.address, $.toWei("100000000", project.stake.decimals))
-					.send({from: $.walletAddress}, $.errorProcess)
-					.then((tx) => {
-						that.waitForReceipt(tx.transactionHash, 6, (receipt) => {
-							
-						});
+				.approve(project.address, $.toWei("100000000", project.stake.decimals))
+				.send({from: $.walletAddress}, $.errorProcess)
+				.then((tx) => {
+					$.resultProcess(tx, function(){
+						
 					});
+				});
 		}
-	}
+	};
 	
 	$.connectWallet($.config.currChain, function() {
 		

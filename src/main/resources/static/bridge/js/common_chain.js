@@ -25,6 +25,7 @@ $(function(){
 	
 	$.resultProcess = function(tx, callback) {
 		$.waitForReceipt(tx.transactionHash, 6, (receipt) => {
+			$.hideDialog();
 			callback();
 		});
 	};
