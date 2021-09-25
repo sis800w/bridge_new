@@ -9,7 +9,7 @@ $(function () {
 	};
 	
 	$.queryAccount = async function(project, callback) {
-		var contract = new $.web3.eth.Contract(MAIN_ABI, project.contractAddr);
+		var contract = new $.web3.eth.Contract(MAIN_ABI, project.address);
 		let result = await contract.methods.query_account($.walletAddress).call();
 		var obj = {};
 		obj.activated = result[0] === "true" ? true : false;

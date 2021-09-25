@@ -116,7 +116,7 @@
 	</div>
 	<textarea id="project_template" style="display:none;">
 		{#foreach $T.projects as item}
-			<div id="{$T.item.contractAddr}" class="div_content">
+			<div id="{$T.item.address}" class="div_content">
 				<label>{$T.item.name}</label>
 				<div class="div_item">
 					<div class="div_item_title">Mining <img src="img/coin/{$T.item.reward.coin}.png"> BRGE BY <img src="img/coin/{$T.item.stake.coin}.png"> {$T.item.stakeCoin}</div>
@@ -176,6 +176,7 @@
 		$(function(){
 			$(".div_main").setTemplateElement("project_template");
 			$(".div_main").processTemplate($.config.currChain);
+			
 			$(".div_content").on('click', function(){
 				var project;
 				for (project of $.config.currChain.projects) {
