@@ -21,22 +21,26 @@ $(function () {
 				BNB: {},
 				DOGE: {},
 				USDT: {}
-			}},
+			}}
 		]
 	};
 	
 	// default from chain
-	var fromChain = $.getParam("fromChain");
-	if (fromChain) {
-		for (var chain of $.config.chains) {
-			if (fromChain == chain.coin) {
-				$.config.fromChain = chain;
+	var chain = $.getParam("chain");
+	if (! chain) {
+		chain = $.getCookie("chain");
+	}
+	if (chain) {
+		for (var currChain of $.config.chains) {
+			if (chain == currChain.coin) {
+				$.config.fromChain = currChain;
 				break;
 			}
 		}
 	} else {
 		$.config.fromChain = $.config.chains[0];
 	}
+	$.setCookie("chain", $.config.fromChain.coin);
 	
 	// default coins & swapCoin
 	var coins = $.config.fromChain.coins;

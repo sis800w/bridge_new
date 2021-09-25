@@ -90,7 +90,7 @@ $(function () {
 		});
 	});
 	$.bindSubmitEvent = function(callback) {
-		$(".btn_submit").on('click', function() {
+		$(".btn_submit").unbind('click').on('click', function() {
 			$.applyPayment(callback);
 		});
 	};

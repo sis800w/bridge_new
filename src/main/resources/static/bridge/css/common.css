@@ -58,3 +58,18 @@ input:focus {
 	background: rgba(33,36,41,.5);
 	border-radius: 20px;
 }
+
+/* main frame */
+.div_content {
+	margin-top: .1rem;
+	background-color: #212429;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	padding: .4rem 0;
+}
+.div_content label {
+	margin: .4rem 14px 10px 14px;
+	font-size: 14px;
+	font-weight: 600;
+}

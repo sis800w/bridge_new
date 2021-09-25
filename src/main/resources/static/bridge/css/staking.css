@@ -1,17 +1,13 @@
 @charset "utf-8";
 
 /* main frame */
+.div_main {
+	background: none;
+}
 .div_content {
-	margin-top: .1rem;
-	border-radius: 20px;
-	display: flex;
-	flex-direction: column;
-	padding: .4rem 0;
+	margin-bottom: 10px;
 }
 .div_content label {
-	margin: .4rem 14px 10px 14px;
-	font-size: 14px;
-	font-weight: 600;
 	color: #4ed8de;
 	text-shadow: 0 0 12px #4ed8de;
 }
