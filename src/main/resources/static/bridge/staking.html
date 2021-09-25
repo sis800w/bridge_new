@@ -122,11 +122,11 @@
 					<div class="div_item_title">Mining <img src="img/coin/{$T.item.reward.coin}.png"> BRGE BY <img src="img/coin/{$T.item.stake.coin}.png"> {$T.item.stakeCoin}</div>
 					<div class="div_item_content">
 						<span>Wallet {$T.item.stake.coin} Balance</span>
-						<span>0</span>
+						<span class="stake_coin_balance">0</span>
 					</div>
 					<div class="div_item_content">
 						<span>Wallet {$T.item.reward.coin} Balance</span>
-						<span>0</span>
+						<span class="reward_coin_balance">0</span>
 					</div>
 				</div>
 			</div>
@@ -172,24 +172,5 @@
 	<script type="text/javascript" src="js/staking/config.js" ></script>
 	<script type="text/javascript" src="js/staking/staking.js" ></script>
 	<script type="text/javascript" src="js/staking/chain.js" ></script>
-	<script type="text/javascript">
-		$(function(){
-			$(".div_main").setTemplateElement("project_template");
-			$(".div_main").processTemplate($.config.currChain);
-			
-			$(".div_content").on('click', function(){
-				var project;
-				for (project of $.config.currChain.projects) {
-					if (project.address == $(this).attr("id")) {
-						break;
-					}
-				}
-				$.showPopup($(this).find("label").text(), function(content) {
-					content.setTemplateElement("details_template");
-					content.processTemplate(project);
-				});
-			});
-		});
-	</script>
 </body>
 </html>

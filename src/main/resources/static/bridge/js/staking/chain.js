@@ -15,17 +15,17 @@ $(function () {
 		obj.activated = result[0] === "true" ? true : false;
 		obj.ref = result[1];
 		obj.balance = Number($.web3.utils.fromWei(result[2]));
-		if (project.stake.coin == config.currChain.coin) {
+		if (project.stake.coin == $.config.currChain.coin) {
 			obj.stakedAllowance = -1;
 			obj.stakedBalance = obj.balance;
 		} else {
-			obj.stakedAllowance = Number($.fromWei(result[3]), $.project.stake.decimals);
-			obj.stakedBalance = Number($.fromWei(result[4]), $.project.stake.decimals);
+			obj.stakedAllowance = Number($.fromWei(result[3]), project.stake.decimals);
+			obj.stakedBalance = Number($.fromWei(result[4]), project.stake.decimals);
 		}
-		if (project.reward.coin == config.currChain.coin) {
+		if (project.reward.coin == $.config.currChain.coin) {
 			obj.rewardBalance = obj.balance;
 		} else {
-			obj.rewardBalance = Number($.fromWei(result[5]), $.project.reward.decimals);
+			obj.rewardBalance = Number($.fromWei(result[5]), project.reward.decimals);
 		}
 		callback(obj);
 	};
@@ -44,8 +44,6 @@ $(function () {
 		}
 	};
 	
-	$.connectWallet($.config.currChain, function() {
-		
-	});
+	$.connectWallet($.config.currChain, $.init);
 	
 });

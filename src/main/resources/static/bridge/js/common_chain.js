@@ -1,6 +1,6 @@
 $(function(){
 	$.fromWei = function(amount, decimals) {
-		if (decimal) {
+		if (decimals) {
 			return $.floatDiv(amount, Math.pow(10, decimals));
 		} else {
 			return $.web3.utils.fromWei(amount);
@@ -8,7 +8,7 @@ $(function(){
 	};
 	
 	$.toWei = function(amount, decimals) {
-		if (decimal) {
+		if (decimals) {
 			return $.floatMul(amount, Math.pow(10, decimals));
 		} else {
 			return $.web3.utils.toWei(amount);
