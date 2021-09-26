@@ -29,7 +29,7 @@
 	</div>
 	<textarea id="project_template" style="display:none;">
 		{#foreach $T.projects as item}
-			<div id="{$T.item.address}" class="div_content">
+			<div id="index_{$T.item$index}" class="div_content">
 				<label>{$T.item.name}</label>
 				<div class="div_item">
 					<div class="div_item_title">Mining <img src="img/coin/{$T.item.reward.coin}.png"> BRGE BY <img src="img/coin/{$T.item.stake.coin}.png"> {$T.item.stakeCoin}</div>
@@ -53,11 +53,11 @@
 			</div>
 			<div>
 				<span>Deposit</span>
-				<span><span>{$T.queryAccount.amount}</span>&nbsp;&nbsp;<span>{$T.stake.coin}</span></span>
+				<span><span>{$T.queryUser.amount}</span>&nbsp;&nbsp;<span>{$T.stake.coin}</span></span>
 			</div>
 			<div>
 				<span>Earned</span>
-				<span><span>{$T.queryAccount.pendingReward}</span>&nbsp;&nbsp;<span>{$T.reward.coin}</span></span>
+				<span><span>{$T.queryUser.pendingReward}</span>&nbsp;&nbsp;<span>{$T.reward.coin}</span></span>
 			</div>
 			<div>
 				<button id="btn_refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button>
@@ -69,9 +69,9 @@
 			<div>{$T.fee} withdrawal fee</div>
 			<div>
 				<input id="input_amount" inputmode="decimal" placeholder="0 {$T.stake.coin}"/>
-				<div><button id="btn_max" max="{$T.queryAccount.stakedBalance}">MAX</button></div>
+				<div><button id="btn_max" max="{$T.queryUser.stakedBalance}">MAX</button></div>
 			</div>
-			<div>WALLET BALANCE: {$T.queryAccount.stakedBalance} {$T.stake.coin}</div>
+			<div>WALLET BALANCE: {$T.queryUser.stakedBalance} {$T.stake.coin}</div>
 		</div>
 		<button class="btn_popup_bottom" id="btn_approve">Approve</button>
 		<button class="btn_popup_bottom" id="btn_deposit">Deposit</button>

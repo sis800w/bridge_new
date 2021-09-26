@@ -1,4 +1,21 @@
 $(function(){
+	$.toAmount = function(value, max) {
+		value = value == "." ? "" : value;
+		value = value == "00" ? "0" : value;
+		value = value.indexOf(".") == value.lastIndexOf(".") ? value : value.substring(0, value.lastIndexOf("."));
+		value = value.replace(/[^\d.]/g, '');						// clear not number & points
+		value = value.replace(/^(\-)*(\d+)\.(\d{6}).*$/, '$1$2.$3');// decimals limit
+		value = Number(value) >= 10000000000 ? "9999999999.999999" : value;
+		if (max) {
+			value = Number(max) < Number(value) ? max : value;
+			if (Number(max) == 0) {
+				value = "";
+				$.dialog("Insufficient balance", 2000);
+			}
+		}
+		return value;
+	};
+	
 	$.fromWei = function(amount, decimals) {
 		if (decimals) {
 			return $.floatDiv(amount, Math.pow(10, decimals));
