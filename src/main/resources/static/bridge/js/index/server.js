@@ -1,13 +1,5 @@
 $(function () {
 	
-	// uuid
-	$.uuid = function () {
-		function S4() {
-			return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-		}
-		return (S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4());
-	};
-	
 	$.applyPayment = function(callback) {
 		// from address
 		var fromAmount = $("#input_from_amount").val();
@@ -65,7 +57,6 @@ $(function () {
 		// 			data.paymentAddr = msg.data.paymentAddr;
 		// 			callback(data);
 		// 		} else {
-		// 			console.log(msg);
 		// 			$.dialog(msg.errorMessage, 2000);
 		// 		}
 		// 	}
@@ -96,7 +87,6 @@ $(function () {
 		// 			$.hidePopup();
 		//			$.hideDialog();
 		// 		} else {
-		// 			console.log(msg);
 		// 			$.dialog(msg.errorMessage, 2000);
 		// 		}
 		// 	}
