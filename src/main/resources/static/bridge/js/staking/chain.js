@@ -42,7 +42,6 @@ $(function () {
 		} else {
 			obj.rewardBalance = Number($.fromWei(result[5]), project.reward.decimals);
 		}
-		obj.stakedBalance = 10000;	// TODO text
 		callback(obj);
 	};
 	
