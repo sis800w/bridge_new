@@ -199,8 +199,7 @@ $(function(){
 			popup.appendTo($("body"));
 			
 			// header
-			var header = $("<div><span>" + title + "</span><i class='fa fa-times' aria-hidden='true'></i></div>");
-			header.text(title);
+			var header = $("<div>");
 			header.css({
 				"font-size": "20px",
 				"color": "#fff",
@@ -210,6 +209,11 @@ $(function(){
 				"padding": "1rem"
 			});
 			header.appendTo(popup);
+			
+			// title
+			var titleSpan = $("<span>");
+			titleSpan.text(title);
+			titleSpan.appendTo(header);
 			
 			// close
 			var close = $("<i>");
