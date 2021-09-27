@@ -39,6 +39,8 @@ input:focus {
 }
 .div_tabs nav {
 	padding: .5rem 1rem;
+	display: flex; 
+	justify-content: space-between;
 }
 .div_tabs div {
 	display: flex;

@@ -94,6 +94,4 @@ $(function () {
 			});
 	};
 	
-	$.connectWallet($.config.currChain, $.init);
-	
 });

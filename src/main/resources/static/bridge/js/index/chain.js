@@ -30,17 +30,4 @@ $(function(){
 		$.dialog("Already submitted, waiting for confirmation.", 0);
 	};
 	
-	// start
-	if ($.config.fromChain.chainId > 0) {
-		$.connectWallet($.config.fromChain, function() {
-			$.inputFromAddrUpdate($.walletAddress);
-			$.bindSubmitEvent($.transfer);
-		}, function() {
-			$.bindQrcodeWindow();
-		}, 3000, "please transfer by scanning QR code");
-	} else {
-		$.dialog("The current chain only supports transfer by scanning QR code", 3000);
-		$.bindQrcodeWindow();
-	}
-	
 });

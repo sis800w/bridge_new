@@ -15,7 +15,9 @@ $(function(){
 				if (++i == $.config.currChain.projects.length - 1) $.hideDialog();
 			});
 		}
+		$("#a_invitation").show();
 	};
+	$.connectWallet($.config.currChain, $.init);
 	
 	$.popupInit = function(content, project) {
 		// show
@@ -118,6 +120,28 @@ $(function(){
 		var project = $.config.currChain.projects[index];
 		$.showPopup($(this).find("label").text(), function(content) {
 			$.popupInit(content, project);
+		});
+	});
+	
+	$("#a_invitation").on('click', function(){
+		$.showPopup("Invitation link", function(content) {
+			content.setTemplateElement("invitation_template");
+			content.processTemplate();
+			
+			// text
+			var ref_url = window.location.protocol + "//" + window.location.host + "/staking.html?ref=" + $.walletAddress;
+			$("#span_link").text(ref_url);
+			$.copy('.btn_copy');
+			
+			// qr
+			$('#ref_qr').qrcode({
+				text: ref_url,
+				width: 150,
+				height: 150,
+				correctLevel: 0,
+				background: "rgba(71, 89, 101)",
+			    foreground: "#32b1f5"
+			});
 		});
 	});
 });

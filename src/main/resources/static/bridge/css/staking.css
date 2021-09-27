@@ -130,3 +130,43 @@
     font: inherit;
     font-size: 20px;
 }
+
+/* qrcode window */
+.div_qrcode_img {
+	width:150px; 
+	margin: auto; 
+	margin-top: 20px; 
+	text-align: center;
+}
+.div_qrcode_addr {
+	margin-top: 15px;
+	font-size: 12px;
+	color: #fff;
+	text-align: center;
+}
+.div_qrcode_addr span {
+	font-family: "Menlo";
+}
+.div_qrcode_submit {
+	width: 60px; 
+	margin: 15px auto;
+}
+.div_qrcode_submit button {
+	width: 100%;
+    color: #fff;
+    background: #32b1f5;
+    border: 0;
+    border-radius: 10px;
+    height: 20px;
+    font: inherit;
+    font-size: 14px;	
+}
+
+/* other */
+#a_invitation {
+	color: #4ed8de!important;
+	display: none;
+}
+#a_invitation:active {
+	color: #4ed8de!important;
+}
