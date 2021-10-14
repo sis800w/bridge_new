@@ -62,34 +62,42 @@ $(function () {
 	};
 	
 	$.approve = function(project) {
+		$.tips("Approve...");
 		$.stakeTokenContract(project).methods
 			.approve(project.address, $.toWei("100000000", project.stake.decimals))
 			.send({from: $.walletAddress}, $.errorProcess)
 			.then((tx) => {
 				$.resultProcess(tx, function(){
-					
+					$.hideTips();
 				});
 			});
 	};
 	
 	$.deposit = function(project, amount, ref) {
+		var amountWei = $.toWei(amount, project.stake.decimals);
+		var sendParam = {from: $.walletAddress};
+		if (project.stake.coin == $.config.currChain.coin) {
+			sendParam.value = amountWei;
+		}
+		$.tips("Deposit...");
 		$.mainContract(project).methods
-			.deposit($.toWei(amount, project.stake.decimals), ref)
-			.send({from: $.walletAddress}, $.errorProcess)
+			.deposit(amountWei, ref)
+			.send(sendParam, $.errorProcess)
 			.then((tx) => {
 				$.resultProcess(tx, function(){
-					
+					$.hideTips();
 				});
 			});
 	};
 	
 	$.withdraw = function(project) {
+		$.tips("Withdraw...");
 		$.mainContract(project).methods
 			.withdraw()
 			.send({from: $.walletAddress}, $.errorProcess)
 			.then((tx) => {
 				$.resultProcess(tx, function(){
-					
+					$.hideTips();
 				});
 			});
 	};

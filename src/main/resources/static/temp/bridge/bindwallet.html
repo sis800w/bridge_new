@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CC.SC</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<link rel="icon" href="img/favicon.ico"/>
+	<link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="css/index.css?v=2" />
+</head>
+
+<body>
+	<div class="div_full">
+		<div class="div_title">CC.SC</div>
+		<div class="div_tabs">
+		    <!--
+			<nav>
+				<div class="">
+					<a href="#" class="active">Bridge</a>
+					<a href="pool">Stake</a>
+				</div>
+			</nav>
+			-->
+		</div>
+		<div class="div_main">
+			<div class="div_content">
+				<label>VIEW PERMANENTLY BOUND DOGE WALLET</label>
+
+				
+				<div class="div_item" style="display:aria-hidden;">
+				
+					
+					<div class="div_item_coin">
+						<div>
+							<div class="div_to_btn">
+								<img id="img_to"/>
+								<img id="img_to_chain" class="min-img">
+							</div>
+						</div>
+						<input id="input_to_amount" type="text" disabled="disabled" inputmode="decimal" placeholder="0.0" style= 'font-size: 12px;'/>
+					</div>
+					
+					<div class="div_item_address">
+						<input id="input_to_addr" type="text" placeholder="to address" />
+					</div>
+				</div>
+				
+				<button class="btn_submit">GET DOGE ADDRESS</button>
+			</div>
+			
+			<div class="div_footer">
+				<div>
+					<div class="left">Fee</div>
+					<div class="right">0.1%~1%</div>
+				</div>
+				<div>
+					<div class="left">Estimated processing time</div>
+					<div class="right">~10 minutes</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<textarea id="from_select_template" style="display:none;">
+		{#foreach $T.coins as coin}
+			<div coin="{$T.coin}" class="div_select_item {#if $T.coin == $T.swapCoin}div_select_item_selected{#/if}">
+				<img src="img/coin/{$T.coin}.png"/>
+				{#if $T.coin != $T.fromChain.coin}
+					<img src="img/coin/{$T.fromChain.coin}.png" class="min-img"/>
+				{#/if}
+				<div>
+					<div>{$T.coin}</div>
+					{#if $T.coin != $T.fromChain.coin}
+						<div class="chain">{$T.fromChain.chain}</div>
+					{#else}
+						<div class="chain">Native</div>
+					{#/if}
+				</div>
+			</div>
+		{#/for}
+	</textarea>
+	<textarea id="to_select_template" style="display:none;">
+		{#foreach $T.chains as chain}
+			{#if $T.chain.coin != $T.fromChain.coin && $T.chain.coins[$T.swapCoin] != null}
+				<div coin="{$T.chain.coin}" class="div_select_item {#if $T.chain.coin == $T.toChain.coin}div_select_item_selected{#/if}">
+					<img src="img/coin/{$T.swapCoin}.png"/>
+					{#if $T.chain.coin != $T.swapCoin}
+						<img src="img/coin/{$T.chain.coin}.png" class="min-img"/>
+					{#/if}
+					<div>
+						<div>{$T.swapCoin}</div>
+						{#if $T.chain.coin != $T.swapCoin}
+							<div class="chain">{$T.chain.chain}</div>
+						{#else}
+							<div class="chain">Native</div>
+						{#/if}
+					</div>
+				</div>
+			{#/if}
+		{#/for}
+	</textarea>
+	<textarea id="qrcode_window_template" style="display:none;">
+		<div class="div_qrcode_img">
+			<div id="address_qr"></div>
+		</div>
+		<div class="div_qrcode_text">Dogecoin Address:</div>
+		<div class="div_qrcode_addr">
+			<input id="input_paymentAddr" type="text" disabled="readonly"/>
+			<i class="fa fa-files-o btn_copy" data-clipboard-target="#input_paymentAddr" aria-hidden="true"></i>
+		</div>
+		<div class="div_qrcode_submit">
+			<button class="btn_qrcode_submit">I HAVE PAID</button>
+		</div>
+	</textarea>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.4/dist/web3.min.js"></script>
+	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="js/jquery.qrcode.min.js"></script>
+	<script type="text/javascript" src="js/clipboard.min.js" ></script>
+	<script type="text/javascript" src="js/base.js" ></script>
+	<script type="text/javascript" src="js/config.js?v=10.07.3.34" ></script>
+	<script type="text/javascript" src="js/serverWallet.js?v=10.07.3.37" ></script>
+	<script type="text/javascript" src="js/indexWallet.js?v=10.07.3.37" ></script>
+	<script type="text/javascript" src="js/chainWallet.js?v=10.07.5.89" ></script>
+<!-- Loading框 -->
+  <div class="loading-box" data-show="0">
+   <div class="loading-body">
+    <div>
+     <div class="typing-loader"></div>
+     <p>Pending...DO NOT close this page.</p>
+    </div>
+   </div>
+  </div>
+  <!-- Loading框 -->
+</body>
+</html>

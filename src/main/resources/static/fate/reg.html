@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>命中注定</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<link rel="icon" href="img/favicon.png"/>
+	<link rel="stylesheet" href="css/common.css?v=16" />
+</head>
+<body>
+	<div>
+		<div class="div_title">注 册 用 户</div>
+		<div class="div_form">
+			<div>
+				<div>手机号：<span>必填</span></div>
+				<input class="phone" type="text" autocomplete="off"/>
+			</div>
+			<div>
+				<div>密码：<span>必填</span></div>
+				<input class="password" type="password" placeholder="6-20位字母数字混合" />
+			</div>
+			<div>
+				<div>重复密码：<span>必填</span></div>
+				<input class="password2" type="password" placeholder="请再次输入密码" />
+			</div>
+			<div>
+				<div>图片验证码：<span>必填</span></div>
+				<input class="imgCaptcha" type="text"/>
+			</div>
+			<div>
+				<div>推荐码：</div>
+				<input class="userSn" type="text" />
+			</div>
+			<button id="btn_submit" class="button_full">确&nbsp;&nbsp;&nbsp;&nbsp;定</button>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="js/common.js?v=20" ></script>
+	<script type="text/javascript" src="js/session.js?v=19" ></script>
+	<script>
+		$(function(){
+			// 注册
+			$('#btn_submit').on('click', function () {
+				// get phone
+				var box = $(this).parent();
+				var phone = box.find('.phone').val();
+				if (! phone) {
+					$.tips('请先输入手机号', 2000);
+					return;
+				}
+				
+				// get password
+				var password = box.find('.password').val();
+				if (! password) {
+					$.tips('请先输入密码', 2000);
+					return;
+				}
+				
+				// get password2
+				var password2 = box.find('.password2').val();
+				if (! password2) {
+					$.tips('请先输入重复密码', 2000);
+					return;
+				}
+				
+				// password error
+				if (password != password2) {
+					$.tips('密码与重复密码不一致', 2000);
+					return;
+				}
+				
+				// get imgCaptcha
+				var imgCaptcha = box.find('.imgCaptcha').val();
+				if (! imgCaptcha) {
+					$.tips('请输入验证码', 2000);
+					return;
+				}
+				
+				// req
+				var data = {
+						phone: phone,
+						imgKey: $.imgKey,
+						imgCaptcha: imgCaptcha,
+						password: password,
+						sn: $.getParam('sn')
+				};
+				$.post("user/register", data, function(msg) {
+					$.setUserinfo(msg);
+					window.location.href = "./edit.html";
+				});
+			});
+        });
+    </script>
+</body>
+</html>

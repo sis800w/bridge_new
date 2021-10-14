@@ -5,14 +5,14 @@ $(function(){
 	$.init = function() {
 		var i = 0;
 		$.user = [];
-		$.dialog("query user info", 0, true);
+		$.tips("query user info");
 		for (var project of $.config.currChain.projects) {
 			$.queryUser(project, function(obj) {
 				$.user[project.address] = obj;
 				var div = $("#index_" + i);
 				div.find(".stake_coin_balance").text(obj.stakedBalance);
 				div.find(".reward_coin_balance").text(obj.rewardBalance);
-				if (++i == $.config.currChain.projects.length - 1) $.hideDialog();
+				if (++i == $.config.currChain.projects.length) $.hideTips();
 			});
 		}
 		$("#a_invitation").show();
@@ -47,16 +47,16 @@ $(function(){
 			if (max > 0) {
 				$("#input_amount").val(max);
 			} else {
-				$.dialog("Insufficient balance", 2000);
+				$.tips("Insufficient balance", 2000);
 			}
 		});
 		
 		$("#btn_refresh").on('click', function(){
-			$.dialog("query user info", 0, true);
+			$.tips("query user info");
 			$.queryUser(project, function(obj){
 				$.user[project.address] = obj;
 				$.popupInit(content, project);
-				$.hideDialog();
+				$.hideTips();
 			});
 		});
 		
@@ -92,7 +92,7 @@ $(function(){
 			// amount
 			var amount = $("#input_amount").val();
 			if (! amount) {
-				$.dialog("amount is null", 2000);
+				$.tips("amount is null", 2000);
 				return;
 			}
 			
@@ -100,7 +100,7 @@ $(function(){
 			var ref = $.getParam("ref");
 			if (ref && ref != ""){
 				if(! $.web3.utils.isAddress(ref)){
-					$.dialog("referrer address error", 2000);
+					$.tips("referrer address error", 2000);
 					return;
 				}
 			} else {

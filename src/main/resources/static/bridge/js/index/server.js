@@ -4,28 +4,28 @@ $(function () {
 		// from address
 		var fromAmount = $("#input_from_amount").val();
 		if (! fromAmount) {
-			$.dialog('No from amount entered', 1000);
+			$.tips('No from amount entered', 1000);
 			return null;
 		}
 		
 		// to address
 		var toAmount = $("#input_to_amount").val();
 		if (! toAmount) {
-			$.dialog('No to amount entered', 1000);
+			$.tips('No to amount entered', 1000);
 			return null;
 		}
 		
 		// from address
 		var fromAddr = $("#input_from_addr").val();
 		if (! fromAddr) {
-			$.dialog("No from address entered", 1000);
+			$.tips("No from address entered", 1000);
 			return null;
 		}
 		
 		// to address
 		var toAddr = $("#input_to_addr").val();
 		if (! toAddr) {
-			$.dialog("No to address entered", 1000);
+			$.tips("No to address entered", 1000);
 			return null;
 		}
 		
@@ -57,7 +57,7 @@ $(function () {
 		// 			data.paymentAddr = msg.data.paymentAddr;
 		// 			callback(data);
 		// 		} else {
-		// 			$.dialog(msg.errorMessage, 2000);
+		// 			$.tips(msg.errorMessage, 2000);
 		// 		}
 		// 	}
 		//});
@@ -74,7 +74,7 @@ $(function () {
 		
 		// 去掉注释后删除
 		$.hidePopup();
-		$.hideDialog();
+		$.hideTips();
 		
 		//$.ajax({
 		// 	type: "post",
@@ -85,9 +85,9 @@ $(function () {
 		// 	success: function(msg){
 		// 		if (msg.success) {
 		// 			$.hidePopup();
-		//			$.hideDialog();
+		//			$.hideTips();
 		// 		} else {
-		// 			$.dialog(msg.errorMessage, 2000);
+		// 			$.tips(msg.errorMessage, 2000);
 		// 		}
 		// 	}
 		//});

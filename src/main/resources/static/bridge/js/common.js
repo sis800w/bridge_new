@@ -55,17 +55,17 @@ $(function(){
 		}
 	};
 	
-	$.copy = function(selecter, successCallback) {
+	$.copy = function(selecter) {
 		if ($(selecter).length == 0) {
 			return;
 		}
 		var clipboard = new ClipboardJS(selecter);
 		clipboard.on('success', function(e) {
-			$.dialog("Copy success", 1000);
+			$.tips("Copy success", 1000);
 			e.clearSelection();
 		});
 		clipboard.on('error', function(e) {
-			$.dialog("Copy error", 1000);
+			$.tips("Copy error", 1000);
 		});
 	};
 	
@@ -86,8 +86,61 @@ $(function(){
 		return "img/coin/" + coin + ".png";
 	};
 	
-	$.dialog = function(msg, ms, lodding) {
-		$.hideDialog();
+	$.lodding = function(msg) {
+		$.hideTips();
+		var id = "id_div_lodding";
+		var lodding = $('#' + id);
+		if (lodding.text().length == 0) {
+			// lodding
+			lodding = $("<div>");
+			lodding.css({
+				"position": "fixed",
+				"top": 0,
+				"left": 0,
+				"width": "100%",
+				"height": "100%",
+				"background-color": "rgba(0,0,0,.7)",
+				"color": "#fff",
+				"font-size": "14px",
+				"display": "flex",
+				"flex-direction": "column",
+				"justify-content": "center",
+				"align-items": "center",
+				"z-index": 10002
+			});
+			lodding.attr("id", id);
+			lodding.appendTo($("body"));
+			
+			var iconWarp = $("<span>");
+			iconWarp.appendTo(lodding);
+			
+			// icon
+			var icon = $("<i>");
+			icon.addClass("fa");
+			icon.addClass("fa-spinner");
+			icon.addClass("fa-pulse");
+			icon.addClass("fa-3x");
+			icon.addClass("fa-fw");
+			icon.appendTo(iconWarp);
+			
+			// text
+			var text = $("<div>");
+			text.css("margin-top", "8px");
+			text.text(msg);
+			text.appendTo(lodding);
+		} else {
+			var text = lodding.children("div");
+			text.text(msg)
+			lodding.show();
+		}
+	};
+	
+	$.hideLodding = function() {
+		$('#id_div_lodding').hide();
+	};
+	
+	$.dialog = function(msg, ms) {
+		$.hideTips();
 		var id = "id_div_dialog";
 		var dialog = $('#' + id);
 		if (dialog.text().length == 0) {
@@ -128,16 +181,11 @@ $(function(){
 			text.appendTo(dialog);
 		} else {
 			var text = dialog.children("div");
-			text.text(msg)
+			text.text(msg);
 			dialog.show();
 		}
 		
 		// public
-		if (lodding) {
-			dialog.find("i").show();
-		} else {
-			dialog.find("i").hide();
-		}
 		if (ms > 0) {
 			setTimeout(function () {
 				dialog.hide();
@@ -149,10 +197,23 @@ $(function(){
 		$('#id_div_dialog').hide();
 	};
 	
+	$.tips = function(msg, ms) {
+		if (ms) {
+			$.dialog(msg, ms);
+		} else {
+			$.lodding(msg);
+		}
+	};
+	
+	$.hideTips = function() {
+		$.hideDialog();
+		$.hideLodding();
+	};
+	
 	$.showOverlay = function() {
 		var id = "id_div_overlay";
 		var overlay = $('#' + id);
-		if (overlay.text().length == 0) {
+		if (! overlay.css("display")) {
 			overlay = $("<div>");
 			overlay.css({
 				"position": "fixed",

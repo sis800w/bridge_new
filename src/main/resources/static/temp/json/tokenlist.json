@@ -1,0 +1,23 @@
+{
+  "name": "CCSC",
+  "logoURI": "https://cc.sc/bridge/img/coin/DFC.png",
+  "keywords": ["defi", "doge", "yield"],
+  "timestamp": "2020-11-23T01:40:34.305Z",
+  "tokens": [
+    {
+      "chainId": 518,
+      "address": "0x7d8f299A092fccFa0876E511786262c42a423598",
+      "name": "USDT",
+      "symbol": "USDT",
+      "decimals": 18
+    },
+    {
+      "chainId": 518,
+      "address": "0x4eBA78A8d882064EA985D5a4582729D458Cd918c",
+      "name": "eDOGE",
+      "symbol": "DOGE",
+      "decimals": 18
+    }
+  ],
+  "version": { "major": 0, "minor": 0, "patch": 0 }
+}

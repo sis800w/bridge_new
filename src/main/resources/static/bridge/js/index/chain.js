@@ -27,7 +27,7 @@ $(function(){
 					});
 				});
 		}
-		$.dialog("Already submitted, waiting for confirmation.", 0);
+		$.tips("Already submitted, waiting for confirmation.");
 	};
 	
 });

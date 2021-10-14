@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>命中注定</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<link rel="icon" href="img/favicon.png"/>
+	<link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="css/common.css?v=9" />
+</head>
+<body>
+	<div>
+		<div class="div_banner">
+			<img src="img/666.jpg"/>
+		</div>
+		<div class="div_title">单身信息登记表</div>
+		<div class="div_form">
+			<div>
+				<div>昵称：</div>
+				<input id="nickname" type="text" placeholder="中文，长度不超10位"/>
+			</div>
+			<div>
+				<div>联系微信号：<span>默认隐藏，有条件公布</span></div>
+				<input id="wechat" type="text"/>
+			</div>
+		</div>
+		<div class="div_banner">
+			<img src="img/656.jpg"/>
+		</div>
+		<div class="div_form">
+			<div>
+				<div>性别：<span>必填，不可修改</span></div>
+				<div id="sex" width="90px"></div>
+			</div>
+			<div>
+				<div>生日：<span>必填，不可修改</span></div>
+				<input id="birthday" type="text" readonly="readonly"/>
+			</div>
+			<div>
+				<div>身高：<span>必填</span></div>
+				<input id="height" type="text" placeholder="整数"/>
+			</div>
+			<div>
+				<div>体重：<span>必填</span></div>
+				<input id="weight" type="text" placeholder="整数"/>
+			</div>
+			<div>
+				<div>颜值自评：</div>
+				<select id="appearance" title="颜值自评" column="2"></select>
+			</div>
+			<div>
+				<div>家乡：</div>
+				<select id="hometown" title="家乡"></select>
+			</div>
+			<div>
+				<div>居住地：</div>
+				<select id="live" title="居住地" column="3"></select>
+			</div>
+			<div>
+				<div>学历：</div>
+				<select id="education" title="学历"></select>
+			</div>
+			<div>
+				<div>职业：</div>
+				<input id="occupation" type="text" />
+			</div>
+			<div>
+				<div>年收入：</div>
+				<select id="income" title="年收入"></select>
+			</div>
+			<div>
+				<div>住房情况：</div>
+				<select id="housing" title="住房情况"></select>
+			</div>
+			<div>
+				<div>婚姻状况：<span>必填，不可逆向修改（如离异->未婚）</span></div>
+				<select id="marriage" title="婚姻状况"></select>
+			</div>
+			<div>
+				<div>生育意愿：<span>必填</span></div>
+				<select id="children" title="生育意愿"></select>
+			</div>
+			<div>
+				<div>是否吸烟：</div>
+				<div id="smoking" width="90px"></div>
+			</div>
+			<div>
+				<div>自我介绍：</div>
+				<textarea id="introduce" placeholder="300字以内"></textarea>
+			</div>
+		</div>
+		<div class="div_banner">
+			<img src="img/677.jpg"/>
+		</div>
+		<div class="div_form">
+			<div>
+				<div>要求年龄范围：</div>
+				<input id="selectionAgeMin" type="text" style="width: 50px;"/>
+				<span> - </span>
+				<input id="selectionAgeMax" type="text" style="width: 50px;"/>
+			</div>
+			<div>
+				<div>要求身高范围 (cm)：</div>
+				<input id="selectionHeightMin" type="text" style="width: 50px;"/>
+				<span> - </span>
+				<input id="selectionHeightMax" type="text" style="width: 50px;"/>
+			</div>
+			<div>
+				<div>要求学历：</div>
+				<select id="selectionEducation" title="要求学历"></select>
+			</div>
+			<div>
+				<div>要求年收入：</div>
+				<select id="selectionIncome" title="要求年收入"></select>
+			</div>
+			<div>
+				<div>要求婚姻状况：</div>
+				<div id="selectionMarriage" y="true"></div>
+			</div>
+			<div>
+				<div>要求住房情况：</div>
+				<div id="selectionHousing" y="true"></div>
+			</div>
+		</div>
+		<button id="btn_submit" class="button_full">确&nbsp;&nbsp;&nbsp;&nbsp;定</button>
+	</div>
+
+	<textarea id="sex_template" style="display:none;">
+		<input name='sex' type="radio" value="男" {#if $T.sex == "男"}checked="checked"{#/if}/><label>男</label>
+		<input name='sex' type="radio" value="女" {#if $T.sex == "女"}checked="checked"{#/if}/><label>女</label>
+	</textarea>
+	<textarea id="appearance_template" style="display:none;">
+		<option value="1" {#if $T.appearance == 1}selected="selected"{#/if}>1分</option>
+		<option value="2" {#if $T.appearance == 2}selected="selected"{#/if}>2分</option>
+		<option value="3" {#if $T.appearance == 3}selected="selected"{#/if}>3分</option>
+		<option value="4" {#if $T.appearance == 4}selected="selected"{#/if}>4分</option>
+		<option value="5" {#if $T.appearance == 5}selected="selected"{#/if}>5分</option>
+		<option value="6" {#if $T.appearance == 6}selected="selected"{#/if}>6分</option>
+		<option value="7" {#if $T.appearance == 7}selected="selected"{#/if}>7分</option>
+		<option value="8" {#if $T.appearance == 8}selected="selected"{#/if}>8分</option>
+		<option value="9" {#if $T.appearance == 9}selected="selected"{#/if}>9分</option>
+		<option value="10" {#if $T.appearance == 10}selected="selected"{#/if}>10分</option>
+	</textarea>
+	<textarea id="hometown_template" style="display:none;">
+		<option value="1" {#if $T.hometown == 1}selected="selected"{#/if}>五城区</option>
+		<option value="2" {#if $T.hometown == 2}selected="selected"{#/if}>成都市域</option>
+		<option value="3" {#if $T.hometown == 3}selected="selected"{#/if}>省内</option>
+		<option value="4" {#if $T.hometown == 4}selected="selected"{#/if}>省外</option>
+	</textarea>
+	<textarea id="live_template" style="display:none;">
+		<option value="1" {#if $T.live == 1}selected="selected"{#/if}>锦江区</option>
+		<option value="2" {#if $T.live == 2}selected="selected"{#/if}>青羊区</option>
+		<option value="3" {#if $T.live == 3}selected="selected"{#/if}>金牛区</option>
+		<option value="4" {#if $T.live == 4}selected="selected"{#/if}>武侯区</option>
+		<option value="5" {#if $T.live == 5}selected="selected"{#/if}>成华区</option>
+		<option value="6" {#if $T.live == 6}selected="selected"{#/if}>龙泉驿区</option>
+		<option value="7" {#if $T.live == 7}selected="selected"{#/if}>青白江区</option>
+		<option value="8" {#if $T.live == 8}selected="selected"{#/if}>新都区</option>
+		<option value="9" {#if $T.live == 9}selected="selected"{#/if}>温江区</option>
+		<option value="10" {#if $T.live == 10}selected="selected"{#/if}>双流区</option>
+		<option value="11" {#if $T.live == 11}selected="selected"{#/if}>郫都区</option>
+		<option value="12" {#if $T.live == 12}selected="selected"{#/if}>新津区</option>
+		<option value="13" {#if $T.live == 13}selected="selected"{#/if}>金堂县</option>
+		<option value="14" {#if $T.live == 14}selected="selected"{#/if}>大邑县</option>
+		<option value="15" {#if $T.live == 15}selected="selected"{#/if}>蒲江县</option>
+		<option value="16" {#if $T.live == 16}selected="selected"{#/if}>都江堰市</option>
+		<option value="17" {#if $T.live == 17}selected="selected"{#/if}>彭州市</option>
+		<option value="18" {#if $T.live == 18}selected="selected"{#/if}>邛崃市</option>
+		<option value="19" {#if $T.live == 19}selected="selected"{#/if}>崇州市</option>
+		<option value="20" {#if $T.live == 20}selected="selected"{#/if}>简阳市</option>
+	</textarea>
+	<textarea id="housing_template" style="display:none;">
+		<option value="1" {#if $T.housing == 1}selected="selected"{#/if}>市区有房无贷</option>
+		<option value="2" {#if $T.housing == 2}selected="selected"{#/if}>市区有房有贷</option>
+		<option value="3" {#if $T.housing == 3}selected="selected"{#/if}>市区无房</option>
+	</textarea>
+	<textarea id="education_template" style="display:none;">
+		<option value="1" {#if $T.education == 1}selected="selected"{#/if}>初中或以下</option>
+		<option value="2" {#if $T.education == 2}selected="selected"{#/if}>高中或职高</option>
+		<option value="3" {#if $T.education == 3}selected="selected"{#/if}>大专</option>
+		<option value="4" {#if $T.education == 4}selected="selected"{#/if}>本科</option>
+		<option value="5" {#if $T.education == 5}selected="selected"{#/if}>硕士或博士</option>
+	</textarea>
+	<textarea id="income_template" style="display:none;">
+		<option value="1" {#if $T.income == 1}selected="selected"{#/if}>5万以下</option>
+		<option value="2" {#if $T.income == 2}selected="selected"{#/if}>5万-8万</option>
+		<option value="3" {#if $T.income == 3}selected="selected"{#/if}>8万-13万</option>
+		<option value="4" {#if $T.income == 4}selected="selected"{#/if}>13万-20万</option>
+		<option value="5" {#if $T.income == 5}selected="selected"{#/if}>20万-30万</option>
+		<option value="6" {#if $T.income == 6}selected="selected"{#/if}>30万-50万</option>
+		<option value="7" {#if $T.income == 7}selected="selected"{#/if}>50万以上</option>
+	</textarea>
+	<textarea id="marriage_template" style="display:none;">
+		<option value="1" {#if $T.marriage == 1}selected="selected"{#/if}>未婚</option>
+		<option value="2" {#if $T.marriage == 2}selected="selected"{#/if}>离异无子</option>
+		<option value="3" {#if $T.marriage == 3}selected="selected"{#/if}>离异有子对方带</option>
+		<option value="4" {#if $T.marriage == 4}selected="selected"{#/if}>离异有子自己带</option>
+	</textarea>
+	<textarea id="children_template" style="display:none;">
+		<option value="1" {#if $T.children == 1}selected="selected"{#/if}>不想生小孩</option>
+		<option value="2" {#if $T.children == 2}selected="selected"{#/if}>可生可不生</option>
+		<option value="3" {#if $T.children == 3}selected="selected"{#/if}>只想生一个小孩</option>
+		<option value="4" {#if $T.children == 4}selected="selected"{#/if}>想生两个或以上小孩</option>
+	</textarea>
+	<textarea id="smoking_template" style="display:none;">
+		<input name='smoking' type="radio" value="1" {#if $T.smoking == 1}checked="checked"{#/if}/><label>不吸</label>
+		<input name='smoking' type="radio" value="2" {#if $T.smoking == 2}checked="checked"{#/if}/><label>要吸</label>
+	</textarea>
+	<textarea id="selectionEducation_template" style="display:none;">
+		<option value="1" {#if $T.selectionEducation == 1}selected="selected"{#/if}>不限</option>
+		<option value="2" {#if $T.selectionEducation == 2}selected="selected"{#/if}>高中或职高以上</option>
+		<option value="3" {#if $T.selectionEducation == 3}selected="selected"{#/if}>大专以上</option>
+		<option value="4" {#if $T.selectionEducation == 4}selected="selected"{#/if}>本科以上</option>
+		<option value="5" {#if $T.selectionEducation == 5}selected="selected"{#/if}>硕士以上</option>
+	</textarea>
+	<textarea id="selectionIncome_template" style="display:none;">
+		<option value="1" {#if $T.selectionIncome == 1}selected="selected"{#/if}>不限</option>
+		<option value="2" {#if $T.selectionIncome == 2}selected="selected"{#/if}>5万以上</option>
+		<option value="3" {#if $T.selectionIncome == 3}selected="selected"{#/if}>8万以上</option>
+		<option value="4" {#if $T.selectionIncome == 4}selected="selected"{#/if}>13万以上</option>
+		<option value="5" {#if $T.selectionIncome == 5}selected="selected"{#/if}>20万以上</option>
+		<option value="6" {#if $T.selectionIncome == 6}selected="selected"{#/if}>30万以上</option>
+		<option value="7" {#if $T.selectionIncome == 7}selected="selected"{#/if}>50万以上</option>
+	</textarea>
+	<textarea id="selectionMarriage_template" style="display:none;">
+		<input name='selectionMarriage' type="checkbox" value="0"/><label all="true">不限</label>
+		<input name='selectionMarriage' type="checkbox" value="8" {#if $T.selectionMarriage[3]}checked="checked"{#/if}/><label>未婚</label>
+		<input name='selectionMarriage' type="checkbox" value="4" {#if $T.selectionMarriage[2]}checked="checked"{#/if}/><label>离异无子</label>
+		<input name='selectionMarriage' type="checkbox" value="2" {#if $T.selectionMarriage[1]}checked="checked"{#/if}/><label>离异有子对方带</label>
+		<input name='selectionMarriage' type="checkbox" value="1" {#if $T.selectionMarriage[0]}checked="checked"{#/if}/><label>离异有子自己带</label>
+	</textarea>
+	<textarea id="selectionHousing_template" style="display:none;">
+		<input name='selectionHousing' type="checkbox" value="0"/><label all="true">不限</label>
+		<input name='selectionHousing' type="checkbox" value="4" {#if $T.selectionHousing[2]}checked="checked"{#/if}/><label>市区有房无贷</label>
+		<input name='selectionHousing' type="checkbox" value="2" {#if $T.selectionHousing[1]}checked="checked"{#/if}/><label>市区有房有贷</label>
+		<input name='selectionHousing' type="checkbox" value="1" {#if $T.selectionHousing[0]}checked="checked"{#/if}/><label>市区无房</label>
+	</textarea>
+	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="js/laydate/laydate.js"></script>
+	<script type="text/javascript" src="js/common.js?v=7" ></script>
+	<script type="text/javascript" src="js/session.js?v=7" ></script>
+	<script type="text/javascript">
+		$(function () {
+			// 登录
+			if (! $.getCookie("token")) {
+				$.showLogin();
+				return;
+			}
+			
+			// 加载数据
+			$.loadData = function() {
+				$.get("user/data", {}, function(data){
+					laydate.render({
+						elem: '#birthday',
+						showBottom: false,
+						max: 0,
+						value: data.birthday ? data.birthday : '1990-01-01'
+					});
+					
+					$("#nickname").val(data.nickname);
+					$("#wechat").val(data.wechat);
+					$("#birthday").val(data.birthday);
+					$("#height").val(data.height);
+					$("#weight").val(data.weight);
+					$("#occupation").val(data.occupation);
+					$("#introduce").val(data.introduce);
+					$("#selectionAgeMin").val(data.selectionAgeMin);
+					$("#selectionAgeMax").val(data.selectionAgeMax);
+					$("#selectionHeightMin").val(data.selectionHeightMin);
+					$("#selectionHeightMax").val(data.selectionHeightMax);
+					
+					$("#sex").setTemplateElement("sex_template");
+					$("#sex").processTemplate(data);
+					$.radio($("#sex"));
+					
+					$("#appearance").setTemplateElement("appearance_template");
+					$("#appearance").processTemplate(data);
+					$.select($("#appearance"));
+					
+					$("#education").setTemplateElement("education_template");
+					$("#education").processTemplate(data);
+					$.select($("#education"));
+					
+					$("#income").setTemplateElement("income_template");
+					$("#income").processTemplate(data);
+					$.select($("#income"));
+					
+					$("#hometown").setTemplateElement("hometown_template");
+					$("#hometown").processTemplate(data);
+					$.select($("#hometown"));
+					
+					$("#live").setTemplateElement("live_template");
+					$("#live").processTemplate(data);
+					$.select($("#live"));
+					
+					$("#marriage").setTemplateElement("marriage_template");
+					$("#marriage").processTemplate(data);
+					$.select($("#marriage"));
+					
+					$("#children").setTemplateElement("children_template");
+					$("#children").processTemplate(data);
+					$.select($("#children"));
+					
+					$("#housing").setTemplateElement("housing_template");
+					$("#housing").processTemplate(data);
+					$.select($("#housing"));
+					
+					$("#smoking").setTemplateElement("smoking_template");
+					$("#smoking").processTemplate(data);
+					$.radio($("#smoking"));
+					
+					$("#selectionEducation").setTemplateElement("selectionEducation_template");
+					$("#selectionEducation").processTemplate(data);
+					$.select($("#selectionEducation"));
+					
+					$("#selectionIncome").setTemplateElement("selectionIncome_template");
+					$("#selectionIncome").processTemplate(data);
+					$.select($("#selectionIncome"));
+					
+					data.selectionMarriage = $.decompose(data.selectionMarriage, 4);
+					$("#selectionMarriage").setTemplateElement("selectionMarriage_template");
+					$("#selectionMarriage").processTemplate(data);
+					$.checkbox($("#selectionMarriage"));
+					
+					data.selectionHousing = $.decompose(data.selectionHousing, 3);
+					$("#selectionHousing").setTemplateElement("selectionHousing_template");
+					$("#selectionHousing").processTemplate(data);
+					$.checkbox($("#selectionHousing"));
+					
+					$("#btn_submit").on('click', function(){
+						// get sex
+						var sex = $("#sex").find("input:radio:checked").val();
+						if (! sex) {
+							$.tips('请选择性别', 2000);
+							return;
+						}
+						
+						// get birthday
+						var birthday = $("#birthday").val();
+						if (! birthday) {
+							$.tips('请选择生日', 2000);
+							return;
+						}
+						
+						// get height
+						var height = $("#height").val();
+						if (! height) {
+							$.tips('请输入身高', 2000);
+							return;
+						}
+						
+						// get weight
+						var weight = $("#weight").val();
+						if (! weight) {
+							$.tips('请输入体重', 2000);
+							return;
+						}
+						
+						// get marriage
+						var marriage = $("#marriage").val();
+						if (! marriage) {
+							$.tips('请选择婚姻状况', 2000);
+							return;
+						}
+						
+						// get children
+						var children = $("#children").val();
+						if (! children) {
+							$.tips('请选择生育意愿', 2000);
+							return;
+						}
+
+						// req
+						var data = {
+								nickname: $("#nickname").val(),
+								sex: sex,
+								birthday: birthday,
+								height: height,
+								weight: weight,
+								appearance: $("#appearance").val(),
+								hometown: $("#hometown").val(),
+								live: $("#live").val(),
+								housing: $("#housing").val(),
+								education: $("#education").val(),
+								occupation: $("#occupation").val(),
+								income:  $("#income").val(),
+								marriage: marriage,
+								children: children,
+								smoking: $("#smoking").find("input:radio:checked").val(),
+								introduce: $("#introduce").val(),
+								selectionAgeMin: $("#selectionAgeMin").val(),
+								selectionAgeMax: $("#selectionAgeMax").val(),
+								selectionHeightMin: $("#selectionHeightMin").val(),
+								selectionHeightMax: $("#selectionHeightMax").val(),
+								selectionEducation: $("#selectionEducation").val(),
+								selectionIncome: $("#selectionIncome").val(),
+								selectionMarriage: $.checkboxVal($("#selectionMarriage")),
+								selectionHousing: $.checkboxVal($("#selectionHousing")),
+								wechat: $("#wechat").val()
+						};
+						$.post('user/data', data, function(msg) {
+							window.location.reload();
+						});
+					});
+				});
+			};
+			$.loadData();
+		});
+	</script>
+</body>
+</html>

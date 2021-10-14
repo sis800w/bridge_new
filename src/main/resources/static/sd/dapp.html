@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css" />
+</head>
+<body>
+	<p>
+		<div>1.allowance</div>
+		<button id="allowance">执行</button>
+	</p>
+	<p>
+		<div>2.approve</div>
+		<button id="approve">执行</button>
+	</p>
+	<p>
+		<div>3.addCharacter</div>
+		<div>名字: 
+			<input id="name"/>
+		</div>
+		<div>性别: 
+			<span id="gender">
+				<input name="gender" type="radio" value="1"/><label>男</label>
+				<input name="gender" type="radio" value="0"/><label>女</label>
+			</span>
+		</div>
+		<div>推荐人钱包地址: 
+			<input id="ref"/>
+		</div>
+		<button id="addCharacter">执行</button>
+	</p>
+	<p>
+		<div>4.freeMintSamurai</div>
+		<button id="freeMintSamurai">执行</button>
+	</p>
+	<p>
+		<div>5.preMintSamurai</div>
+		<div>数量: 
+			<input id="numberOfTokens1"/>
+		</div>
+		<button id="preMintSamurai">执行</button>
+	</p>
+	<p>
+		<div>6.primaryMintSamurai</div>
+		<div>数量: 
+			<input id="numberOfTokens2"/>
+		</div>
+		<button id="primaryMintSamurai">执行</button>
+	</p>
+	<p>
+		<div>7.postMintSamurai</div>
+		<div>数量: 
+			<input id="numberOfTokens3"/>
+		</div>
+		<button id="postMintSamurai">执行</button>
+	</p>
+	<p>
+		<div>8.tokenURI</div>
+		<div>tokenId: 
+			<input id="tokenId"/>
+		</div>
+		<button id="tokenURI">执行</button>
+	</p>
+	
+
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.4/dist/web3.min.js"></script>
+	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/common_chain.js"></script>
+	<script type="text/javascript" src="js/chain.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			$("#allowance").on('click', function(){
+				$.allowance(function(allowance){
+					alert(allowance);
+				});
+			});
+			
+			$("#approve").on('click', function(){
+				$.approve(function(txHash){
+					alert("操作成功");
+				});
+			});
+			
+			$("#addCharacter").on('click', function(){
+				var name = $("#name").val();
+				var gender = $("#gender").find("input:radio:checked").val();
+				var ref = $("#ref").val();
+				$.addCharacter(name, gender, ref, function(txHash){
+					alert("操作成功");
+				});
+			});
+			
+			$("#freeMintSamurai").on('click', function(){
+				$.freeMintSamurai(function(txHash){
+					alert("操作成功");
+				});
+			});
+			
+			$("#preMintSamurai").on('click', function(){
+				var numberOfTokens = $("#numberOfTokens1").val();
+				$.preMintSamurai(numberOfTokens, function(txHash){
+					alert("操作成功");
+				});
+			});
+			
+			$("#primaryMintSamurai").on('click', function(){
+				var numberOfTokens = $("#numberOfTokens2").val();
+				$.primaryMintSamurai(numberOfTokens, function(txHash){
+					alert("操作成功");
+				});
+			});
+			
+			$("#postMintSamurai").on('click', function(){
+				var numberOfTokens = $("#numberOfTokens3").val();
+				$.postMintSamurai(numberOfTokens, function(txHash){
+					alert("操作成功");
+				});
+			});
+			
+			$("#tokenURI").on('click', function(){
+				var tokenId = $("#tokenId").val();
+				$.tokenURI(tokenId, function(tokenURI){
+					alert(tokenURI);
+				});
+			});
+		});
+	</script>
+</body>
+</html>

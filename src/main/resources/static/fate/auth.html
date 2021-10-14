@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>命中注定</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<link rel="icon" href="img/favicon.png"/>
+	<link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="css/common.css?v=9" />
+	<style type="text/css">
+		.image_upload {
+			border: 1px dashed #d3d3d3; 
+			padding: 20px 0;
+			width: 148px; 
+			height: 108px; 
+			display: flex; 
+			flex-direction: column; 
+			justify-content: space-around; 
+			align-items: center;
+			text-align: center;
+		}
+		.image_upload:hover {
+			border: 1px solid #2d8fd9;
+			background: rgba(0,164,255,.1);
+		}
+		
+	</style>
+</head>
+<body>
+	<div>
+		<div class="div_banner">
+			<img src="img/666.jpg"/>
+		</div>
+		<div class="div_title">实名认证</div>
+		<div class="div_form">
+			<div>
+				<div>真实姓名：<span>必填</span></div>
+				<input id="realname" type="text" placeholder="中文，长度不超10位"/>
+			</div>
+			<div>
+				<div>手持身份证照片：<span>必填</span></div>
+				<input class="image_upload" type="file"/>
+				
+				
+			</div>
+		</div>
+		<button id="btn_submit" class="button_full">确&nbsp;&nbsp;&nbsp;&nbsp;定</button>
+	</div>
+
+
+	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="js/common.js?v=7" ></script>
+	<script type="text/javascript">
+		$(function () {
+			// 登录
+			if (! $.getCookie("token")) {
+				$.showLogin();
+				return;
+			}
+			
+			$.image_upload = function(eles) {
+				eles.each(function(){
+					var ele = $(this);
+					ele.css("display", "none");
+					
+					var div0 = $("<div>");
+					div0.css({
+						"border": "1px dashed #d3d3d3",
+						"padding": "20px 0",
+						"width": "148px",
+						"height": "108px", 
+						"display": "flex",
+						"flex-direction": "column", 
+						"justify-content": "space-around",
+						"align-items": "center",
+						"text-align": "center"
+					});
+					ele.after(div0);
+					
+					var div1 = $("<div>");
+					div1.appendTo(div0);
+					var i = $("<i>");
+					i.addClass("fa");
+					i.addClass("fa-picture-o");
+					i.addClass("fa-5x");
+					i.appendTo(div1);
+					var div2 = $("<div>");
+					div2.appendTo(div0);
+					var div21 = $("<div>");
+					div21.text("点击选择图片");
+					div21.appendTo(div2);
+					var div22 = $("<div>");
+					div22.text("（需小于20M）");
+					div22.appendTo(div2);
+					
+					div0.hover(function(){
+						div0.css({
+							"border": "1px solid #2d8fd9",
+							"background": "rgba(0,164,255,.1)"
+						});
+					}, function(){
+						div0.css({
+							"border": "1px dashed #d3d3d3",
+							"background": ""
+						});
+					});
+					
+					div0.on('click', function(){
+						ele.click();
+					});
+				});
+			};
+			$.image_upload($(".image_upload"));
+		});
+	</script>
+</body>
+</html>

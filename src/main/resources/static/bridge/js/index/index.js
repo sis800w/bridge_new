@@ -132,7 +132,7 @@ $(function () {
 			$.bindQrcodeWindow();
 		}, 3000, "please transfer by scanning QR code");
 	} else {
-		$.dialog("The current chain only supports transfer by scanning QR code", 3000);
+		$.tips("The current chain only supports transfer by scanning QR code", 3000);
 		$.bindQrcodeWindow();
 	}
 });

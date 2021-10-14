@@ -10,7 +10,7 @@ $(function(){
 			value = Number(max) < Number(value) ? max : value;
 			if (Number(max) == 0) {
 				value = "";
-				$.dialog("Insufficient balance", 2000);
+				$.tips("Insufficient balance", 2000);
 			}
 		}
 		return value;
@@ -35,21 +35,21 @@ $(function(){
 	$.errorProcess = function(error){
 		if (error) {
 			if (error.code == 4001) {
-				$.dialog(error.message, 2000);
+				$.tips(error.message, 2000);
 			}
 		}
 	};
 	
 	$.resultProcess = function(tx, callback) {
 		$.waitForReceipt(tx.transactionHash, 6, (receipt) => {
-			$.hideDialog();
+			$.hideTips();
 			callback();
 		});
 	};
 	
 	$.waitForReceipt = async function(tx_hash, max_try, callback) {
 		if (max_try <= 0) {
-			$.dialog("Wait for receipt timeout", 2000);
+			$.tips("Wait for receipt timeout", 2000);
 			return;
 		}
 		let receipt = await $.web3.eth.getTransactionReceipt(tx_hash);
@@ -61,15 +61,24 @@ $(function(){
 		}
 	};
 	
+	$.switchNetwork = async function(chainId) {
+		var data = networks[chainId];
+		if (data[0].rpcUrls) {
+			await window.ethereum.request({method: 'wallet_addEthereumChain', params: data}).catch();
+		} else {
+			await window.ethereum.request({method: 'wallet_switchEthereumChain', params: data}).catch();
+		}
+	};
+	
 	$.connectWallet = function(chain, callback, errorCallback, errorMsgTimeout, errorMsgAppend) {
 		errorMsgTimeout = errorMsgTimeout ? errorMsgTimeout : 0;
 		errorMsgAppend = errorMsgAppend ? ", " + errorMsgAppend : "";
 		if (window.ethereum) {
 			try {
 				// connect wallet
-				$.dialog("Connect Wallet...", 0, true);
+				$.lodding("Connect Wallet...", 0, true);
 				window.ethereum.enable().then(accounts => {
-					$.hideDialog();
+					$.hideLodding();
 					$.web3 = new Web3(window.ethereum);
 					
 					// network changed
@@ -90,16 +99,19 @@ $(function(){
 							$.walletAddress = accounts[0];
 							if (callback) callback();
 						} else {
-							$.dialog("Not in " + chain.chain.toLowerCase() + " network" + errorMsgAppend, errorMsgTimeout);
+							$.switchNetwork(chain.chainId);
+							$.tips("Not in \"" + chain.chain.toLowerCase() + "\"  network" + errorMsgAppend, errorMsgTimeout);
 							if (errorCallback) errorCallback();
 						}
 					});
 				});
 			} catch (error) {
-				$.dialog(error + errorMsgAppend, errorMsgTimeout);
+				$.tips(error + errorMsgAppend, errorMsgTimeout);
+				if (errorCallback) errorCallback();
 			}
 		} else {
-			$.dialog("Not in dapp browser" + errorMsgAppend, errorMsgTimeout);
+			$.tips("Not in dapp browser" + errorMsgAppend, errorMsgTimeout);
+			if (errorCallback) errorCallback();
 		}
 	};
 });
