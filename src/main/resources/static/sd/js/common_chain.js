@@ -112,12 +112,14 @@ $(function(){
 		}
 	};
 	
-	$.switchNetwork = async function(chainId) {
+	$.switchChain = async function(chainId) {
 		var data = networks[chainId];
-		if (data[0].rpcUrls) {
-			await window.ethereum.request({method: 'wallet_addEthereumChain', params: data}).catch();
-		} else {
-			await window.ethereum.request({method: 'wallet_switchEthereumChain', params: data}).catch();
+		try {
+			await window.ethereum.request({method: 'wallet_switchEthereumChain', params: data});
+		} catch (switchError) {
+			if (switchError.code === 4902 || switchError.code === -32602) {
+				await window.ethereum.request({method: 'wallet_addEthereumChain', params: data}).catch();
+			}
 		}
 	};
 	
@@ -150,7 +152,7 @@ $(function(){
 							$.walletAddress = accounts[0];
 							if (callback) callback();
 						} else {
-							$.switchNetwork(chain.id);
+							$.switchChain(chain.id);
 							$.tips("Not in \"" + chain.name.toLowerCase() + "\"  network" + errorMsgAppend, errorMsgTimeout);
 							if (errorCallback) errorCallback();
 						}
