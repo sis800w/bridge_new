@@ -113,7 +113,7 @@ $(function(){
 	};
 	
 	$.switchNetwork = async function(chainId) {
-		var data = networks[56];
+		var data = networks[chainId];
 		if (data[0].rpcUrls) {
 			await window.ethereum.request({method: 'wallet_addEthereumChain', params: data}).catch();
 		} else {
