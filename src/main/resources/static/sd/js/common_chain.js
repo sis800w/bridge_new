@@ -128,7 +128,7 @@ $(function(){
 					
 					// verify chainId
 					$.web3.eth.getChainId().then(chainId => {
-						if (chain.chainId == chainId) {
+						if (chain.id == chainId) {
 							// accounts changed
 							window.ethereum.on("accountsChanged", function(accounts) {
 								$.walletAddress = accounts[0];
@@ -139,8 +139,8 @@ $(function(){
 							$.walletAddress = accounts[0];
 							if (callback) callback();
 						} else {
-							$.switchNetwork(chain.chainId);
-							$.tips("Not in \"" + chain.chain.toLowerCase() + "\"  network" + errorMsgAppend, errorMsgTimeout);
+							$.switchNetwork(chain.id);
+							$.tips("Not in \"" + chain.name.toLowerCase() + "\"  network" + errorMsgAppend, errorMsgTimeout);
 							if (errorCallback) errorCallback();
 						}
 					});

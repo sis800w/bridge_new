@@ -1,4 +1,44 @@
 $(function(){
+	const networks = {
+		1: [{
+			chainId: '0x1'
+		}],
+		3: [{	// Ropsten test network
+			chainId: '0x3'
+		}],
+		4: [{	// Rinkeby test network
+			chainId: '0x4'
+		}],
+		5: [{	// Goerli test network
+			chainId: '0x5'
+		}],
+		42: [{	// Kovan test network
+			chainId: '0x2a'
+		}],
+		56: [{
+			chainId: '0x38',
+			chainName: 'Binance Smart Chain',
+			nativeCurrency: {
+				name: 'BNB',
+				symbol: 'BNB',
+				decimals: 18
+			},
+			rpcUrls: ['https://bsc-dataseed.binance.org/'],
+			blockExplorerUrls: ['https://bscscan.com/']
+		}],
+		97: [{
+			chainId: '0x61',
+			chainName: 'Binance Smart Chain - Testnet',
+			nativeCurrency: {
+				name: 'BNB',
+				symbol: 'BNB',
+				decimals: 18
+			},
+			rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+			blockExplorerUrls: ['https://testnet.bscscan.com']
+		}]
+	};
+	
 	$.toAmount = function(value, max) {
 		value = value == "." ? "" : value;
 		value = value == "00" ? "0" : value;
