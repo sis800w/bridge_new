@@ -36,6 +36,17 @@ $(function(){
 			},
 			rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
 			blockExplorerUrls: ['https://testnet.bscscan.com']
+		}],
+		128: [{
+			chainId: '0x80',
+			chainName: 'Heco',
+			nativeCurrency: {
+				name: 'HT',
+				symbol: 'HT',
+				decimals: 18
+			},
+			rpcUrls: ['https://http-mainnet.hecochain.com/'],
+			blockExplorerUrls: ['https://scan.hecochain.com']
 		}]
 	};
 	
