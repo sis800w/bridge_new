@@ -165,15 +165,6 @@ $(function(){
 			dialog.attr("id", id);
 			dialog.appendTo($("body"));
 			
-			// icon
-			var icon = $("<i>");
-			icon.addClass("fa");
-			icon.addClass("fa-spinner");
-			icon.addClass("fa-pulse");
-			icon.addClass("fa-3x");
-			icon.addClass("fa-fw");
-			icon.appendTo(dialog);
-			
 			// text
 			var text = $("<div>");
 			text.css("margin-top", "8px");
