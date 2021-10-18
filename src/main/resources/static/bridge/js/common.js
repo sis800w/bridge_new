@@ -167,7 +167,6 @@ $(function(){
 			
 			// text
 			var text = $("<div>");
-			text.css("margin-top", "8px");
 			text.text(msg);
 			text.appendTo(dialog);
 		} else {
