@@ -166,6 +166,9 @@
 .div_select_item > div {
 	margin-left: 15px;
 	font-size: 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 }
 .div_select_item .chain {
 	color: #6c7284;
@@ -216,4 +219,12 @@
     height: 20px;
     font: inherit;
     font-size: 14px;	
+}
+
+/* other */
+#a_switchChain {
+	color: #4ed8de!important;
+}
+#a_switchChain:active {
+	color: #4ed8de!important;
 }

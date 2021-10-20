@@ -179,4 +179,6 @@ $(function () {
 	};
 	$.updateToList();
 	
+	// switch chain
+	$.config.chainIds = Object.keys($.config.chains);
 });

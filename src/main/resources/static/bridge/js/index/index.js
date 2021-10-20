@@ -121,6 +121,19 @@ $(function () {
 		});
 	};
 	
+	$("#a_switchChain").on('click', function(){
+		$.showPopup("Switch Chain", function(content) {
+			content.setTemplateElement("switch_chain_template");
+			content.processTemplate($.config);
+			content.find(".div_select_item").each(function(){
+				var that = $(this);
+				that.on('click', function() {
+					window.location.href = "./index.html?fromChain=" + that.attr("chain");
+				});
+			});
+		});
+	});
+	
 	// start
 	if (Number($.config.from.chain) > 0) {
 		$.connectWallet(Number($.config.from.chain), $.config.chains[$.config.from.chain].name, function() {

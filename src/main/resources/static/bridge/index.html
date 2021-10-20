@@ -27,6 +27,9 @@
 					<a href="#" class="active">Bridge</a>
 					<a href="staking.html">Staking</a>
 				</div>
+				<div>
+					<a id="a_switchChain" href="#" class="active">Switch Chain</a>
+				</div>
 			</nav>
 		</div>
 		<div class="div_main">
@@ -128,6 +131,16 @@
 					{#else}
 						<div class="chain">Native</div>
 					{#/if}
+				</div>
+			</div>
+		{#/for}
+	</textarea>
+	<textarea id="switch_chain_template" style="display:none;">
+		{#foreach $T.chainIds as item}
+			<div chain="{$T.item}" class="div_select_item {#if $T.item == $T.from.chain}div_select_item_selected{#/if}">
+				<img src="img/chain/{$T.item}.png"/>
+				<div>
+					<div>{$T.chains[$T.item].name}</div>
 				</div>
 			</div>
 		{#/for}
