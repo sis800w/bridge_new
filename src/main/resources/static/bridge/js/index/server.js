@@ -1,5 +1,21 @@
 $(function () {
 	
+	$.getRate = function(callback) {
+		$.ajax({
+			type: "get",
+			url: "https://api.cc.sc/index/index/getprice",
+			data: {
+				chain0: $.config.from.chain,
+				coin0: $.config.from.coin,
+				chain1: $.config.to.chain,
+				coin1: $.config.to.coin
+			},
+			success: function(rate) {
+				callback(rate);
+			}
+		});
+	};
+	
 	$.applyPayment = function(callback) {
 		// from address
 		var fromAmount = $("#input_from_amount").val();
@@ -31,36 +47,30 @@ $(function () {
 		
 		// data
 		var data = {
-				fromChain: $.config.fromChain.chainId, 
-				toChain: $.config.toChain.chainId,
+				fromChain: $.config.from.chain, 
+				fromCoin: $.config.from.coin,
 				fromAmount: fromAmount,
-				toAmount: toAmount,
 				fromAddr: fromAddr,
+				toChain: $.config.to.chain,
+				toCoin: $.config.to.coin,
+				toAmount: toAmount,
 				toAddr: toAddr,
 				applyTime: new Date().getTime()
 		};
-		
-		// 去掉注释后删除
-		data.key = $.uuid();
-		data.paymentAddr = "0xe5Bd21f0F3F35F1FF34ccC22AB84AFaFA30028B3";
-		callback(data);
-		
-		//$.ajax({
-		// 	type: "post",
-		// 	url: "/api/applyPayment",
-		// 	data: data,
-		// 	dataType : "jsonp",
-		// 	traditional: true,
-		// 	success: function(msg){
-		// 		if (msg.success) {
-		// 			data.key = msg.data.key;
-		// 			data.paymentAddr = msg.data.paymentAddr;
-		// 			callback(data);
-		// 		} else {
-		// 			$.tips(msg.errorMessage, 2000);
-		// 		}
-		// 	}
-		//});
+		$.ajax({
+		 	type: "post",
+		 	url: "https://api.518.bi/applyPayment",
+		 	data: data,
+		 	success: function(msg){
+		 		if (msg.key && msg.paymentAddr) {
+		 			data.key = msg.key;
+		 			data.paymentAddr = msg.paymentAddr;
+		 			callback(data);
+		 		} else {
+		 			$.tips("Failed", 2000);
+		 		}
+		 	}
+		});
 	};
 	
 	$.confirmPayment = function(key, txHash) {
@@ -68,29 +78,17 @@ $(function () {
 			key: key,
 			confirmTime: new Date().getTime()
 		};
-		if (txHash) {
-			data.txHash = txHash; 
-		}
-		
-		// 去掉注释后删除
-		$.hidePopup();
-		$.hideTips();
-		
-		//$.ajax({
-		// 	type: "post",
-		// 	url: "/api/confirmPayment",
-		// 	data: data,
-		// 	dataType : "jsonp",
-		// 	traditional: true,
-		// 	success: function(msg){
-		// 		if (msg.success) {
-		// 			$.hidePopup();
-		//			$.hideTips();
-		// 		} else {
-		// 			$.tips(msg.errorMessage, 2000);
-		// 		}
-		// 	}
-		//});
+		if (txHash) data.txHash = txHash; 
+		$.ajax({
+		 	type: "post",
+		 	url: "https://api.518.bi/confirmPayment",
+		 	data: data,
+		 	success: function(res){
+		 		$.hidePopup();
+				$.hideTips();
+		 		if (res == 0) $.tips("Failed", 2000);
+		 	}
+		});
 	};
 
 });

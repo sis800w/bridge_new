@@ -1,19 +1,25 @@
 $(function () {
+	if ($.config.from) {
+		$("title").text($.config.chains[$.config.from.chain].name + " - Security Token Assets Router");
+	} else {
+		return;
+	}
+	
 	// init
 	$.init = function() {
-		$("#img_from").attr("src", $.logo($.config.swapCoin));
-		if ($.config.swapCoin == $.config.fromChain.coin) {
+		$("#img_from").attr("src", "img/chain/" + $.config.from.chain + "/" + $.config.from.coin + ".png");
+		if ($.config.from.coin == "0x") {
 			$("#img_from_chain").hide();
 		} else {
 			$("#img_from_chain").show();
-			$("#img_from_chain").attr("src", $.logo($.config.fromChain.coin));
+			$("#img_from_chain").attr("src", "img/chain/" + $.config.from.chain + ".png");
 		}
-		$("#img_to").attr("src", $.logo($.config.swapCoin));
-		if ($.config.swapCoin == $.config.toChain.coin) {
+		$("#img_to").attr("src", "img/chain/" + $.config.to.chain + "/" + $.config.to.coin + ".png");
+		if ($.config.to.coin == "0x") {
 			$("#img_to_chain").hide();
 		} else {
 			$("#img_to_chain").show();
-			$("#img_to_chain").attr("src", $.logo($.config.toChain.coin));
+			$("#img_to_chain").attr("src", "img/chain/" + $.config.to.chain + ".png");
 		}
 	};
 	$.init();
@@ -33,7 +39,7 @@ $(function () {
 		inputFromAddr.change();
 	};
 	$.inputFromAddrChange = function() {
-		if ($.config.fromChain.chainId > 0 && $.config.toChain.chainId > 0) {
+		if (Number($.config.from.chain) > 0 && Number($.config.to.chain) > 0) {
 			$("#input_to_addr").val($(this).val());
 			$("#input_to_addr").attr("disabled", "disabled");
 		}
@@ -48,15 +54,11 @@ $(function () {
 			content.processTemplate($.config);
 			content.find(".div_select_item").each(function(){
 				var that = $(this);
-				that.on('click', function(){
-					for (var coin of $.config.coins) {
-						if (coin == that.attr("coin")) {
-							$.config.swapCoin = coin;
-							$.init();
-							$.hidePopup();
-							break;
-						}	
-					}
+				that.on('click', function() {
+					$.updateFromTo($.config.from.chain, that.attr("coin"));
+					$.updateToList();
+					$.init();
+					$.hidePopup();
 				});
 			});
 		});
@@ -68,21 +70,17 @@ $(function () {
 			content.find(".div_select_item").each(function(){
 				var that = $(this);
 				that.on('click', function(){
-					for (var chain of $.config.chains) {
-						if (chain.coin == that.attr("coin")) {
-							$.config.toChain = chain;
-							$.init();
-							if ($.config.toChain.chainId <= 0) {
-								$("#input_to_addr").val("");
-								$("#input_to_addr").removeAttr("disabled");
-							} else if ($.config.fromChain.chainId > 0) {
-								$("#input_to_addr").val($("#input_from_addr").val());
-								$("#input_to_addr").attr("disabled", "disabled");
-							}
-							$.hidePopup();
-							break;
-						}
+					$.config.to.chain = that.attr("chain");
+					$.config.to.coin = that.attr("coin");
+					$.init();
+					if (Number($.config.to.chain) <= 0) {
+						$("#input_to_addr").val("");
+						$("#input_to_addr").removeAttr("disabled");
+					} else if (Number($.config.from.chain) > 0) {
+						$("#input_to_addr").val($("#input_from_addr").val());
+						$("#input_to_addr").attr("disabled", "disabled");
 					}
+					$.hidePopup();
 				});
 			});
 		});
@@ -124,8 +122,8 @@ $(function () {
 	};
 	
 	// start
-	if ($.config.fromChain.chainId > 0) {
-		$.connectWallet($.config.fromChain, function() {
+	if (Number($.config.from.chain) > 0) {
+		$.connectWallet(Number($.config.from.chain), $.config.chains[$.config.from.chain].name, function() {
 			$.inputFromAddrUpdate($.walletAddress);
 			$.bindSubmitEvent($.transfer);
 		}, function() {

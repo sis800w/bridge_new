@@ -82,10 +82,6 @@ $(function(){
 		});
 	};
 	
-	$.logo = function(coin){
-		return "img/coin/" + coin + ".png";
-	};
-	
 	$.lodding = function(msg) {
 		$.hideTips();
 		var id = "id_div_lodding";

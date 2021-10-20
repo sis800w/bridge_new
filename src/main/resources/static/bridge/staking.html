@@ -2,12 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Ekta Chain</title>
+	<title>Staking</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no" />
 	<meta name="format-detection" content="telephone=no" />
-	<link rel="icon" href="img/favicon.svg"/>
+	<link rel="icon" href="img/favicon.ico"/>
 	<link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/common.css" />
 	<link rel="stylesheet" href="css/staking.css" />
@@ -15,7 +15,7 @@
 
 <body>
 	<div class="div_full">
-		<div class="div_title">Staking For Ekta Chain</div>
+		<div id="title" class="div_title">Staking For Ekta Chain</div>
 		<div class="div_tabs">
 			<nav style="display: flex; justify-content: space-between;">
 				<div>
@@ -35,13 +35,13 @@
 			<div id="index_{$T.item$index}" class="div_content">
 				<label>{$T.item.name}</label>
 				<div class="div_item">
-					<div class="div_item_title">Mining <img src="img/coin/{$T.item.reward.coin}.png"> BRGE BY <img src="img/coin/{$T.item.stake.coin}.png"> {$T.item.stakeCoin}</div>
+					<div class="div_item_title">Mining <img src="img/chain/{$T.chainId}/{$T.item.reward.address}.png"> BRGE BY <img src="img/chain/{$T.chainId}/{$T.item.stake.address}.png"></div>
 					<div class="div_item_content">
-						<span>Wallet {$T.item.stake.coin} Balance</span>
+						<span>Wallet {$T.item.stake.name} Balance</span>
 						<span class="stake_coin_balance">0</span>
 					</div>
 					<div class="div_item_content">
-						<span>Wallet {$T.item.reward.coin} Balance</span>
+						<span>Wallet {$T.item.reward.name} Balance</span>
 						<span class="reward_coin_balance">0</span>
 					</div>
 				</div>
@@ -56,11 +56,11 @@
 			</div>
 			<div>
 				<span>Deposit</span>
-				<span><span>{$T.queryUser.amount}</span>&nbsp;&nbsp;<span>{$T.stake.coin}</span></span>
+				<span><span>{$T.queryUser.amount}</span>&nbsp;&nbsp;<span>{$T.stake.name}</span></span>
 			</div>
 			<div>
 				<span>Earned</span>
-				<span><span>{$T.queryUser.pendingReward}</span>&nbsp;&nbsp;<span>{$T.reward.coin}</span></span>
+				<span><span>{$T.queryUser.pendingReward}</span>&nbsp;&nbsp;<span>{$T.reward.name}</span></span>
 			</div>
 			<div>
 				<button id="btn_refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button>
@@ -68,13 +68,13 @@
 			</div>
 		</div>
 		<div class="div_amount">
-			<div><span id="tabs_deposit" class="span_method">DEPOSIT</span><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><span id="tabs_withdraw">WITHDRAW</span></div>
+			<div><span id="tabs_deposit" class="span_method">DEPOSIT</span><span id="tabs_s">&nbsp;&nbsp;|&nbsp;&nbsp;</span><span id="tabs_withdraw">WITHDRAW</span></div>
 			<div>{$T.fee} withdrawal fee</div>
 			<div>
-				<input id="input_amount" inputmode="decimal" placeholder="0 {$T.stake.coin}"/>
+				<input id="input_amount" inputmode="decimal" placeholder="0 {$T.stake.name}"/>
 				<div><button id="btn_max" max="{$T.queryUser.stakedBalance}">MAX</button></div>
 			</div>
-			<div>WALLET BALANCE: {$T.queryUser.stakedBalance} {$T.stake.coin}</div>
+			<div>WALLET BALANCE: {$T.queryUser.stakedBalance} {$T.stake.name}</div>
 		</div>
 		<button class="btn_popup_bottom" id="btn_approve">Approve</button>
 		<button class="btn_popup_bottom" id="btn_deposit">Deposit</button>

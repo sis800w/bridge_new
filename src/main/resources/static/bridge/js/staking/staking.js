@@ -1,23 +1,27 @@
 $(function(){
+	$("title").text($.config.currChain.name + " - Staking");
+	$("#title").text("Staking For " + $.config.currChain.name);
 	$(".div_main").setTemplateElement("project_template");
 	$(".div_main").processTemplate($.config.currChain);
 	
 	$.init = function() {
 		var i = 0;
 		$.user = [];
-		$.tips("query user info");
-		for (var project of $.config.currChain.projects) {
-			$.queryUser(project, function(obj) {
-				$.user[project.address] = obj;
-				var div = $("#index_" + i);
-				div.find(".stake_coin_balance").text(obj.stakedBalance);
-				div.find(".reward_coin_balance").text(obj.rewardBalance);
-				if (++i == $.config.currChain.projects.length) $.hideTips();
-			});
+		if ($.config.currChain.projects.length > 0) {
+			$.tips("query user info");
+			for (var project of $.config.currChain.projects) {
+				$.queryUser(project, function(obj) {
+					$.user[project.address] = obj;
+					var div = $("#index_" + i);
+					div.find(".stake_coin_balance").text(obj.stakedBalance);
+					div.find(".reward_coin_balance").text(obj.rewardBalance);
+					if (++i == $.config.currChain.projects.length) $.hideTips();
+				});
+			}
+			$("#a_invitation").show();
 		}
-		$("#a_invitation").show();
 	};
-	$.connectWallet($.config.currChain, $.init);
+	$.connectWallet($.config.currChain.chainId, $.config.currChain.name, $.init);
 	
 	$.popupInit = function(content, project) {
 		// show
@@ -27,6 +31,7 @@ $(function(){
 		if (project.queryUser.stakedAllowance == 0) {
 			$("#tabs_withdraw").hide();
 			$("#tabs_deposit").hide();
+			$("#tabs_s").hide();
 			$("#btn_deposit").hide();
 			$("#btn_withdraw").hide();
 		} else {
