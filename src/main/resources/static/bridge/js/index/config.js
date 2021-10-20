@@ -1,6 +1,19 @@
 $(function () {
 	$.config = {
 		chains : {
+			"-3": {name: "Doge Blockchain", coins: {
+				"0x": {name: "DOGE"}
+			}},
+			"1": {name: "Ethereum", coins: {
+				"0x": {name: "ETH"},
+				"0xdac17f958d2ee523a2206206994597c13d831ec7": {name: "USDT", unit: "Mwei"}
+			}},
+			"56": {name: "Smart Chain", coins: {
+				"0x": {name: "BNB"},
+				"0xba2ae424d960c26247dd6c32edc70b295c744c43": {name: "DOGE", decimals: 8},
+				"0x55d398326f99059ff775485246999027b3197955": {name: "USDT"},
+				"0x6bb1425890bf7176d26b474a4099fd05a89566b2": {name: "DFC", unit: "Mwei"}
+			}},
 			"518": {name: "DeFi Chain", coins: {
 				"0x": {name: "DFC"},
 				"0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C": {name: "WDOGE"},
@@ -12,19 +25,6 @@ $(function () {
 				"0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C": {name: "DFC"},
 				"0x7d8f299A092fccFa0876E511786262c42a423598": {name: "USDT"},
 				"0x6Bf654F5873AAeCaee75e328B7977c256D906829": {name: "SDOG"}
-			}},		
-			"-3": {name: "Doge Blockchain", coins: {
-				"0x": {name: "DOGE"}
-			}},
-			"56": {name: "Smart Chain", coins: {
-				"0x": {name: "BNB"},
-				"0xba2ae424d960c26247dd6c32edc70b295c744c43": {name: "DOGE", decimals: 8},
-				"0x55d398326f99059ff775485246999027b3197955": {name: "USDT"},
-				"0x6bb1425890bf7176d26b474a4099fd05a89566b2": {name: "DFC", unit: "Mwei"}
-			}},
-			"1": {name: "Ethereum", coins: {
-				"0x": {name: "ETH"},
-				"0xdac17f958d2ee523a2206206994597c13d831ec7": {name: "USDT", unit: "Mwei"}
 			}}
 		},
 		pairs : [

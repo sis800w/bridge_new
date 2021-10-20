@@ -68,12 +68,14 @@
 	margin-left: .2rem;
 	font-size: 14px;
 	color: #323233;
-	background-color: #fff;
+	background-color: #dad6d6;
 	border: 1px solid #ebedf0;
 	border-radius: 2px;
 }
 .div_info > div button:last-child {
+	/*
 	opacity: .5;
+	*/
 }
 .div_amount .span_method {
 	color: #e66799;

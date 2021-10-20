@@ -6,15 +6,13 @@ $(function(){
 	
 	$.init = function() {
 		var i = 0;
-		$.user = [];
 		if ($.config.currChain.projects.length > 0) {
 			$.tips("query user info");
 			for (var project of $.config.currChain.projects) {
 				$.queryUser(project, function(obj) {
-					$.user[project.address] = obj;
 					var div = $("#index_" + i);
-					div.find(".stake_coin_balance").text(obj.stakedBalance);
-					div.find(".reward_coin_balance").text(obj.rewardBalance);
+					div.find(".stake_coin_balance").text($.setScale(obj.stakedBalance, 6));
+					div.find(".reward_coin_balance").text($.setScale(obj.rewardBalance, 6));
 					if (++i == $.config.currChain.projects.length) $.hideTips();
 				});
 			}
@@ -25,18 +23,19 @@ $(function(){
 	
 	$.popupInit = function(content, project) {
 		// show
-		project.queryUser = $.user[project.address];
 		content.setTemplateElement("details_template");
 		content.processTemplate(project);
 		if (project.queryUser.stakedAllowance == 0) {
-			$("#tabs_withdraw").hide();
-			$("#tabs_deposit").hide();
-			$("#tabs_s").hide();
 			$("#btn_deposit").hide();
 			$("#btn_withdraw").hide();
 		} else {
 			$("#btn_withdraw").hide();
 			$("#btn_approve").hide();
+		}
+		if (project.queryUser.amount == 0) {
+			$("#tabs_withdraw").hide();
+			$("#tabs_deposit").hide();
+			$("#tabs_s").hide();
 		}
 		
 		// bind event
@@ -50,7 +49,16 @@ $(function(){
 		$("#btn_max").on('click', function(){
 			var max = $(this).attr("max");
 			if (max > 0) {
-				$("#input_amount").val(max);
+				if (project.stake.address == "0x") {
+					$.tips("Please reserve 1 " + $.config.currChain.nativeCurrencyName + " gas fee", 2000);
+					if (max < 1) {
+						$("#input_amount").val(0);
+					} else {
+						$("#input_amount").val(max - 1);
+					}
+				} else {
+					$("#input_amount").val(max);
+				}
 			} else {
 				$.tips("Insufficient balance", 2000);
 			}
@@ -59,15 +67,18 @@ $(function(){
 		$("#btn_refresh").on('click', function(){
 			$.tips("query user info");
 			$.queryUser(project, function(obj){
-				$.user[project.address] = obj;
 				$.popupInit(content, project);
 				$.hideTips();
 			});
 		});
 		
-		$("#btn_claim").on('click', function(){
-			$.deposit(project, "0", project.ref);
-		});
+		if (project.queryUser.pendingReward > 0) {
+			$("#btn_claim").on('click', function(){
+				$.deposit(project, "0", project.ref);
+			});
+		} else {
+			$("#btn_claim").hide();
+		}
 		
 		$("#tabs_deposit").on('click', function(){
 			$("#tabs_withdraw").removeClass("span_method");

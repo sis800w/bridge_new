@@ -20,18 +20,19 @@ $(function () {
 		obj.activated = result[0] === "true" ? true : false;
 		obj.ref = result[1];
 		obj.balance = Number($.fromWei(result[2]));
-		if (project.stake.address) {
-			obj.stakedAllowance = Number($.fromWei(result[3], project.stake.unit, project.stake.decimals));
-			obj.stakedBalance = Number($.fromWei(result[4], project.stake.unit, project.stake.decimals));
-		} else {
+		if (project.stake.address == "0x") {
 			obj.stakedAllowance = -1;
 			obj.stakedBalance = obj.balance;
-		}
-		if (project.reward.address) {
-			obj.rewardBalance = Number($.fromWei(result[5], project.reward.unit, project.reward.decimals));
 		} else {
-			obj.rewardBalance = obj.balance;
+			obj.stakedAllowance = Number($.fromWei(result[3], project.stake.unit, project.stake.decimals));
+			obj.stakedBalance = Number($.fromWei(result[4], project.stake.unit, project.stake.decimals));
 		}
+		if (project.reward.address == "0x") {
+			obj.rewardBalance = obj.balance;
+		} else {
+			obj.rewardBalance = Number($.fromWei(result[5], project.reward.unit, project.reward.decimals));
+		}
+		project.queryUser = obj;
 		callback(obj);
 	};
 	
@@ -53,12 +54,12 @@ $(function () {
 	
 	$.approve = function(project) {
 		$.tips("Approve...");
-		$.coinContract($.config.currChain.chainId, project.stake.coin).methods
+		$.coinContract($.config.currChain.chainId, project.stake.address).methods
 			.approve(project.address, $.toWei("100000000", project.stake.unit, project.stake.decimals))
 			.send({from: $.walletAddress}, $.errorProcess)
 			.then((tx) => {
 				$.resultProcess(tx, function(){
-					$.hideTips();
+					$("#btn_refresh").click();
 				});
 			});
 	};
@@ -69,13 +70,14 @@ $(function () {
 		if (! project.stake.address) {
 			sendParam.value = amountWei;
 		}
-		$.tips("Deposit...");
+		$.tips(amount == "0" ? "Claim...": "Deposit...");
 		$.mainContract(project).methods
 			.deposit(amountWei, ref)
 			.send(sendParam, $.errorProcess)
 			.then((tx) => {
-				$.resultProcess(tx, function(){
-					$.hideTips();
+				$.resultProcess(tx, function() {
+					$("#input_amount").val("");
+					$("#btn_refresh").click();
 				});
 			});
 	};
@@ -87,7 +89,7 @@ $(function () {
 			.send({from: $.walletAddress}, $.errorProcess)
 			.then((tx) => {
 				$.resultProcess(tx, function(){
-					$.hideTips();
+					$("#btn_refresh").click();
 				});
 			});
 	};

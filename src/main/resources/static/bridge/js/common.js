@@ -55,6 +55,17 @@ $(function(){
 		}
 	};
 	
+	$.setScale = function (value, scale, roundingMode) {
+		if (roundingMode) {
+			if (roundingMode.toLowerCase() == "roundhalfup") {
+				return (Math.round(value * Math.pow(10, scale)) / Math.pow(10, scale)).toFixed(scale);
+			} else if (roundingMode.toLowerCase() == "roundup") {
+				return (Math.ceil(value * Math.pow(10, scale)) / Math.pow(10, scale)).toFixed(scale);
+			}
+		}
+		return (Math.floor(value * Math.pow(10, scale)) / Math.pow(10, scale)).toFixed(scale);
+	};
+	
 	$.copy = function(selecter) {
 		if ($(selecter).length == 0) {
 			return;
