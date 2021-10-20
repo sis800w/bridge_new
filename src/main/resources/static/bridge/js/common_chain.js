@@ -151,25 +151,25 @@ $(function(){
 	$.switchNetwork = async function(chainId) {
 		var data = networks[chainId];
 		if (data[0].rpcUrls) {
-			await window.ethereum.request({method: 'wallet_addEthereumChain', params: data}).catch();
+			await ethereum.request({method: 'wallet_addEthereumChain', params: data}).catch();
 		} else {
-			await window.ethereum.request({method: 'wallet_switchEthereumChain', params: data}).catch();
+			await ethereum.request({method: 'wallet_switchEthereumChain', params: data}).catch();
 		}
 	};
 	
 	$.connectWallet = function(chainId, chainName, callback, errorCallback, errorMsgTimeout, errorMsgAppend) {
 		errorMsgTimeout = errorMsgTimeout ? errorMsgTimeout : 0;
 		errorMsgAppend = errorMsgAppend ? ", " + errorMsgAppend : "";
-		if (window.ethereum) {
+		if (ethereum) {
 			try {
 				// connect wallet
 				$.lodding("Connect Wallet...", 0, true);
-				window.ethereum.enable().then(accounts => {
+				ethereum.enable().then(accounts => {
 					$.hideLodding();
-					$.web3 = new Web3(window.ethereum);
+					$.web3 = new Web3(ethereum);
 					
 					// network changed
-					window.ethereum.on("networkChanged", function (networkId) {
+					ethereum.on("chainChanged", function (chainId) {	// chainId=0x**
 						location.reload();
 					});
 					
@@ -177,7 +177,7 @@ $(function(){
 					$.web3.eth.getChainId().then(currChainId => {
 						if (chainId == currChainId) {
 							// accounts changed
-							window.ethereum.on("accountsChanged", function(accounts) {
+							ethereum.on("accountsChanged", function(accounts) {
 								$.walletAddress = accounts[0];
 								if (callback) callback();
 							});
