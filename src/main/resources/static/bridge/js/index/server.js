@@ -20,28 +20,28 @@ $(function () {
 		// from address
 		var fromAmount = $("#input_from_amount").val();
 		if (! fromAmount) {
-			$.tips('No from amount entered', 1000);
+			$.tips('No from amount entered', 2000);
 			return null;
 		}
 		
 		// to address
 		var toAmount = $("#input_to_amount").val();
 		if (! toAmount) {
-			$.tips('No to amount entered', 1000);
+			$.tips('No to amount entered', 2000);
 			return null;
 		}
 		
 		// from address
 		var fromAddr = $("#input_from_addr").val();
 		if (! fromAddr) {
-			$.tips("No from address entered", 1000);
+			$.tips("No from address entered", 2000);
 			return null;
 		}
 		
 		// to address
 		var toAddr = $("#input_to_addr").val();
 		if (! toAddr) {
-			$.tips("No to address entered", 1000);
+			$.tips("No to address entered", 2000);
 			return null;
 		}
 		

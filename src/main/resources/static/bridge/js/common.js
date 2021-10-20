@@ -61,11 +61,11 @@ $(function(){
 		}
 		var clipboard = new ClipboardJS(selecter);
 		clipboard.on('success', function(e) {
-			$.tips("Copy success", 1000);
+			$.tips("Copy success", 2000);
 			e.clearSelection();
 		});
 		clipboard.on('error', function(e) {
-			$.tips("Copy error", 1000);
+			$.tips("Copy error", 2000);
 		});
 	};
 	
