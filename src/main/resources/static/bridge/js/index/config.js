@@ -14,6 +14,11 @@ $(function () {
 				"0x55d398326f99059ff775485246999027b3197955": {name: "USDT"},
 				"0x6bb1425890bf7176d26b474a4099fd05a89566b2": {name: "DFC", unit: "Mwei"}
 			}},
+			"97": {name: "Smart Chain - Testnet", coins: {
+				"0x": {name: "BNB"},
+				"0xdB5556A2d8765BCE5f5c4b239A815D3C5d3eA812": {name: "ERC20"},
+				"0xc80af98BdD271B4c84FFf51a519CA400d72C8A10": {name: "TEST2"}
+			}},
 			"518": {name: "DeFi Chain", coins: {
 				"0x": {name: "DFC"},
 				"0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C": {name: "WDOGE"},
@@ -118,6 +123,15 @@ $(function () {
 			], [	// 518SDOG : 1000SDOG
 				{chain: "518", coin: "0xBd90EfDf4c5543bc9be1033F84e1162E40F61365"},
 				{chain: "1000", coin: "0x6Bf654F5873AAeCaee75e328B7977c256D906829"}
+			], [	// 97BNB : 97ERC20
+				{chain: "97", coin: "0x"},
+				{chain: "97", coin: "0xdB5556A2d8765BCE5f5c4b239A815D3C5d3eA812"}
+			], [	// 97BNB : 97TEST2
+				{chain: "97", coin: "0x"},
+				{chain: "97", coin: "0xc80af98BdD271B4c84FFf51a519CA400d72C8A10"}
+			], [	// 97ERC20 : 97TEST2
+				{chain: "97", coin: "0xdB5556A2d8765BCE5f5c4b239A815D3C5d3eA812"},
+				{chain: "97", coin: "0xc80af98BdD271B4c84FFf51a519CA400d72C8A10"}
 			]
 		]
 	};
@@ -180,5 +194,10 @@ $(function () {
 	$.updateToList();
 	
 	// switch chain
-	$.config.chainIds = Object.keys($.config.chains);
+	var chainMap = {};
+	for(var pair of $.config.pairs) {
+		chainMap[pair[0].chain] = "";
+		chainMap[pair[1].chain] = "";
+	}
+	$.config.chainIds = Object.keys(chainMap);
 });
