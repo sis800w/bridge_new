@@ -28,57 +28,96 @@ $(function () {
 			}}
 		},
 		pairs : [
-			[
+			[		// 1ETH : 1USDT
+				{chain: "1", coin: "0x"},
+				{chain: "1", coin: "0xdac17f958d2ee523a2206206994597c13d831ec7"}
+			],  [	// 56BNB : 56DOGE
+				{chain: "56", coin: "0x"},
+				{chain: "56", coin: "0xba2ae424d960c26247dd6c32edc70b295c744c43"}
+			],[		// 56BNB : 56USDT
+				{chain: "56", coin: "0x"},
+				{chain: "56", coin: "0x55d398326f99059ff775485246999027b3197955"}
+			],[		// 56BNB : 56DFC
+				{chain: "56", coin: "0x"},
+				{chain: "56", coin: "0x6bb1425890bf7176d26b474a4099fd05a89566b2"}
+			], [	// 56DOGE : 56USDT
+				{chain: "56", coin: "0xba2ae424d960c26247dd6c32edc70b295c744c43"},
+				{chain: "56", coin: "0x55d398326f99059ff775485246999027b3197955"}
+			], [	// 56DOGE : 56DFC
+				{chain: "56", coin: "0xba2ae424d960c26247dd6c32edc70b295c744c43"},
+				{chain: "56", coin: "0x6bb1425890bf7176d26b474a4099fd05a89566b2"}
+			], [	// 56USDT : 56DFC
+				{chain: "56", coin: "0x55d398326f99059ff775485246999027b3197955"},
+				{chain: "56", coin: "0x6bb1425890bf7176d26b474a4099fd05a89566b2"}
+			], [	// 518DFC : 518WDOGE
 				{chain: "518", coin: "0x"},
 				{chain: "518", coin: "0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C"}
-			], [
+			], [	// 518DFC : 518USDT
 				{chain: "518", coin: "0x"},
 				{chain: "518", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"}
-			], [
+			], [	// 518DFC : 518SDOG
 				{chain: "518", coin: "0x"},
 				{chain: "518", coin: "0xBd90EfDf4c5543bc9be1033F84e1162E40F61365"}
-			], [
+			], [	// 518WDOGE : 518USDT
 				{chain: "518", coin: "0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C"},
 				{chain: "518", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"}
-			], [
+			], [	// 518WDOGE : 518SDOG
 				{chain: "518", coin: "0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C"},
 				{chain: "518", coin: "0xBd90EfDf4c5543bc9be1033F84e1162E40F61365"}
-			], [
+			], [	// 518USDT : 518SDOG
 				{chain: "518", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"},
 				{chain: "518", coin: "0xBd90EfDf4c5543bc9be1033F84e1162E40F61365"}
-			], [
-				{chain: "518", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"},
+			], [	// 1000RDFC : 1000DFC
+				{chain: "1000", coin: "0x"},
+				{chain: "1000", coin: "0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C"}
+			],[		// 1000RDFC : 1000USDT
+				{chain: "1000", coin: "0x"},
+				{chain: "1000", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"}
+			],[		// 1000RDFC : 1000SDOG
+				{chain: "1000", coin: "0x"},
+				{chain: "1000", coin: "0x6Bf654F5873AAeCaee75e328B7977c256D906829"}
+			], [	// 1000DFC : 1000USDT
+				{chain: "1000", coin: "0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C"},
+				{chain: "1000", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"}
+			],[		// 1000DFC : 1000SDOG
+				{chain: "1000", coin: "0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C"},
+				{chain: "1000", coin: "0x6Bf654F5873AAeCaee75e328B7977c256D906829"}
+			],[		// 1000USDT : 1000SDOG
+				{chain: "1000", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"},
+				{chain: "1000", coin: "0x6Bf654F5873AAeCaee75e328B7977c256D906829"}
+			], [	// 1USDT : 56USDT
+				{chain: "1", coin: "0xdac17f958d2ee523a2206206994597c13d831ec7"},
 				{chain: "56", coin: "0x55d398326f99059ff775485246999027b3197955"}
-			], [
+			], [	// 1USDT : 518USDT
+				{chain: "1", coin: "0xdac17f958d2ee523a2206206994597c13d831ec7"},
+				{chain: "518", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"}
+			], [	// 1USDT : 1000USDT
+				{chain: "1", coin: "0xdac17f958d2ee523a2206206994597c13d831ec7"},
+				{chain: "1000", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"},
+			], [	// 56USDT : 518USDT
+				{chain: "56", coin: "0x55d398326f99059ff775485246999027b3197955"},
+				{chain: "518", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"}
+			], [	// 56USDT : 1000USDT
+				{chain: "56", coin: "0x55d398326f99059ff775485246999027b3197955"},
+				{chain: "1000", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"}
+			], [	// 518USDT : 1000USDT
 				{chain: "518", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"},
 				{chain: "1000", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"}
-			], [
-				{chain: "518", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"},
-				{chain: "1", coin: "0xdac17f958d2ee523a2206206994597c13d831ec7"}
-			], [
-				{chain: "1000", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"},
-				{chain: "56", coin: "0x55d398326f99059ff775485246999027b3197955"}
-			], [
-				{chain: "1000", coin: "0x7d8f299A092fccFa0876E511786262c42a423598"},
-				{chain: "1", coin: "0xdac17f958d2ee523a2206206994597c13d831ec7"}
-			], [
-				{chain: "56", coin: "0x55d398326f99059ff775485246999027b3197955"},
-				{chain: "1", coin: "0xdac17f958d2ee523a2206206994597c13d831ec7"}
-			], [
-				{chain: "518", coin: "0xBd90EfDf4c5543bc9be1033F84e1162E40F61365"},
-				{chain: "1000", coin: "0x6Bf654F5873AAeCaee75e328B7977c256D906829"}
-			], [
-				{chain: "56", coin: "0x6bb1425890bf7176d26b474a4099fd05a89566b2"},
-				{chain: "1000", coin: "0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C"}
-			], [
-				{chain: "518", coin: "0x"},
-				{chain: "1000", coin: "0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C"}
-			], [
-				{chain: "518", coin: "0x"},
-				{chain: "56", coin: "0x6bb1425890bf7176d26b474a4099fd05a89566b2"}
-			], [
+			], [	// -3DOGE : 56DOGE
 				{chain: "-3", coin: "0x"},
 				{chain: "56", coin: "0xba2ae424d960c26247dd6c32edc70b295c744c43"}
+			], [	// 56DFC : 518DFC
+				{chain: "56", coin: "0x6bb1425890bf7176d26b474a4099fd05a89566b2"},
+				{chain: "518", coin: "0x"},
+			], [	// 56DFC : 1000DFC
+				{chain: "56", coin: "0x6bb1425890bf7176d26b474a4099fd05a89566b2"},
+				{chain: "1000", coin: "0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C"}
+			], [	// 518DFC : 1000DFC
+				{chain: "518", coin: "0x"},
+				{chain: "1000", coin: "0x3C8a7B3e97060Ad50E257ae2d27576bF53D9e10C"}
+			], [	// 518SDOG : 1000SDOG
+				{chain: "518", coin: "0xBd90EfDf4c5543bc9be1033F84e1162E40F61365"},
+				{chain: "1000", coin: "0x6Bf654F5873AAeCaee75e328B7977c256D906829"}
 			]
 		]
 	};
