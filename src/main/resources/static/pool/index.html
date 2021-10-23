@@ -169,7 +169,7 @@
 					.approve(ADDR, $.web3.utils.toWei("100000000", "Mwei"))
 					.send({from: $.walletAddress}, function(error){
 						if (error) {
-							if (error.code == 4001) {
+							if (error.code == 4001 || error.code == -32603) {
 								$.dialog(error.message);
 							}
 						}
