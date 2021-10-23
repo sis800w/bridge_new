@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>我的</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- <link rel="shortcut icon" href=""/> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div class="back_m" id="div_username" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px; padding-left: 15px; text-align: center;"></div>
+	<div class="back_m" style="height: 150px; width: 100%;"></div>
+	<div style="height: 115px;"></div>
+	
+	<!-- 内容:统计数据 -->
+	<div class="float_box" style="background-color: white; height: 220px; width: 94%; margin-left: 3%; position: absolute; top: 40px; padding: 6px 15px; border-radius:10px;">
+		<div style="margin-left: 5px;">
+			<span class="font_14" style="color: #999999;">今日平台净收益总数</span><br>
+			<span class="font_28 base_money" scale="6" id="sumProfitToday">0</span> <span class="font_18">USDT</span>
+		</div>
+		<div>
+			<div style="width: 50%; float: left;">
+				<span class="font_12" style="color: #B2B2B2;">今日成交总额</span><br>
+				<span class="font_16 base_money" id="sumPayAmountSuccessToday">0</span><span class="font_16"> 元</span>
+			</div>
+			<div style="width: 50%; float: right;">
+				<span class="font_12" style="color: #B2B2B2;">交易中总额</span><br>
+				<span class="font_16 base_money" id="sumPayAmountNew">0</span><span class="font_16"> 元</span>
+			</div>
+		</div>
+		<div>
+			<div style="width: 50%; float: left;">
+				<span class="font_12" style="color: #B2B2B2;">用户与账号总数</span><br>
+				<span class="font_16" id="userAndAccountNo">0∈0</span>
+				
+			</div>
+			<div style="width: 50%; float: right;">
+				<span class="font_12" style="color: #B2B2B2;">用户余额总数</span><br>
+				<span class="font_16" id="sumBalance">0</span> <span class="font_16">USDT</span>
+			</div>
+		</div>
+		<div>
+			<div style="width: 50%; float: left;">
+				<span class="font_12" style="color: #B2B2B2;">在线用户与账号总数</span><br>
+				<span class="font_16" id="onlineUserAndAccountNo">0∈0</span>
+				
+			</div>
+			<div style="width: 50%; float: right;">
+				<span class="font_12" style="color: #B2B2B2;">在线用户余额总数</span><br>
+				<span class="font_16" id="sumBalanceOnline">0</span> <span class="font_16">USDT</span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="color_sh" style="background-color: white; margin-top: 8px; padding-left: 15px;">
+		<table style="width: 100%;">
+			<tr style="height: 45px;" id="merchant_manager">
+				<td><i class="fa fa-diamond fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;商户管理</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+			<tr style="height: 45px; border-top: 1px solid #F0F0F0;" id="config_manager">
+				<td><i class="fa fa-cog fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;配置管理</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+			<tr style="height: 45px; border-top: 1px solid #F0F0F0;" id="admin_manager">
+				<td><i class="fa fa-sitemap fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;管理员管理</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="color_sh" style="background-color: white; margin-top: 8px; padding-left: 15px;">
+		<table style="width: 100%;">
+			<tr style="height: 45px;" id="updatePswBtn">
+				<td><i class="fa fa-user-secret fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;修改密码</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="color_sh div_button" style="background-color: white; text-align: center;" id="logout_btn"><i class="fa fa-power-off fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;退出登录</div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./withdraw.html">
+				<i class="fa fa-sign-out fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">提币管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./user.html">
+				<i class="fa fa-users fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">用户管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="#">
+				<i class="fa fa-user-circle-o fa-fw fa-lg" aria-hidden="true"></i>
+				<span class="text">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/admin.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			$.loadData = function() {
+				// 登录
+				if (! $.getCookie("admin_token")) {
+					$.showLogin();
+					return;
+				}
+				var userinfo = $.userinfo();
+				$("#div_username").text(userinfo);
+				
+				// 查询
+				$.req('get', '/api/admin/myInfo', null, function(msg) {
+					// 统计数据填充
+					$("#sumPayAmountNew").text(msg.sumPayAmountNew);
+					$("#sumPayAmountSuccessToday").text(msg.sumPayAmountSuccessToday);
+					$("#sumProfitToday").text(msg.sumProfitToday);
+					$("#userAndAccountNo").text(msg.userNo + "∈" + msg.accountNo);
+					$("#sumBalance").text(msg.sumBalance);
+					$("#onlineUserAndAccountNo").text(msg.onlineUserNo + "∈" + msg.onlineAccountNo);
+					$("#sumBalanceOnline").text(msg.sumBalanceOnline);
+					$.base_money($(".base_money"));
+				});
+			};
+			$.loadData();
+			
+			$("#merchant_manager").on('click', function(){
+				window.location.href = './merchant.html';
+			});
+			$("#config_manager").on('click', function(){
+				window.location.href = './config.html';
+			});
+			$("#admin_manager").on('click', function(){
+				window.location.href = './admin.html';
+			});
+			
+			//弹出修改密码
+			$("#updatePswBtn").click(function (event) {
+				$.box
+					.build("updatePsw", "修 改 密 码")
+					.addInput("password", "原密码", null, null, true)
+					.addInput("newPassword", "新密码", "6-20位字母数字混合", null, true)
+					.addInput("newPassword2", "重复新密码", null, null, true)
+					.addBtn("确定", function(box) {
+						// get password
+						var password = box.find('.password').val();
+						if (! password) {
+							$.base_dialog('请输入原密码');
+							return;
+						}
+						
+						// get password
+						var newPassword = box.find('.newPassword').val();
+						if (! newPassword) {
+							$.base_dialog('请输入新密码');
+							return;
+						}
+						
+						// get password2
+						var newPassword2 = box.find('.newPassword2').val();
+						if (! newPassword2) {
+							$.base_dialog('请重复输入新密码');
+							return;
+						}
+						
+						// password error
+						if (newPassword != newPassword2) {
+							$.base_dialog('重复新密码错误');
+							return;
+						}
+						
+						// req
+						var data = {
+								password: password,
+								newPassword: newPassword
+						};
+						$.req('post', '/api/admin/updatePwd', data, function(msg) {
+							box.find('.password').val("");
+							box.find('.newPassword').val("");
+							box.find('.newPassword2').val("");
+							$.base_dialog('修改成功');
+							box.hide();
+						});
+					})
+					.show();
+			});
+			
+		});
+	</script>
+</body>
+</html>

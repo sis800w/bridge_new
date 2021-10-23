@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>用户管理</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- <link rel="shortcut icon" href=""/> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		.btn_small {
+			font-size: 12px;
+			height: 22px;
+			width: 32px;
+			padding: 1px 4px;
+		}
+		#detailsBox .form-item {
+			margin: 10px auto;
+		}
+	</style>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div class="back_m" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px;">
+		<span style="float: left; padding-left: 10px;">用户管理</span>
+		<span style="float: right; padding-right: 10px; width: 50px; text-align: right;" id="search">
+			<i class="fa fa-search fa-fw" aria-hidden="true"></i>
+		</span>
+	</div>
+	<div id="my_tbody" style="padding-top: 40px;"></div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./withdraw.html">
+				<i class="fa fa-sign-out fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">提币管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="#">
+				<i class="fa fa-users fa-fw fa-lg" aria-hidden="true"></i>
+				<span class="text">用户管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<!-- 详情弹窗 -->
+	<div class="pop-box-model" id="detailsBox" style="display: none">
+		<div class="pop-box" style="max-width: 450px; top: 0px; bottom: 0px;">
+			<div id="detailsContent" style="display: none">
+				<div class="title">用户详情</div>
+				<div class="content">
+					<div class="form-box">
+						<div class="form-content" id="ele_mydetails">
+						</div>
+					</div>
+				</div>
+				<!-- 关闭按钮 -->
+				<div class="close closeDetailsBoxBtn"></div>
+			</div>
+		</div>
+	</div>
+	
+	<textarea id="mydetails_template" style="display:none">
+		<div class="show-item">手机号：<span>{$T.phone}</span></div>
+	</textarea>
+	
+	<textarea id="my_template" style="display:none;">
+		{#foreach $T as item}
+			<div user_id="{$T.item.id}" style="background-color: white; margin-bottom: 2px; padding: 10px 10px;">
+			<table style="width: 100%;">
+				<tr>
+					<td style="font-size: 14px;">手机：{$T.item.phone}</td>
+					<td style="font-size: 12px; color: #777; text-align: right;" class="userDetails">
+						用户详情 <span style="color: #ccc;">&gt;</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="color_h" style="font-size: 12px;">注册：{$T.item.createTime}</td>
+					<td class="color_h" style="font-size: 12px; text-align: right;">登录：{$T.item.loginTime}</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<button class="btn_small account">账号</button>
+						<button class="btn_small orders">订单</button>
+						<button class="btn_small withdraw">提币</button>
+						<button class="btn_small wallet">钱包</button>
+						<button class="btn_small recharge" style="width: 56px;">充币处理</button>
+						<button class="btn_small resetpassword" style="width: 56px;">密码重置</button>
+						<button class="btn_small clearpaypassword" style="width: 80px;">清空支付密码</button>
+						{#if $T.item.block}
+							<button class="btn_small block" block="false" style="width: 32px;">解封</button>
+						{#else}
+							<button class="btn_small block" block="true" style="width: 32px; background-color: red;">封号</button>
+						{#/if}
+					</td>
+				</tr>
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/admin.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			var mydetails = [];
+			var xmap = [];
+			var current = 1;
+			var stop = false;
+			var phone = null;
+			
+			$.loadData = function() {
+				// 停止查询
+				if (stop) {
+					return;
+				}
+				
+				// 登录
+				if (! $.getCookie("admin_token")) {
+					$.showLogin();
+					return;
+				}
+				
+				// 分页参数
+				var data = {
+					current: current,
+					size: 10,
+					phone: phone
+				};
+				
+				// 查询
+				$.req('get', '/api/user/admin/list?merchant=false', data, function(msg) {
+					// 翻页逻辑
+					if (stop) {
+						return;
+					}
+					if (msg.records.length == 10) {	// 满页-下一页可能还有数据
+						current++;
+					} else {						// 未满-不需要查下一页了
+						stop = true;
+					}
+					
+					// 滚动列表
+					for (var i = 0; i < msg.records.length; i++) {
+						mydetails.push(msg.records[i]);
+						xmap[msg.records[i].id] = msg.records[i];
+					}
+					$("#my_tbody").setTemplateElement("my_template");
+					$("#my_tbody").processTemplate(mydetails);
+					
+					// 详情
+					$.base_btn($(".userDetails"), function(_this){
+						var userId = _this.parent().parent().parent().parent().attr("user_id");
+						var user = xmap[userId];
+						$("#ele_mydetails").setTemplateElement("mydetails_template");
+						$("#ele_mydetails").processTemplate(user);
+						$(".pop-box").height($(window).height());
+		                $("#detailsBox").show();
+		                $("#detailsContent").show();
+					});
+					
+					// 封号
+					$.base_btn($(".block"), function(_this){
+						var block = _this.attr("block");
+						var userId = _this.parent().parent().parent().parent().parent().attr("user_id");
+						$.req('post', '/api/user/admin/updateBlock', {userId: userId, block: block}, function(msg) {
+							$.flushData();
+						});
+					});
+					
+					// 账号
+					$.base_btn($(".account"), function(_this){
+						var userId = _this.parent().parent().parent().parent().parent().attr("user_id");
+						var user = xmap[userId];
+						window.location.href = './account.html?userId=' + userId + '&phone=' + user.phone;
+					});
+					
+					// 提币管理
+					$.base_btn($(".withdraw"), function(_this){
+						var userId = _this.parent().parent().parent().parent().parent().attr("user_id");
+						var user = xmap[userId];
+						window.location.href = './withdraw.html?userId=' + userId + '&phone=' + user.phone;
+					});
+					
+					// 订单管理
+					$.base_btn($(".orders"), function(_this){
+						var userId = _this.parent().parent().parent().parent().parent().attr("user_id");
+						var user = xmap[userId];
+						window.location.href = './orders.html?userId=' + userId + '&phone=' + user.phone;
+					});
+					
+					// 钱包管理
+					$.base_btn($(".wallet"), function(_this){
+						var userId = _this.parent().parent().parent().parent().parent().attr("user_id");
+						var user = xmap[userId];
+						window.location.href = './wallet.html?userId=' + userId + '&phone=' + user.phone;
+					});
+					
+					// 充币任务
+					$.base_btn($(".recharge"), function(_this){
+						var userId = _this.parent().parent().parent().parent().parent().attr("user_id");
+						var user = xmap[userId];
+						$.req('post', '/api/wallet/admin/recharge', {userId: userId}, function(msg) {
+							$.base_dialog('处理成功');
+						});
+					});
+					
+					// 密码重置
+					$.base_btn($(".resetpassword"), function(_this){
+						var userId = _this.parent().parent().parent().parent().parent().attr("user_id");
+						var user = xmap[userId];
+						$.req('post', '/api/user/admin/resetpassword', {userId: userId}, function(msg) {
+							$.base_dialog('处理成功');
+						});
+					});
+					
+					// 清空支付密码
+					$.base_btn($(".clearpaypassword"), function(_this){
+						var userId = _this.parent().parent().parent().parent().parent().attr("user_id");
+						var user = xmap[userId];
+						$.req('post', '/api/user/admin/clearpaypassword', {userId: userId}, function(msg) {
+							$.base_dialog('处理成功');
+						});
+					});
+					isScroll = false;
+				});
+			};
+			$.loadData();
+			
+			$.flushData = function() {
+				mydetails = [];
+				xmap = [];
+				current = 1;
+				stop = false;
+				$.loadData();
+			};
+			
+			// 搜索
+			$("#search").on('click', function() {
+				$.base_window("search_window", 48, 
+						'<div style="background-color: #fff; padding: 10px 15px 10px 15px">' + 
+							'<input id="phone" placeholder="手机号" style="width: 80%; height: 28px;"/>&nbsp;&nbsp;' +
+							'<button id="search_btn" class="btn_small" style="font-size: 14px; width: 45px; height: 28px; float: right;">搜索</button>' + 
+						'</div>');
+				$("#search_btn").on('click', function(){
+					phone = $("#phone").val();
+					$.flushData();
+				});
+			});
+			
+			// 滚动监听
+			var isScroll = false;
+			$(window).scroll(function(){
+				if ($(document).scrollTop() >= $(document).height() - $(window).height() - 10) {
+					if (! isScroll) {
+						isScroll = true;
+						$.loadData();
+					}
+				}
+			});
+			
+			//关闭详情
+			$('.closeDetailsBoxBtn').click(function (event) {
+				$("#detailsBox").hide();
+				$("#detailsContent").hide();
+			});
+			
+			
+			$.tabs('tabs', function(tab) {
+				type = tab;
+				$.flushData();
+			});
+		});
+	</script>
+</body>
+</html>

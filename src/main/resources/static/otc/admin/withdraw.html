@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>提币管理</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<div id="title" class="back_m" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px; padding-left: 15px; text-align: center;">提 币 管 理</div>
+	<div id="tabs" class="color_sh" style="font-weight: 600; position: fixed; height: 30px; width: 100%; margin-top: 40px; background: #fff; text-align: center; border-bottom:1px solid #ddd;">
+		<div tab="TDF" style="float: left; width: 20%;"><p class="color_m" style="height: 30px; width:29px; border-bottom: 3px solid var(--color_m);">TDF</p></div>
+		<div tab="REA" style="float: left; width: 20%;"><p style="height: 30px; width:29px;">REA</p></div>
+		<div tab="ZES" style="float: left; width: 20%;"><p style="height: 30px; width:29px;">ZES</p></div>
+		<div tab="USDT" style="float: left; width: 20%; "><p style="height: 30px; width:39px;">USDT</p></div>
+		<div tab="TRX" style="float: left; width: 20%;"><p style="height: 30px; width:29px;">TRX</p></div>
+		<!-- 
+		<div tab="ETH" style="float: left; width: 25%;"><p style="height: 30px; width:29px;">ETH</p></div>
+		<div tab="BTC" style="float: left; width: 14%;"><p style="height: 30px; width:28px;">BTC</p></div>
+		<div tab="BCH" style="float: left; width: 14%;"><p style="height: 30px; width:32px;">BCH</p></div>
+		<div tab="LTC" style="float: left; width: 14%;"><p style="height: 30px; width:25px;">LTC</p></div>
+		 -->
+	</div>
+	
+	<!-- 内容:表格 -->
+	<div id="myorder_tbody" style="padding-top: 70px;">
+	</div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a id="withdraw_all" href="#">
+				<i class="fa fa-sign-out fa-fw fa-lg" aria-hidden="true"></i>
+				<span class="text">提币管理</span>
+			</a>
+			<a id="withdraw_part" href="./withdraw.html" style="display: none;">
+				<i class="fa fa-sign-out fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">提币管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./user.html">
+				<i class="fa fa-users fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">用户管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<!-- 详情弹窗 -->
+	<div class="pop-box-model" id="detailsBox" style="display: none">
+		<div class="pop-box" style="max-width: 450px; top: 0px; bottom: 0px;">
+			<div id="detailsContent" style="display: none">
+				<div class="title">提币申请详情</div>
+				<div class="content">
+					<div class="form-box">
+						<div class="form-content" id="ele_mydetails">
+						</div>
+					</div>
+				</div>
+				<!-- 关闭按钮 -->
+				<div class="close closeDetailsBoxBtn"></div>
+			</div>
+		</div>
+	</div>
+	
+	<textarea id="mydetails_template" style="display:none;">
+		<div class="show-item">申请时间：<span>{$T.createTime}</span></div>
+		<div class="show-item">申请用户：<span>{$T.userPhone}</span></div>
+		{#if $T.userName}
+			<div class="show-item">申请用户昵称：<span>{$T.userName}</span></div>
+		{#/if}
+		<div class="show-item">提币地址：<span id="withdrawAddress" style="word-wrap:break-word;width:60%;"><a href="https://tronscan.org/#/address/{$T.withdrawAddress}/transfers">{$T.withdrawAddress}</a>&nbsp;&nbsp;<i id="address_copy_{$T.id}" class="fa fa-copy color-m" data-clipboard-target="#withdrawAddress" ></i></span></div>
+		<div class="show-item">提币到账数量：<span>{$T.withdrawNum - $T.withdrawFee} {$T.coin}</span></div>
+		<button id="success_btn">提币成功</button>
+	</textarea>
+	
+	<textarea id="myorder_template" style="display:none;">
+		{#foreach $T as item}
+			<div class="order_tr" details_id="{$T.item.id}" style="background-color: white; margin-bottom: 2px; padding: 10px 10px;">
+			<table style="width: 100%;">
+				<tr>
+					<td class="font_14">{#if $T.item.txHash == '0'}【异常】{#else}【手动】{#/if}提币数量：<span class="base_money" scale="6">{$T.item.withdrawNum}</span> {$T.item.coin}</td>
+				</tr>
+				<tr>
+					<td class="color_h font_12">手续费：<span class="base_money" scale="6">{$T.item.withdrawFee}</span> {$T.item.coin}</td>
+				</tr>
+				<tr>
+					<td class="color_h font_12">提币用户：{$T.item.userPhone}{#if $T.item.userName}-{$T.item.userName}{#/if}</td>
+				</tr>
+				<tr>
+					<td class="color_h font_12">申请时间：{$T.item.createTime}</td>
+				</tr>
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../jslib/clipboard/clipboard.min.js" ></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/admin.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			var myorders = [];
+			var myordersmap = [];
+			var current = 1;
+			var stop = false;
+			var coin = "TDF";
+			var userId = $.getParam("userId");
+			if (userId) {
+				$("#title").text("提币管理 ( " + $.getParam("phone") + " )");
+				$("#withdraw_all").hide();
+				$("#withdraw_part").show();
+			}
+			
+			$.loadData = function() {
+				// 停止查询
+				if (stop) {
+					return;
+				}
+				
+				// 登录
+				if (! $.getCookie("admin_token")) {
+					$.showLogin();
+					return;
+				}
+				
+				// 分页参数
+				var data = {
+					current: current,
+					size: 15,
+					coin: coin,
+					userId: userId
+				};
+				
+				// 查询
+				$.req('get', '/api/wallet/admin/withdraws', data, function(msg) {
+					// 翻页逻辑
+					if (stop) {
+						return;
+					}
+					if (msg.records.length == 15) {	// 满页-下一页可能还有数据
+						current++;
+					} else {						// 未满-不需要查下一页了
+						stop = true;
+					}
+					
+					// 滚动列表
+					for (var i = 0; i < msg.records.length; i++) {
+						myorders.push(msg.records[i]);
+						myordersmap[msg.records[i].id] = msg.records[i];
+					}
+					$("#myorder_tbody").setTemplateElement("myorder_template");
+					$("#myorder_tbody").processTemplate(myorders);
+					$.base_money($(".base_money"));
+					
+					// 详情
+					$.base_btn($(".order_tr"), function(_this){
+						var detailsId = _this.attr("details_id");
+						var details = myordersmap[detailsId];
+						$("#ele_mydetails").setTemplateElement("mydetails_template");
+						$("#ele_mydetails").processTemplate(details);
+						$.copy("#address_copy_" + detailsId);
+						var successBtn = $("#success_btn");
+						if (successBtn) {
+							successBtn.on('click', function(){
+								$.base_confirm('请提交转账交易的txHash', '<textarea id="tx_hash" style="width: 100%;"></textarea>', function(){
+									$.rechargeHandle(detailsId, $("#tx_hash").val());
+						    	});
+							});
+						}
+						$(".pop-box").height($(window).height());
+		                $("#detailsBox").show();
+		                $("#detailsContent").show();
+					});
+					isScroll = false;
+				});
+			};
+			$.loadData();
+			
+			$.flushData = function() {
+				myorders = [];
+				myordersmap = [];
+				current = 1;
+				stop = false;
+				$.loadData();
+			};
+			
+			$.rechargeHandle = function(detailsId, txHash){
+				$.req('post', '/api/wallet/admin/withdrawHandle', {detailsId: detailsId, txHash: txHash}, function(msg) {
+					$.base_dialog('执行成功');
+					$.flushData();
+					$("#detailsBox").hide();
+					$("#detailsContent").hide();
+				});
+			};
+			
+			// 标签点击
+			$.tabs('tabs', function(tab) {
+				coin = tab;
+				$.flushData();
+			});
+			
+			//关闭添加账号
+			$('.closeDetailsBoxBtn').click(function (event) {
+				$("#detailsBox").hide();
+				$("#detailsContent").hide();
+			});
+			
+			// 滚动监听
+			var isScroll = false;
+			$(window).scroll(function(){
+				if ($(document).scrollTop() >= $(document).height() - $(window).height() - 10) {
+					if (! isScroll) {
+						isScroll = true;
+						$.loadData();
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>

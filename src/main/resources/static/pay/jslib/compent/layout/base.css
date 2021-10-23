@@ -1,0 +1,12 @@
+/* 121布局 */
+#base_layout_121 {overflow: hidden;}
+#base_layout_121 #header { height: 50px; overflow: hidden; border-bottom: 1px solid #d3e6ed; background: #2481d1;}
+#base_layout_121 #nav { height: 600px; width: 200px; float: left; overflow-x: hidden; overflow-y: auto; border-right: 1px solid #d3e6ed; background: #e6f4f9;}
+#base_layout_121 #content { height: 600px; margin-left: 201px; overflow-x: hidden; overflow-y: auto; }
+#base_layout_121 #footer { height: 20px; overflow: hidden; border-top: 1px solid #d3e6ed; text-align: center;}
+#base_layout_121 #header, 
+#base_layout_121 #nav, 
+#base_layout_121 #content, 
+#base_layout_121 #footer { white-space: nowrap; }
+#base_layout_121 #content iframe { width: 100%; border: 0px;}
+

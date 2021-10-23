@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>订单</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- <link rel="shortcut icon" href=""/> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		#detailsBox .form-item {
+			margin: 10px auto;
+		}
+	</style>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div id="title" class="back_m" style="color: #fff; position: fixed; height: 40px; width: 100%; padding-top: 8px; padding-left: 15px; text-align: center;">订 单</div>
+	<div id="tabs" class="color_sh" style="font-weight: 600; position: fixed; height: 30px; width: 100%; margin-top: 40px; background: #fff; text-align: center; border-bottom:1px solid #ddd;">
+		<div tab="" style="float: left; width: 25%; "><p style="height: 30px; width:32px;"><span>全部</span></p></div>
+		<div tab="NEW" style="float: left; width: 25%;"><p class="color_m" style="height: 30px; width:48px; border-bottom: 3px solid var(--color_m);"><span>待确认</p></span></div>
+		<div tab="SUCCESS" style="float: left; width: 25%;"><p style="height: 30px; width:48px;"><span>已完成</p></span></div>
+		<div tab="FAIL" style="float: left; width: 25%;"><p style="height: 30px; width:48px;"><span>已取消</p></span></div>
+	</div>
+	
+	<!-- 内容:表格 -->
+	<div id="my_tbody" style="padding-top: 70px;">
+	</div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./otc.html">
+				<i class="fa fa-balance-scale fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">市场</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a id="orders_all" href="#">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg" aria-hidden="true"></i>
+				<span class="text">订单</span>
+			</a>
+			<a id="orders_part" href="./orders.html" style="display: none;">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./assets.html">
+				<i class="fa fa-diamond fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">资产</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<textarea id="my_template" style="display:none;">
+		{#foreach $T as item}
+			<div class="order_tr" lc_order_id="{$T.item.id}" style="background-color: #fff; margin-bottom: 2px; padding: 10px 10px;">
+			<table style="width: 100%;">
+				<tr>
+					<td style="font-size: 16px;" colspan="2">
+						{#if $T.item.buy}
+							购买 {$T.item.coin}
+						{#else}
+							出售 {$T.item.coin}
+						{#/if}
+					</td>
+					<td style="font-size: 12px; color: #777; text-align: right;">
+						{#if $T.item.orderStatus == 'NEW'}
+							{#if $T.item.pay}
+								<span style="color:red;">● 待确认</span> <span class="color_h">&gt;</span>
+							{#else}
+								<span style="color:red;">●</span> 待付款 <span class="color_h">&gt;</span>
+							{#/if}
+						{#elseif $T.item.orderStatus == 'FAIL'}
+							<span style="color:red;">●</span> 已取消 <span class="color_h">&gt;</span>
+						{#elseif $T.item.orderStatus == 'SUCCESS'}
+							<span style="color:red;">●</span> 已完成 <span class="color_h">&gt;</span>
+						{#else}
+							<span style="color:red;">●</span> 未知 <span class="color_h">&gt;</span>
+						{#/if}
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 12px;">
+						<span class="color_h">时间</span><br>
+						{$T.item.startTime}
+					</td>
+					<td style="font-size: 12px;">
+						<span class="color_h">数量({$T.item.coin})</span><br>
+						<span class="base_money" scale="6">{$T.item.coinNum}</span>
+					</td>
+					<td style="font-size: 12px; text-align: right;">
+						<span class="color_h">交易总额(CNY)</span><br>
+						<span class="base_money">{$T.item.payAmount}</span>
+					</td>
+				</tr>
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+	
+	<script type="text/javascript" src="/jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="/jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="/jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="/js/common.js?v=8"></script>
+	<script type="text/javascript" src="/js/user.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			var mydetails = [];
+			var current = 1;
+			var stop = false;
+			var status = "NEW";
+			var entrustId = $.getParam("entrustId");
+			if (entrustId) {
+				$("#title").text("订 单 ( ad:" + entrustId + " )");
+				$("#orders_all").hide();
+				$("#orders_part").show();
+			}
+			
+			$.loadData = function() {
+				// 停止查询
+				if (stop) {
+					return;
+				}
+				
+				// 登录
+				if (! $.getCookie("token")) {
+					$.showLogin();
+					return;
+				}
+				
+				// 分页参数
+				var data = {
+					current: current,
+					size: 10,
+					status: status,
+					entrustId: entrustId,
+					coins: $.coins().listedCoins
+				};
+				
+				// 查询
+				$.req('get', '/api/order/orders', data, function(msg) {
+					// 翻页逻辑
+					if (stop) {
+						return;
+					}
+					if (msg.records.length == 10) {	// 满页-下一页可能还有数据
+						current++;
+					} else {						// 未满-不需要查下一页了
+						stop = true;
+					}
+					
+					// 滚动列表
+					for (var i = 0; i < msg.records.length; i++) {
+						mydetails.push(msg.records[i]);
+					}
+					$("#my_tbody").setTemplateElement("my_template");
+					$("#my_tbody").processTemplate(mydetails);
+					$.base_money($(".base_money"));
+					
+					// 详情
+					$.base_btn($(".order_tr"), function(_this){
+						window.location.href = "order.html?orderId=" + _this.attr("lc_order_id");
+					});
+					isScroll = false;
+				});
+			};
+			
+			$.flushData = function() {
+				mydetails = [];
+				current = 1;
+				stop = false;
+				$.loadData();
+			};
+			$.flushData();
+			
+			// 标签点击
+			$.tabs('tabs', function(tab) {
+				status = tab;
+				$.flushData();
+			});
+			
+			// 滚动监听
+			var isScroll = false;
+			$(window).scroll(function(){
+				if ($(document).scrollTop() >= $(document).height() - $(window).height() - 10) {
+					if (! isScroll) {
+						isScroll = true;
+						$.loadData();
+					}
+				}
+			});
+			
+			// 打开弹窗
+			$.open();
+		});
+	</script>
+</body>
+</html>

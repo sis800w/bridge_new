@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>支付</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		.btn:hover {
+			color: white;
+		}
+	</style>
+</head>
+<body style="padding-bottom: 55px; max-width: 450px; margin: 0 auto;">
+	<div id="order_body"></div>
+	
+	<textarea id="order_tmp" style="display:none;">
+		<div style="color: #000; width: 100%; padding: 10px 15px; max-width: 450px;">
+			<div style="{#if $T.buyer}display:none;{#/if} float: left; font-size: 14px;" id="go_back"><i class="fa fa-arrow-left fa-fw"></i></div>
+			{#if $T.orderStatus == 'NEW'}
+				<div style="display:none; float: right; font-size: 14px;" class="color_m contact_btn">联系{#if $T.buyer}卖家{#else}买家{#/if}</div>
+			{#/if}
+			<div style="clear: both;"></div>
+			<table style="width: 100%; margin-top: 10px;">
+				<tr>
+					{#if $T.orderStatus == 'NEW'}
+						{#if $T.buyer}
+							{#if $T.pay}
+								<td>
+									<div style="font-size: 24px;">卖家正在确认</div>
+									<div style="font-size: 12px;" class="color_h">若一直未确认放行，请联系客服</div>
+								</td>
+								<td style="text-align: right; font-size: 32px;" class="color_m">
+									<i class="fa fa-spinner fa-pulse fa-fw fa-lg"></i>
+								</td>
+							{#else}
+								{#if $T.payCountdown > 0}
+									<td>
+										<div style="font-size: 24px;">请付款</div>
+										<div style="font-size: 12px;" class="color_h">付款剩余时间 <span class="payCountdown color_m"></span></div>
+									</td>
+									<td style="text-align: right; font-size: 32px;" class="color_m">
+										<i class="fa fa-clock-o fa-fw fa-lg"></i>
+									</td>
+								{#else}
+									<td>
+										<div style="font-size: 24px;">支付超时</div>
+										<div style="font-size: 12px;" class="color_h">若未支付，请点击【取消订单】<br>若已支付，请点击【我已付款成功】</div>
+									</td>
+									<td style="text-align: right; font-size: 32px; color: orange;">
+										<i class="fa fa-exclamation-triangle fa-fw fa-lg"></i>
+									</td>
+								{#/if}
+							{#/if}
+						{#else}
+							{#if $T.pay}
+								<td>
+									<div style="font-size: 24px;">请确认收款</div>
+									<div style="font-size: 12px;" class="color_h">对方已标记付款成功，请确认收款</div>
+								</td>
+								<td style="text-align: right; font-size: 32px;" class="color_m">
+									<i class="fa fa-clock-o fa-fw fa-lg"></i>
+								</td>
+							{#else}
+								{#if $T.payCountdown > 0}
+									<td>
+										<div style="font-size: 24px;">买家正在付款</div>
+										<div style="font-size: 12px;" class="color_h">98.3%的订单会在5分钟内完成</div>
+									</td>
+									<td style="text-align: right;">
+										<i style="font-size: 32px;" class="fa fa-clock-o fa-fw fa-lg color_m"></i><br>
+										<span class="payCountdown font_12 color_m" style="padding-right: 4px;"></span>
+									</td>
+								{#else}
+									<td>
+										<div style="font-size: 24px;">买家正在付款</div>
+										<div style="font-size: 12px;" class="color_h">还未收到对方付款？<a href="#" class="contact_btn">联系对方</a></div>
+									</td>
+									<td style="text-align: right; font-size: 32px;" class="color_m">
+										<i class="fa fa-clock-o fa-fw fa-lg"></i>
+									</td>
+								{#/if}
+							{#/if}
+						{#/if}
+					{#elseif $T.orderStatus =="SUCCESS"}
+						<td>
+							<div style="font-size: 24px;">交易成功</div>
+							{#if $T.buyer}
+								<div style="font-size: 12px;" class="color_h"><span class="base_money" scale="6">{$T.coinNum - $T.buyFee}</span> USDT 已存入您的钱包</div>
+							{#else}
+								<div style="font-size: 12px;" class="color_h">您已成功出售 <span class="base_money" scale="6">{$T.coinNum}</span> USDT</div>
+							{#/if}
+						</td>
+						<td style="text-align: right; font-size: 32px;" class="color_m">
+							<i class="fa fa-check fa-fw fa-lg"></i>
+						</td>
+					{#elseif $T.orderStatus =="FAIL"}
+						<td>
+							<div style="font-size: 24px;">交易取消</div>
+							<div style="font-size: 12px;" class="color_h">订单取消无法查看支付信息</div>
+						</td>
+						<td style="text-align: right; font-size: 32px;" class="color_h">
+							<i class="fa fa-times fa-fw fa-lg"></i>
+						</td>
+					{#/if}
+				</tr>
+			</table>
+		</div>
+		<div style="background-color: #fff; padding: 0px 15px; font-size: 14px;">
+			<table style="width: 100%;">
+				<tr style="height: 50px; border-top: 1px solid #F0F0F0;">
+					<td colspan="2">
+						<div style="background-image: url('/image/coin/USDT.png'); background-size: 20px; background-position: 0px 3px; background-repeat: no-repeat; padding-left: 30px; font-size: 16px;">
+							{#if $T.buyer}购买{#else}出售{#/if}USDT
+						</div>
+					</td>
+				</tr>
+				<tr style="height: 35px;">
+					<td class="color_sh">总价</td>
+					<td style="text-align: right;" class="color_m font_18">￥<span class="base_money">{$T.payAmount}</span></td>
+				</tr>
+				<tr style="height: 35px;">
+					<td class="color_sh">价格</td>
+					<td style="text-align: right;">￥<span class="base_money">{$T.coinPrice}</span></td>
+				</tr>
+				<tr style="height: 35px;">
+					<td class="color_sh">数量</td>
+					<td style="text-align: right;"><span class="base_money" scale="6">{$T.coinNum}</span> USDT</td>
+				</tr>
+				{#if $T.buyer}
+					<tr style="height: 35px;">
+						<td class="color_sh">手续费</td>
+						<td style="text-align: right;"><span class="base_money" scale="6">{$T.buyFee}</span> USDT</td>
+					</tr>
+					<tr style="height: 35px;">
+						<td class="color_sh">到账数量</td>
+						<td style="text-align: right;"><span class="base_money" scale="6">{$T.coinNum - $T.buyFee}</span> USDT</td>
+					</tr>
+				{#else}
+					<tr style="height: 35px;">
+						<td class="color_sh">手续费</td>
+						<td style="text-align: right;"><span class="base_money" scale="6">{$T.sellFee}</span> USDT</td>
+					</tr>
+					<tr style="height: 35px;">
+						<td class="color_sh">实扣数量</td>
+						<td style="text-align: right;"><span class="base_money" scale="6">{$T.coinNum + $T.sellFee}</span> USDT</td>
+					</tr>
+				{#/if}
+				<tr style="height: 35px;" >
+					<td class="color_sh">订单号</td>
+					<td style="text-align: right;">
+						<span id="orderSn">{$T.orderSn}</span>
+						<span class="base_copy" style="font-size: 12px; padding: 3px 0 3px 0;" data-clipboard-target="#orderSn" ><i class="fa fa-files-o fa-fw"></i></span>
+					</td>
+				</tr>
+				{#if $T.orderStatus =="SUCCESS"}
+					<tr style="height: 35px;">
+						<td class="color_sh">订单时间</td>
+						<td style="text-align: right;">{$T.endTime}</td>
+					</tr>
+				{#/if}
+
+				<tr style="height: 5px;" >
+					<td></td>
+					<td></td>
+				</tr>
+				<tr style="height: 5px; border-top: 1px solid #F0F0F0;" >
+					<td></td>
+					<td></td>
+				</tr>
+
+				<tr style="height: 35px;">
+					<td class="color_sh">{#if $T.buyer}卖家昵称{#else}买家昵称{#/if}</td>
+					<td style="text-align: right;">{$T.nickname}</td>
+				</tr>
+				{#if ! $T.buyer}
+					<tr style="height: 35px;">
+						<td class="color_sh">买家实名</td>
+						<td style="text-align: right;">{$T.realname}</td>
+					</tr>
+				{#/if}
+
+				<tr style="height: 5px;" >
+					<td></td>
+					<td></td>
+				</tr>
+				<tr style="height: 5px; border-top: 1px solid #F0F0F0;" >
+					<td></td>
+					<td></td>
+				</tr>
+				
+				<!-- 支付方式（卖方随时可看自己的收款方式、买方只有未付款时可以看对方的收款方式，买方可以向对方任意收款方式付款） -->
+				{#if ! $T.buyer || ($T.buyer && $T.orderStatus == "NEW" && ! $T.pay && $T.payCountdown > 0)}
+					<tr style="height: 35px;">
+						<td class="color_sh">收款方式</td>
+						<td style="text-align: right;">
+							<span id="accountType" style="background-image: url('/image/account/{$T.accountType}.png'); background-size: 16px; background-position: 0px 2px; background-repeat: no-repeat; padding-left: 20px;">
+								{#if $T.accountType == 'ALIPAY'}	
+									支付宝
+								{#elseif $T.accountType == 'WECHAT'}
+									微信
+								{#elseif $T.accountType == 'UNIONPAY'}
+									云闪付
+								{#elseif $T.accountType == 'BANKCARD'}
+									{$T.bank}
+								{#/if}
+								{#if $T.buyer}{#else}[{$T.accountNo}]{#/if}
+							</span>
+						</td>
+					</tr>
+					<tr style="height: 5px;" >
+						<td></td>
+						<td></td>
+					</tr>
+					<tr style="height: 5px; border-top: 1px solid #F0F0F0;" >
+						<td></td>
+						<td></td>
+					</tr>
+				{#/if}
+			</table>
+		</div>
+		
+		<!-- 已付款 -->
+		{#if $T.orderStatus == "NEW"}
+			{#if $T.buyer}
+				<div id="bottom_div" class="toolbar-container" data-spm="toolbar" style="padding: 0 15px; left:50%; max-width: 450px;">
+					{#if $T.pay}
+						<!-- 已付款未放行
+							<button class="btn" disabled="disabled" style="height: 40px; margin: 5px 0; background-color: rgb(178, 178, 178); ">申诉</button>
+						 -->
+					{#else}
+						<button id="cancel_btn" class="btn" style="height: 40px; width: 31%; margin: 5px 0; background-color: rgb(178, 178, 178); ">取消订单</button>
+						{#if $T.payCountdown > 0}
+							<button id="qopay_btn" class="btn" style="height: 40px; width: 66%; margin: 5px 0;">去付款</button>
+						{#else}
+							<button id="pay_ok" class="btn" style="height: 40px; width: 66%; margin: 5px 0;">我已付款成功</button>
+						{#/if}
+					{#/if}
+				</div>
+			{#else}
+				<div id="bottom_div" class="toolbar-container" data-spm="toolbar" style="padding: 0 15px; left:50%; max-width: 450px;">
+					{#if $T.pay}
+						<button id="appeal_btn" class="btn" style="height: 40px; width: 31%; margin: 5px 0; background-color: rgb(178, 178, 178); ">申诉</button>
+						<button id="confirm_btn" class="btn" style="height: 40px; width: 66%; margin: 5px 0;">我确认已收到付款</button>
+					{#else}
+						<button class="btn" disabled="disabled" style="height: 40px; width: 100%; margin: 5px 0; background-color: rgb(178, 178, 178); ">我确认已收到付款</button>
+					{#/if}
+				</div>
+			{#/if}
+		{#/if}
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../jslib/clipboard/clipboard.min.js" ></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/user.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			var orderId = $.getParam("orderId");
+			var orderSn = $.getParam("orderSn");
+			var sign = $.getParam("sign");
+			
+			// 事件：页面唤醒后刷新（解决手机锁屏倒计时停止问题）
+			document.addEventListener("visibilitychange", () => {
+				if (document.hidden) {	// 页面被挂起
+				} else {				// 页面唤醒
+					$.loadData();
+				}
+			});
+			
+			// 函数：底部居中（确保pc显示正常）
+			$.center = function() {
+				var bdiv = $("#bottom_div");
+				var width = $(window).width();
+				width = width > 450 ? 450 : width;
+				bdiv.css("margin-left", - (width / 2));
+			};
+			
+			// 函数：取消订单
+			$.cancel = function() {
+				$.base_confirm('确认取消订单', 
+						'<div style="margin-bottom: 10px;">' +
+							'<span class="color_m">如果您已付款，请千万不要取消订单</span><br>' +
+							'<span class="color_h">取消规则：买家当日累计3笔取消，</span><br>' + 
+							'<span class="color_h">会限制当日买入功能</span>' + 
+						'</div>' + 
+						'取消原因：<br>' + 
+						'&nbsp;&nbsp;&nbsp;&nbsp;<label style="margin-bottom: 0;"><input name="cancel_cause" type="radio" value="GIVE_UP"/>&nbsp;&nbsp;放弃购买</label><br>' +
+						'&nbsp;&nbsp;&nbsp;&nbsp;<label style="margin-bottom: 0;"><input name="cancel_cause" type="radio" value="TIME_LIMIT"/>&nbsp;&nbsp;动作慢，时间不足</label><br>' +
+						'&nbsp;&nbsp;&nbsp;&nbsp;<label style="margin-bottom: 0;"><input name="cancel_cause" type="radio" value="ACCOUNT_ERROR"/>&nbsp;&nbsp;对方收款方式信息有误</label><br>' + 
+						'&nbsp;&nbsp;&nbsp;&nbsp;<label style="margin-bottom: 0;"><input name="cancel_cause" type="radio" value="PAY_FAIL"/>&nbsp;&nbsp;支付失败，风控或限额等</label>', 
+					function(obj){
+						var data = {
+							orderId: orderId,
+							orderSn: orderSn,
+							sign: sign,
+							cancelCause: obj.find('input:radio:checked').val()
+						};
+						$.req('post', '/api/order/cancel', data, function(msg) {
+							$.loadData();
+						});
+					}, function() {
+		    		}, '确认我未付款', '我再想想');
+			};
+			
+			// 函数：我已付款成功
+			$.payok = function (){
+				$.base_confirm('付款确认', '请确认您已向卖家付款<br><span class="color_m">恶意点击将直接冻结账户</span>', function(){
+					$.req('post', '/api/order/payok', {orderId: orderId, orderSn: orderSn, sign: sign}, function(msg) {
+						$.loadData();
+					});
+		    	}, function(){
+		    		
+				}, '确认');
+			};
+			
+			// 函数：我确认已收到付款
+			$.confirm = function(orderId){
+				$.base_confirm('确认放行', 
+						'<div style="font-size: 13px; margin-bottom: 10px;">' +
+							'<span class="color_sh">请务必登录网上银行或第三方支付账号</span><br>' + 
+							'<span class="color_sh">确认收到该笔款项</span>' + 
+						'</div>' + 
+						'<label style="font-size: 13px; margin-bottom: 0;"><input type="radio" checked="checked"/> 我确定已登录收款账户，并核对收款无误</label>',
+					function(obj){
+						var inputPayPsw = $.base_window("inputPayPsw", 172, 
+								'<div style="background-color: #fff; padding: 10px 15px 10px 15px">' + 
+									'<div class="font_18">安全验证</div>' + 
+									'<div class="font_12" style="margin-top: 10px;">支付密码</div>' + 
+									'<div class="form-item" style="margin: 0 0 0 0;"><input type="password" placeholder="输入支付密码" style="font-weight: 400;"/></div>' + 
+									'<button class="btn" style="margin-top: 15px; height: 40px; font-size: 16px;">确定</button>' +
+								'</div>'
+						);
+						inputPayPsw.find(".btn").on('click', function(){
+							var payPassword = inputPayPsw.find("input").val();
+							if (payPassword.length != 6 || isNaN(Number(payPassword))) {
+								$.base_dialog("请输入正确的支付密码");
+								return;
+							}
+							var data = {
+								orderId: orderId,
+								payPassword: payPassword
+							};
+							$.req('post', '/api/order/success', data, function(msg) {
+								inputPayPsw.dialog( "close" );
+								$.loadData();
+							});
+						});
+					});
+			};
+			
+		 	// 函数：初始化页面
+		    $.init = function(msg) {
+		    	$("#order_body").setTemplateElement("order_tmp");
+				$("#order_body").processTemplate(msg);
+				$.base_money($(".base_money"));
+				$.copy('.base_copy');
+				$.center();
+				
+			 	// 事件绑定
+			 	$("#go_back").on('click', function(){
+		 			window.location.href = "orders.html";
+			    });
+			 	$(".contact_btn").each(function(){			// 联系对方
+			 		$(this).on('click', function(){
+				    	$.base_dialog(msg.wechat);
+				    });
+			 	});
+			    $("#cancel_btn").on('click', function(){	// 取消订单
+			    	$.cancel();
+			    });
+				$("#qopay_btn").on('click', function(){		// 去支付
+					window.location.href = "pay.html?orderId=" + orderId + "&orderSn=" + orderSn + "&sign=" + sign;
+				});
+				$("#pay_ok").on('click', function(){		// 我已付款成功
+					$.payok();
+				});
+				$("#confirm_btn").on('click', function(){	// 我确认已收到付款
+					$.confirm(msg.id);
+				});
+				$("#appeal_btn").on('click', function(){	// 申诉
+					window.location.href = "appeal.html?orderId=" + msg.id;
+				});
+			    
+			    // 刷新(卖家等待付款/买家等待放行)
+			    if (msg.orderStatus == "NEW" && ((! msg.pay && ! msg.buyer) || (msg.pay && msg.buyer))) {
+			    	setTimeout(function() {
+			    		$.loadData();
+			    	}, 5000);
+			    }
+			    
+				// 倒计时更新
+			    if (msg.orderStatus == "NEW" && ! msg.pay && msg.payCountdown > 0) {
+			    	var countdown = function () {
+				    	if (msg.payCountdown <= 0) {
+				    		$.init(msg);
+				        } else {
+			            	var s = msg.payCountdown % 60;
+			            	var m = (msg.payCountdown - s) / 60;
+			            	var str = (m < 10 ? "0" : "") + m + " : " + (s < 10 ? "0" : "") + s;
+				        	$('.payCountdown').each(function(){
+				        		$(this).text(str);
+				        	});
+				        	msg.payCountdown--;
+				        }
+				    };
+				    countdown();
+			    	setInterval(countdown, 1000);
+			    }
+		    };
+			
+			// 查询
+			$.loadData = function() {
+				$.req('get', '/api/order/query', {orderId: orderId, orderSn: orderSn, sign: sign}, $.init);
+			};
+			$.loadData();
+			
+			// 打开弹窗
+			$.open();
+		});
+	</script>
+</body>
+</html>

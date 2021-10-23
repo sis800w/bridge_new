@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>申诉</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+</head>
+<body class="pop-box-model">
+	<div class="pop-box" style="max-width: 450px; top: 0px; bottom: 0px;">
+		<div class="title">申 诉</div>
+		<div class="content">
+			<div class="form-box">
+				<div class="form-content" style="font-size: 14px;">
+					<div class="form-item">
+						<span>申诉理由：</span>
+						<div id="appealCause" style="width: 70%; margin: 0;">
+							<label style="margin: 0;"><input name="appealCause" type="radio" value="NOT_PAY" style="font-weight: 200; width: 30px;"/> 我并没有收到买家的转款</label><br>
+							<label style="margin: 0;"><input name="appealCause" type="radio" value="AMOUNT_ERROR" style="font-weight: 200; width: 30px;" /> 收到买家付款，但金额不符</label><br>
+							<label style="margin: 0;"><input name="appealCause" type="radio" value="INFO_ERROR" style="font-weight: 200; width: 30px;" /> 收到买家付款，但是付款信息与买家实名信息不符</label><br>
+							<label style="margin: 0;"><input name="appealCause" type="radio" value="OTHER" style="font-weight: 200; width: 30px;" /> 其它</label><br>
+						</div>
+					</div>
+					<button id="btn_appeal">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/user.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			// 函数：重定向
+			$.redirect = function() {
+				var redirect = $.getParam('redirect');
+				if (redirect) {
+					window.location.href = redirect;
+				} else {
+					window.history.go(-1);
+				}
+			};
+			
+			// 提交
+			$("#btn_appeal").on('click', function() {
+				// 申诉理由
+				var appealCause = $('#appealCause input[type=radio]:checked').val();
+				if (! appealCause) {
+					$.base_dialog('请选择申诉理由');
+					return false;
+				}
+				var fd = new FormData();
+				fd.append("appealCause", appealCause);
+				fd.append("lcOrderId", $.getParam("orderId"));
+				
+				// 提交
+				$.ajax({
+					type: "POST",
+					url: "/api/order/appeal",
+					data: fd,
+					processData: false,
+					contentType: false,
+					success: function(msg){
+						$.reqSuccess(msg, function(data){
+							$.base_dialog("申诉成功", function() {
+				    			$.redirect();
+				    		});
+						});
+					}
+				});
+			});
+			
+			// 打开弹窗
+			$.open();
+		});
+	</script>
+</body>
+</html>

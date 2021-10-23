@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>收款方式管理</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- <link rel="shortcut icon" href=""/> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		.my_table {width:100%;border-spacing:0;border-collapse:collapse;border:none;}
+		.my_table thead th {border-bottom:2px solid #ddd;padding:14px 5px;text-align:left;}
+		.my_table td {border-top:1px solid #ddd; padding:12px 1px;}
+		a:hover{text-decoration:none; color: var(--color_m);}
+	</style>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div id="title" class="back_m" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px; text-align: center;">收款方式管理</div>
+	
+	<!-- 内容:表格 -->
+	<div id="myaccount_tbody" style="padding-top: 40px;">
+	</div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./withdraw.html">
+				<i class="fa fa-sign-out fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">提币管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./user.html">
+				<i class="fa fa-users fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">用户管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<!-- 详情弹窗 -->
+	<div class="pop-box-model" id="detailsBox" style="display: none">
+		<div class="pop-box" style="max-width: 450px; top: 0px; bottom: 0px;">
+			<div id="detailsContent" style="display: none">
+				<div class="title" id="details_title"></div>
+				<div class="content">
+					<div class="form-box">
+						<div class="form-content" id="ele_mydetails">
+						</div>
+					</div>
+				</div>
+				<!-- 关闭按钮 -->
+				<div class="close closeDetailsBoxBtn"></div>
+			</div>
+		</div>
+	</div>
+	
+	<textarea id="myaccount_template" style="display:none;">
+		{#foreach $T as item}
+			<div account_id="{$T.item.id}" style="background-color: white; margin-bottom: 2px; padding: 10px 10px;">
+			<table style="width: 100%;">
+				<tr>
+					<td class="order_tr" style="font-size: 12px;">
+						<span style="background-image: url('/image/account/{$T.item.accountType}.png'); background-size: 12px; background-position: 0px 3px; background-repeat: no-repeat; padding-left: 18px;">
+							{#if $T.item.accountType == 'ALIPAY'}	
+								支付宝
+							{#elseif $T.item.accountType == 'WECHAT'}
+								微信
+							{#elseif $T.item.accountType == 'UNIONPAY'}
+								云闪付
+							{#elseif $T.item.accountType == 'BANKCARD'}
+								{$T.item.bank}
+							{#/if}
+						</span>
+					</td>
+					<td style="font-size: 12px; float: right;">
+						{#if $T.item.block}
+							<a class="block" block="false" style="color:red;" href="#"><i class="fa fa-check-square-o" aria-hidden="true"></i> 已封号</a>
+						{#else}
+							<a class="color_h block" block="true" href="#"><i class="fa fa-square-o" aria-hidden="true"></i> 未封号</a>
+						{#/if}
+					</td>
+				</tr>
+				<tr>
+					<td class="order_tr color_h" colspan="2" style="font-size: 14px; padding-top: 10px;">
+						{$T.item.realname}
+					</td>
+				</tr>
+				<tr>
+					<td class="order_tr" colspan="2" style="font-size: 14px;">
+						{#if $T.item.accountType == 'BANKCARD'}
+							<b><span class="card_no">{$T.item.accountNo}</span></b>
+						{#else}
+							<b><span>{$T.item.accountNo}</span></b>
+						{#/if}
+					</td>
+				</tr>
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+	
+	<textarea id="mydetails_template" style="display:none">
+		<div class="show-item">用户手机号：<span>{$T.userPhone}</span></div>
+		{#if $T.accountType == 'ALIPAY'}
+			<div class="show-item">支付宝实名：<span>{$T.realname}</span></div>
+			<div class="show-item">支付宝账号：<span>{$T.accountNo}</span></div>
+		{#elseif $T.accountType == 'WECHAT'}
+			<div class="show-item">微信实名：<span>{$T.realname}</span></div>
+			<div class="show-item">微信号：<span>{$T.accountNo}</span></div>
+		{#elseif $T.accountType == 'UNIONPAY'}
+			<div class="show-item">收款人姓名：<span>{$T.realname}</span></div>
+			<div class="show-item">已绑卡用户手机号：<span>{$T.accountNo}</span></div>
+		{#elseif $T.accountType == 'BANKCARD'}
+			<div class="show-item">银行卡实名：<span>{$T.realname}</span></div>
+			<div class="show-item">银行卡卡号：<span class="card_num">{$T.accountNo}</span></div>
+			<div class="show-item">开户银行：<span>{$T.bank}</span></div>
+			{#if $T.subbranch}
+				<div class="show-item">支行名称：<span>{$T.subbranch}</span></div>
+			{#/if}
+		{#/if}
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/admin.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			var list = [];
+			var map = [];
+			var current = 1;
+			var stop = false;
+			var userId = $.getParam("userId");
+			$("#title").text("收款方式管理 ( " + $.getParam("phone") + " )");
+			
+			$.loadData = function() {
+				// 停止查询
+				if (stop) {
+					return;
+				}
+				
+				// 登录
+				if (! $.getCookie("admin_token")) {
+					$.showLogin();
+					return;
+				}
+				
+				// 分页参数
+				var data = {
+					current: current,
+					size: 10,
+					userId: userId
+				};
+				
+				// 查询
+				$.req('get', '/api/account/admin/list', data, function(msg) {
+					// 翻页逻辑
+					if (stop) {
+						return;
+					}
+					if (msg.records.length == 10) {	// 满页-下一页可能还有数据
+						current++;
+					} else {						// 未满-不需要查下一页了
+						stop = true;
+					}
+					
+					// 滚动列表
+					for (var i = 0; i < msg.records.length; i++) {
+						list.push(msg.records[i]);
+						map[msg.records[i].id] = msg.records[i];
+					}
+					$("#myaccount_tbody").setTemplateElement("myaccount_template");
+					$("#myaccount_tbody").processTemplate(list);
+					$.base_no($(".card_no"));
+					
+					// 封号
+					$.base_btn($(".block"), function(_this){
+						var accountId = _this.parent().parent().parent().parent().parent().attr("account_id");
+						var block = _this.attr("block");
+						$.req('post', '/api/account/admin/updateBlock', {accountId: accountId, block: block}, function(msg) {
+							$.flushData();
+						});
+					});
+					
+					// 详情
+					$.base_btn($(".order_tr"), function(_this){
+						var accountId = _this.parent().parent().parent().parent().attr("account_id");
+						var account = map[accountId];
+						if (account.accountType == 'ALIPAY') {
+							$("#details_title").text('支 付 宝');
+						} else if (account.accountType == 'WECHAT') {
+							$("#details_title").text('微 信');
+						} else if (account.accountType == 'UNIONPAY') {
+							$("#details_title").text('云 闪 付');
+						} else if (account.accountType == 'BANKCARD') {
+							$("#details_title").text('银 行 卡');
+						}
+						
+						$("#ele_mydetails").setTemplateElement("mydetails_template");
+						$("#ele_mydetails").processTemplate(account);
+						$.base_no($(".card_num"));
+						
+						// 显示
+						$(".pop-box").height($(window).height());
+		                $("#detailsBox").show();
+		                $("#detailsContent").show();
+					});
+					isScroll = false;
+				});
+			};
+			$.loadData();
+			
+			$.flushData = function() {
+				list = [];
+				map = [];
+				current = 1;
+				stop = false;
+				$.loadData();
+			};
+			
+			//关闭详情
+			$('.closeDetailsBoxBtn').click(function (event) {
+				$("#detailsBox").hide();
+				$("#detailsContent").hide();
+			});
+			
+			// 滚动监听
+			var isScroll = false;
+			$(window).scroll(function(){
+				if ($(document).scrollTop() >= $(document).height() - $(window).height() - 10) {
+					if (! isScroll) {
+						isScroll = true;
+						$.loadData();
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>

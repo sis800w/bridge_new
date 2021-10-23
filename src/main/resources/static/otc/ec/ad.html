@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>我的广告</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- <link rel="shortcut icon" href=""/> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		.btn:hover {
+			color: white;
+		}
+		#entrustbox .form-item {
+			margin: 10px auto;
+		}
+		#entrustbox .form-item span, #entrustbox .form-item label {
+			font-size: 14px;
+		}
+		#entrustbox .pop-box {
+			padding: 10px 5px 5px 5px;
+		}
+	</style>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div class="back_m" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px; text-align: center;">我&nbsp;&nbsp;的&nbsp;&nbsp;广&nbsp;&nbsp;告</div>
+	
+	<!-- 内容:表格 -->
+	<div id="my_tbody" style="padding-top: 40px;">
+	</div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./otc.html">
+				<i class="fa fa-balance-scale fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">市场</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./assets.html">
+				<i class="fa fa-diamond fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">资产</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<textarea id="my_template" style="display:none;">
+		{#foreach $T as item}
+			<div lc_entrust_id="{$T.item.id}" style="background-color: white; margin-bottom: 2px; padding: 5px 10px;">
+			<table style="width: 100%;">
+				<tr>
+					<td style="font-size: 16px;" >
+						{#if $T.item.entrustType == 'BUY'}购买 {$T.item.coin}{#else}出售 {$T.item.coin}{#/if}
+					</td>
+					<td style="text-align: right;" colspan="2">
+						<button class="btn_small cancel" style="width: 50px; height: 22px; padding: 0 6px; background-color: rgb(178, 178, 178);">撤销</button>
+						<button class="btn_small orders" style="width: 50px; height: 22px; padding: 0 6px;"><span>订单</span></button>
+					</td>
+				</tr>
+				<tr style="height: 5px;"><td></td><td></td><td></td></tr>
+				<tr>
+					<td style="font-size: 12px;">
+						<span class="color_h">数量({$T.item.coin})</span><br>
+						<span class="base_money" scale="6">{$T.item.entrustNum}</span>
+					</td>
+					<td style="font-size: 12px;">
+						<span class="color_h">单价(CNY)</span><br>
+						<span class="base_money">{$T.item.entrustPrice}</span>
+					</td>
+					<td style="font-size: 12px; text-align: right;">
+						<span class="color_h">时间</span><br>
+						{$T.item.entrustTime}
+					</td>
+				</tr>
+				<tr style="height: 5px;"><td></td><td></td><td></td></tr>
+				<tr>
+					<td style="font-size: 12px;">
+						<span class="color_h">单笔限额下限(CNY)</span><br>
+						<span class="base_money">{$T.item.limitAmountMin}</span>
+					</td>
+					<td style="font-size: 12px;">
+						<span class="color_h">单笔限额上限(CNY)</span><br>
+						<span class="base_money">{$T.item.limitAmountMax}</span>
+					</td>
+					<td style="font-size: 12px; text-align: right;">
+						<span class="color_h">限制{#if $T.item.entrustType == 'BUY'}付款{#else}收款{#/if}方式</span><br>
+						{#foreach $T.item.limitAccountTypes as item2}
+							<span style="background-image: url('/image/account/{$T.item2}.png'); background-size: 14px; background-repeat: no-repeat; padding-left: 20px;"></span>
+						{#/for}
+					</td>
+				</tr>
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/user.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			var mydetails = [];
+			var mydetailsmap = [];
+			var current = 1;
+			var stop = false;
+			
+			$.loadData = function() {
+				// 停止查询
+				if (stop) {
+					return;
+				}
+				
+				// 登录
+				if (! $.getCookie("token")) {
+					$.showLogin();
+					return;
+				}
+				
+				// 分页参数
+				var data = {
+					current: current,
+					size: 10,
+					coins: $.coins().listedCoins
+				};
+				
+				// 查询
+				$.req('get', '/api/entrust/myAd', data, function(msg) {
+					// 翻页逻辑
+					if (stop) {
+						return;
+					}
+					if (msg.records.length == 10) {	// 满页-下一页可能还有数据
+						current++;
+					} else {						// 未满-不需要查下一页了
+						stop = true;
+					}
+					
+					// 滚动列表
+					for (var i = 0; i < msg.records.length; i++) {
+						mydetails.push(msg.records[i]);
+						mydetailsmap[msg.records[i].id] = msg.records[i];
+					}
+					$("#my_tbody").setTemplateElement("my_template");
+					$("#my_tbody").processTemplate(mydetails);
+					$.base_money($(".base_money"));
+					
+					// 撤销
+					$.base_btn($(".cancel"), function(_this){
+						var lcEntrustId = _this.parent().parent().parent().parent().parent().attr("lc_entrust_id");
+						var entrust = mydetailsmap[lcEntrustId];
+						$.base_confirm('确认撤销', 
+								'<div style="font-size: 16px; margin-bottom: 10px;">' +
+									'<span>确认撤销吗？</span><br>' +
+								'</div>', 
+							function(obj){
+								$.req('post', '/api/entrust/cancel', {lcEntrustId: lcEntrustId}, function(msg) {
+									$.flushData();
+								});
+							}
+						);
+					});
+					
+					// 订单
+					$.base_btn($(".orders"), function(_this){
+						var lcEntrustId = _this.parent().parent().parent().parent().parent().attr("lc_entrust_id");
+						window.location.href = "orders.html?entrustId=" + lcEntrustId;
+					});
+					isScroll = false;
+				});
+			};
+			
+			$.flushData = function() {
+				mydetails = [];
+				mydetailsmap = [];
+				current = 1;
+				stop = false;
+				$.loadData();
+			};
+			$.flushData();
+			
+			// 滚动监听
+			var isScroll = false;
+			$(window).scroll(function(){
+				if ($(document).scrollTop() >= $(document).height() - $(window).height() - 10) {
+					if (! isScroll) {
+						isScroll = true;
+						$.loadData();
+					}
+				}
+			});
+			
+			// 打开弹窗
+			$.open();
+		});
+	</script>
+</body>
+</html>

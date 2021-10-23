@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>资产管理</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- <link rel="shortcut icon" href=""/> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		.my_table {width:100%;border-spacing:0;border-collapse:collapse;border:none;}
+		.my_table thead th {border-bottom:2px solid #ddd;padding:14px 5px;text-align:left;}
+		.my_table td {border-top:1px solid #ddd; padding:12px 1px;}
+		a:hover{text-decoration:none; color: var(--color_m);}
+	</style>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div id="title" class="back_sm" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px; text-align: center;">资 产 管 理</div>
+	<div id="tabs" class="color_sh" style="font-weight: 600; position: fixed; height: 30px; width: 100%; margin-top: 40px; background: #fff; text-align: center; border-bottom:1px solid #ddd;">
+		<div tab="TDF" style="float: left; width: 20%;"><p class="color_m" style="height: 30px; width:29px; border-bottom: 3px solid var(--color_m);">TDF</p></div>
+		<div tab="REA" style="float: left; width: 20%;"><p style="height: 30px; width:29px;">REA</p></div>
+		<div tab="ZES" style="float: left; width: 20%;"><p style="height: 30px; width:29px;">ZES</p></div>
+		<div tab="USDT" style="float: left; width: 20%; "><p style="height: 30px; width:39px;">USDT</p></div>
+		<div tab="TRX" style="float: left; width: 20%;"><p style="height: 30px; width:29px;">TRX</p></div>
+		<!-- 
+		<div tab="ETH" style="float: left; width: 25%;"><p style="height: 30px; width:29px;">ETH</p></div>
+		<div tab="BTC" style="float: left; width: 14%;"><p style="height: 30px; width:28px;">BTC</p></div>
+		<div tab="BCH" style="float: left; width: 14%;"><p style="height: 30px; width:32px;">BCH</p></div>
+		<div tab="LTC" style="float: left; width: 14%;"><p style="height: 30px; width:25px;">LTC</p></div>
+		 -->
+	</div>
+	
+	<!-- 内容:表格 -->
+	<div id="myaccount_tbody" style="padding-top: 70px;">
+	</div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./withdraw.html">
+				<i class="fa fa-sign-out fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">提币管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./user.html">
+				<i class="fa fa-users fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">用户管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<textarea id="myaccount_template" style="display:none;">
+		{#foreach $T as item}
+			<div class="order_tr" user_id="{$T.item.userId}" coin="{$T.item.coin}" style="background-color: white; margin-bottom: 2px; padding: 10px 10px;">
+			<table style="width: 100%; color: #000;">
+				<tr>
+					<td style="font-size: 12px;">
+						{#if $T.item.phone}
+							<span class="color_h">用户</span><br>
+							<span {#if $T.item.availableNum <= 0 && $T.item.freezeNum <= 0}class="color_h"{#/if}>{$T.item.phone}</span>
+						{#else}
+							<span class="color_h">币种</span><br>
+							<span {#if $T.item.availableNum <= 0 && $T.item.freezeNum <= 0}class="color_h"{#/if}>{$T.item.coin}</span>
+						{#/if}
+					</td>
+					<td style="font-size: 12px; width: 37%;">
+						<span class="color_h">可用</span><br>
+						<span class="base_money {#if $T.item.availableNum <= 0 && $T.item.freezeNum <= 0}color_h{#/if}" scale="6">{$T.item.availableNum}</span>
+					</td>
+					<td style="font-size: 12px; width: 37%; text-align: right;">
+						<span class="color_h">冻结</span><br>
+						<span class="base_money {#if $T.item.availableNum <= 0 && $T.item.freezeNum <= 0}color_h{#/if}" scale="6">{$T.item.freezeNum}</span>
+					</td>
+				</tr>
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../jslib/clipboard/clipboard.min.js" ></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/admin.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			var list = [];
+			var map = [];
+			var current = 1;
+			var stop = false;
+			var coin = "TDF";
+			var userId = $.getParam("userId");
+			if (userId) {
+				coin = null;
+				$("#title").text("资产管理 ( " + $.getParam("phone") + " )");
+				$("#tabs").hide();
+				$("#myaccount_tbody").css("padding-top", "40px");
+			}
+			
+			$.loadData = function() {
+				// 停止查询
+				if (stop) {
+					return;
+				}
+				
+				// 登录
+				if (! $.getCookie("admin_token")) {
+					$.showLogin();
+					return;
+				}
+				
+				// 参数
+				var data = {
+					current: current,
+					size: 10,
+					userId: userId,
+					coin: coin
+				};
+				
+				// 查询
+				$.req('get', '/api/wallet/admin/assets', data, function(msg) {
+					// 翻页逻辑
+					if (stop) {
+						return;
+					}
+					if (msg.records.length == 10) {	// 满页-下一页可能还有数据
+						current++;
+					} else {						// 未满-不需要查下一页了
+						stop = true;
+					}
+					
+					// 滚动列表
+					for (var i = 0; i < msg.records.length; i++) {
+						list.push(msg.records[i]);
+						map[msg.records[i].id] = msg.records[i];
+					}
+					$("#myaccount_tbody").setTemplateElement("myaccount_template");
+					$("#myaccount_tbody").processTemplate(list);
+					$.base_money($(".base_money"));
+					
+					// 详情
+					$.base_btn($(".order_tr"), function(_this){
+						var userId = _this.attr("user_id");
+						var coin = _this.attr("coin");
+						window.location.href = 'details.html?userId=' + userId + "&coin=" + coin;
+					});
+					isScroll = false;
+				});
+			};
+			$.loadData();
+			
+			$.flushData = function() {
+				list = [];
+				map = [];
+				current = 1;
+				stop = false;
+				$.loadData();
+			};
+			
+			// 标签点击
+			$.tabs('tabs', function(tab) {
+				coin = tab;
+				$.flushData();
+			});
+			
+			// 滚动监听
+			var isScroll = false;
+			$(window).scroll(function(){
+				if ($(document).scrollTop() >= $(document).height() - $(window).height() - 10) {
+					if (! isScroll) {
+						isScroll = true;
+						$.loadData();
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>

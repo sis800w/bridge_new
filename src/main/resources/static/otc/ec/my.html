@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>我的</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- <link rel="shortcut icon" href=""/> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		#infobox .form-item span, #entrustbox .form-item label {
+			font-size: 14px;
+		}
+		#infobox .pop-box {
+			padding: 15px 5px;
+		}
+		#infobox .form-item input {
+			width: 75%;
+		}
+		#updatePswbox .form-item input {
+			width: 60%;
+		}
+	</style>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div class="back_m" id="div_phone" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px; padding-left: 15px; text-align: center;">我的</div>
+
+	<!-- 内容 -->
+	<div class="color_sh" style="background-color: white; padding-top: 40px; padding-left: 15px;">
+		<table style="width: 100%;">
+			<tr style="height: 45px;" id="assets">
+				<td><i class="fa fa-diamond fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;我的资产</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+			<tr style="height: 45px; border-top: 1px solid #F0F0F0;" id="lcEntrust">
+				<td><i class="fa fa-bullhorn fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;我的广告</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+			<tr style="height: 45px; border-top: 1px solid #F0F0F0;" id="lcOrder">
+				<td><i class="fa fa-paper-plane-o fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;我的订单</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="color_sh" style="background-color: white; margin-top: 8px; padding-left: 15px;">
+		<table style="width: 100%;">
+			<tr style="height: 45px;" id="realnameAuth">
+				<td><i class="fa fa-vcard-o fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;实名认证</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+			<tr style="height: 45px; border-top: 1px solid #F0F0F0;" id="info">
+				<td><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;设置联系方式</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+			<tr style="height: 45px; border-top: 1px solid #F0F0F0;" id="updatePayPsw">
+				<td><i class="fa fa-key fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;设置支付密码</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+			<tr style="height: 45px; border-top: 1px solid #F0F0F0;" id="myaccount">
+				<td><i class="fa fa-credit-card fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;收款方式管理</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="color_sh" style="background-color: white; margin-top: 8px; padding-left: 15px;">
+		<table style="width: 100%;">
+			<tr style="height: 45px;" class="copy" data-clipboard-target="#code">
+				<td><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;我的邀请链接</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="color_sh" style="background-color: white; margin-top: 8px; padding-left: 15px;">
+		<table style="width: 100%;">
+			<tr style="height: 45px;" id="updatePhoneBtn">
+				<td><i class="fa fa-volume-control-phone fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;修改手机号</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+			<tr style="height: 45px; border-top: 1px solid #F0F0F0;" id="updatePswBtn">
+				<td><i class="fa fa-user-secret fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;修改密码</td>
+				<td style="padding-right: 15px; text-align: right;">&gt;</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="color_sh div_button" style="background-color: white; text-align: center;" id="logout_btn"><i class="fa fa-power-off fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;退出登录</div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./otc.html">
+				<i class="fa fa-balance-scale fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">市场</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./assets.html">
+				<i class="fa fa-diamond fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">资产</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="#">
+				<i class="fa fa-user-circle-o fa-fw fa-lg" aria-hidden="true"></i>
+				<span class="text">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<div id="code" style="position: absolute; top: 0px; font-size: 1px; z-index: -999;"></div>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../jslib/clipboard/clipboard.min.js" ></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/user.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			// 登录
+			if (! $.getCookie("token")) {
+				$.showLogin();
+				return;
+			}
+				
+			// 标题
+			var user = $.userinfo();
+			$("#div_phone").text("我的（" + user.phone + "）");
+			
+			// code填充,用于复制
+			var path = window.location.href;
+			var pathName = window.location.pathname;
+            var pos = path.indexOf(pathName);
+			var newPath = path.substring(0, pos) + "/ec/reg.html?sn=" + user.userSn;
+	        $("#code").text(newPath);
+			
+	        // 菜单
+			$("#myaccount").on('click', function(){
+				window.location.href = './account.html';
+			});
+			$("#lcOrder").on('click', function(){
+				window.location.href = './orders.html';
+			});
+			$("#lcEntrust").on('click', function(){
+				window.location.href = './ad.html';
+			});
+			$("#withdraw").on('click', function(){
+				window.location.href = './withdraw.html';
+			});
+			$("#assets").on('click', function(){
+				window.location.href = './assets.html';
+			});
+			$("#info").on('click', function(){
+				$.updateInfo();
+			});
+			$("#realnameAuth").on('click', function(){
+				$.realnameAuth();
+			});
+			$("#updatePayPsw").click(function (event) {
+				$.updatePayPsw();
+			});
+			
+			//弹出修改密码
+			$("#updatePswBtn").click(function (event) {
+				$.box
+					.build("updatePsw", "修 改 密 码")
+					.addInput("password", "原密码", null, null, true)
+					.addInput("newPassword", "新密码", "6-20位字母数字混合", null, true)
+					.addInput("newPassword2", "重复新密码", null, null, true)
+					.addBtn("确定", function(obj) {
+						// get password
+						var password = obj.find('.password').val();
+						if (! password) {
+							$.base_dialog('请输入原密码');
+							return;
+						}
+						
+						// get password
+						var newPassword = obj.find('.newPassword').val();
+						if (! newPassword) {
+							$.base_dialog('请输入新密码');
+							return;
+						}
+						
+						// get password2
+						var newPassword2 = obj.find('.newPassword2').val();
+						if (! newPassword2) {
+							$.base_dialog('请重复输入新密码');
+							return;
+						}
+						
+						// password error
+						if (newPassword != newPassword2) {
+							$.base_dialog('重复新密码错误');
+							return;
+						}
+						
+						// req
+						var data = {
+								password: password,
+								newPassword: newPassword
+						};
+						$.req('post', '/api/user/updatePwd', data, function(msg) {
+							obj.find('.password').val("");
+							obj.find('.newPassword').val("");
+							obj.find('.newPassword2').val("");
+							$.base_dialog('修改成功');
+							obj.hide();
+						});
+					})
+					.show();
+			});
+			
+			//弹出修改手机号
+			$("#updatePhoneBtn").click(function (event) {
+				$.box
+					.build("updatePhone", "修 改 手 机 号")
+					.addInput("password", "密码", null, null, true)
+					.addInput("newPhone", "新手机号")
+					.addBtn("确定", function(obj) {
+						// get password
+						var password = obj.find('.password').val();
+						if (! password) {
+							$.base_dialog('请输入密码');
+							return;
+						}
+						
+						// get newPhone
+						var newPhone = obj.find('.newPhone').val();
+						if (! newPhone) {
+							$.base_dialog('请输入新手机号');
+							return;
+						}
+						
+						// req
+						var data = {
+								password: password,
+								newPhone: newPhone
+						};
+						$.req('post', '/api/user/updatePhone', data, function(msg) {
+							obj.find('.password').val("");
+							obj.find('.newPhone').val("");
+							$.base_dialog('修改成功');
+							var user = $.userinfo();
+							user.phone = newPhone;
+							$.setUserinfo(user);
+							$("#div_phone").text("我的（" + user.phone + "）");
+							obj.hide();
+						});
+					})
+					.show();
+			});
+			
+			// 复制
+			var clipboard = new ClipboardJS('.copy');
+			clipboard.on('success', function(e) {
+	            $.base_dialog('你的邀请链接为：' + $("#code").text() + '<br>已复制到粘贴板！');
+				e.clearSelection();
+			});
+			clipboard.on('error', function(e) {
+				$.base_dialog('复制失败');
+			});
+			
+			// 打开弹窗
+			$.open();
+		});
+	</script>
+</body>
+</html>

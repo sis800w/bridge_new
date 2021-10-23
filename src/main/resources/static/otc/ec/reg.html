@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!--替换url  浏览器标签页logo-->
+	<!-- <link rel="shortcut icon" href=""/>   -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<title>注册</title>
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+</head>
+<body style="background-color: #FFFFFF">
+	<div class="pop-box-model">
+		<div class="pop-box" style="max-width: 450px; top: 0px; bottom: 0px;">
+			<!-- 注册弹出框 -->
+			<div id="regBox">
+				<div class="title">注 册 用 户</div>
+				<div class="content">
+					<div class="form-box">
+						<div class="form-content">
+							<div class="form-item" style="margin-bottom: 5px;">
+								<input type="text" class="phone" placeholder="手机号" style="font-weight: 200; width: 100%;"/>
+							</div>
+							<div style='color: red; font-size: 12px;'>注意：请填写真实手机号以便找回密码所需！</div>
+							<div class="form-item">
+								<input type="password" class="password" placeholder="密码（6-20位字母数字混合）" style="font-weight: 200; width: 100%;" />
+							</div>
+							<div class="form-item">
+								<input type="password" class="password2" placeholder="重复密码" style="font-weight: 200; width: 100%;" />
+							</div>
+							<div class="form-item">
+								<input type="text" class="imgCaptcha" placeholder="图片验证码" style="font-weight: 200; width: 100%;" />
+								<img class="imgCaptcha_btn" src="" />
+							</div>
+							<div class="form-item">
+								<input type="text" class="userSn" id="userSn" placeholder="推荐码（可选）" style="font-weight: 200; width: 100%;" />
+							</div>
+							<button id="register_btn">确定</button>
+							<a style="float: right; margin-top: 10px;" href="otc.html">已注册，去登录</a>
+						</div>
+					</div>
+				</div>
+				<!-- <div class="close closeBtn"></div> -->
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js" ></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js" ></script>
+	<script type="text/javascript" src="../jslib/compent/base/base.js" ></script>
+	<script type="text/javascript" src="../jslib/compent/dialog/base.js" ></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/user.js?v=8" ></script>
+	<script>
+		$(document).ready(function(){
+			$(".imgCaptcha_btn").click();
+        	
+			var sn = $.getParam('sn');
+			if (sn) {
+				$("#userSn").val(sn);
+			}
+			
+			// 注册
+			$('#register_btn').on('click', function () {
+				// get phone
+				var box = $(this).parent();
+				var phone = box.find('.phone').val();
+				if (! phone) {
+					$.base_dialog('请先输入手机号');
+					return;
+				}
+				
+				// get password
+				var password = box.find('.password').val();
+				if (! password) {
+					$.base_dialog('请先输入密码');
+					return;
+				}
+				
+				// get password2
+				var password2 = box.find('.password2').val();
+				if (! password2) {
+					$.base_dialog('请先输入重复密码');
+					return;
+				}
+				
+				// password error
+				if (password != password2) {
+					$.base_dialog('密码与重复密码不一致');
+					return;
+				}
+				
+				// get imgCaptcha
+				var imgCaptcha = box.find('.imgCaptcha').val();
+				if (! imgCaptcha) {
+					$.base_dialog('请输入验证码');
+					return;
+				}
+				
+				// get userSn
+				var userSn = box.find('.userSn').val();
+				
+				// req
+				var data = {
+						phone: phone,
+						imgKey: $.imgKey,
+						imgCaptcha: imgCaptcha,
+						password: password,
+						sn: userSn
+				};
+				$.req('post', '/api/user/register', data, function(msg) {
+					$.setUserinfo(msg);
+					window.location.href = "./my.html?open=updatePayPsw";
+				});
+			});
+        });
+    </script>
+</body>
+</html>

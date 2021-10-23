@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>支付</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		.btn:hover {
+			color: white;
+		}
+	</style>
+</head>
+<body style="padding-bottom: 55px; max-width: 450px; margin: 0 auto;">
+	<div id="pay_body"></div>
+	
+	<textarea id="pay_tmp" style="display:none">
+		<div style="color: #000; width: 100%; padding: 10px 15px; max-width: 450px;">
+			<div style="float: left; font-size: 14px;" id="go_back"><i class="fa fa-arrow-left fa-fw"></i></div>
+			<div style="float: right; font-size: 14px;" class="color_m" id="contact_btn">联系卖家</div>
+			<div style="clear: both;"></div>
+			<div style="text-align: center; margin-top: 20px;">
+				<div class="font_14">向卖家付款</div>
+				<div style="font-size: 36px;">￥<span class="base_money">{$T.payAmount}</span><span class="base_copy" style="font-size: 12px; padding: 8px;" data-clipboard-target="#payAmount" ><i class="fa fa-files-o fa-fw"></i></span></div>
+				<div class="font_14 color_h">付款剩余时间 <span class="payCountdown color_m"></span></div>
+				<div style="margin-top: 10px;"><span class="font_12" style="background-color: #F7F6FB; padding: 3px 10px; border-top-left-radius: 11px; border-top-right-radius: 11px; border-bottom-left-radius: 11px; border-bottom-right-radius: 11px;">您正在向卖家购买 <span class="base_money" scale="6">{$T.coinNum}</span> {$T.coin}<span></div>
+			</div>
+		</div>
+		<div style="background-color: #fff; padding: 30px 15px 0 15px; font-size: 14px;">
+			<div style="line-height: 200%; padding: 15px 0; border-top: 1px solid #F0F0F0;">
+				<div>{$T.nickname}</div>
+				<div class="font_12"><i class="fa fa-check-square-o fa-fw color_m"></i><span class="color_h">已实名认证<span></div>
+			</div>
+			<table style="width: 100%;">
+				{#if $T.accountType == 'ALIPAY'}
+					<tr style="height: 40px; border-top: 1px solid #F0F0F0;">
+						<td class="color_sh">卖家姓名</td>
+						<td style="text-align: right;"><span id="realname">{$T.realname}</span><span class="base_copy" style="font-size: 12px; padding: 8px;" data-clipboard-target="#realname" ><i class="fa fa-files-o fa-fw"></i></span></td>
+					</tr>
+					<tr style="height: 40px; border-bottom: 1px solid #F0F0F0;">
+						<td class="color_sh">支付宝账号</td>
+						<td style="text-align: right;"><span id="accountNo">{$T.accountNo}</span><span class="base_copy" style="font-size: 12px; padding: 8px;" data-clipboard-target="#accountNo" ><i class="fa fa-files-o fa-fw"></i></span></td>
+					</tr>
+				{#elseif $T.accountType == 'WECHAT'}
+					<tr style="height: 40px; border-top: 1px solid #F0F0F0;">
+						<td class="color_sh">微信实名</td>
+						<td style="text-align: right;"><span id="realname">{$T.realname}</span><span class="base_copy" style="font-size: 12px; padding: 8px;" data-clipboard-target="#realname" ><i class="fa fa-files-o fa-fw"></i></span></td>
+					</tr>
+					<tr style="height: 40px; border-bottom: 1px solid #F0F0F0;">
+						<td class="color_sh">微信号</td>
+						<td style="text-align: right;"><span id="accountNo">{$T.accountNo}</span><span class="base_copy" style="font-size: 12px; padding: 8px;" data-clipboard-target="#accountNo" ><i class="fa fa-files-o fa-fw"></i></span></td>
+					</tr>
+				{#elseif $T.accountType == 'UNIONPAY'}
+					<tr style="height: 40px; border-top: 1px solid #F0F0F0;">
+						<td class="color_sh">收款人姓名</td>
+						<td style="text-align: right;"><span id="realname">{$T.realname}</span><span class="base_copy" style="font-size: 12px; padding: 8px;" data-clipboard-target="#realname" ><i class="fa fa-files-o fa-fw"></i></span></td>
+					</tr>
+					<tr style="height: 40px; border-bottom: 1px solid #F0F0F0;">
+						<td class="color_sh">已绑卡用户手机号</td>
+						<td style="text-align: right;"><span id="accountNo">{$T.accountNo}</span><span class="base_copy" style="font-size: 12px; padding: 8px;" data-clipboard-target="#accountNo" ><i class="fa fa-files-o fa-fw"></i></span></td>
+					</tr>
+				{#elseif $T.accountType == 'BANKCARD'}
+					<tr style="height: 40px; border-top: 1px solid #F0F0F0;">
+						<td class="color_sh">银行卡实名</td>
+						<td style="text-align: right;"><span id="realname">{$T.realname}</span><span class="base_copy" style="font-size: 12px; padding: 8px;" data-clipboard-target="#realname" ><i class="fa fa-files-o fa-fw"></i></span></td>
+					</tr>
+					<tr style="height: 40px;">
+						<td class="color_sh">银行卡卡号</td>
+						<td style="text-align: right;"><span id="accountNo">{$T.accountNo}</span><span class="base_copy" style="font-size: 12px; padding: 8px;" data-clipboard-target="#accountNo" ><i class="fa fa-files-o fa-fw"></i></span></td>
+					</tr>
+					<tr style="height: 40px; {#if ! $T.subbranch}border-bottom: 1px solid #F0F0F0;{#/if}">
+						<td class="color_sh">开户银行</td>
+						<td style="text-align: right;"><span id="bank">{$T.bank}</span><span class="base_copy" style="font-size: 12px; padding: 8px;" data-clipboard-target="#bank" ><i class="fa fa-files-o fa-fw"></i></span></td>
+					</tr>
+					{#if $T.subbranch}
+						<tr style="height: 40px; border-bottom: 1px solid #F0F0F0;">
+							<td class="color_sh">支行名称</td>
+							<td style="text-align: right;"><span id="subbranch">{$T.subbranch}</span><span class="base_copy" style="font-size: 12px; padding: 8px;" data-clipboard-target="#subbranch" ><i class="fa fa-files-o fa-fw"></i></span></td>
+						</tr>
+					{#/if}
+				{#/if}
+			</table>
+		</div>
+		<span id="payAmount" style="color: white;">{$T.payAmount}</span>	<!-- 用于复制 -->
+		
+		<!-- 已付款 -->
+		{#if $T.orderStatus == "NEW"}
+			<div id="bottom_div" class="toolbar-container" data-spm="toolbar" style="padding: 0 15px; left:50%; max-width: 450px;">
+				<button id="pay_ok" class="btn" style="height: 40px; margin: 5px 0;">我已付款成功</button>
+			</div>
+		{#/if}
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../jslib/clipboard/clipboard.min.js" ></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/user.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			// 登录
+			if (! $.getCookie("token")) {
+				$.showLogin();
+				return;
+			}
+			var orderId = $.getParam("orderId");
+			
+			// 加一个历史记录
+			window.history.pushState({
+				title: document.title,
+				url: location.href
+			}, document.title, location.href);
+			
+			// 事件：返回上一页
+			window.addEventListener("popstate", function(e) { 
+				$.base_confirm('确认离开支付', 
+						'<div style="font-size: 13px; margin-bottom: 10px;">' +
+							'<span class="color_m">如您已付款，请务必先点击"我已付款成功"</span><br>' +
+							'<span class="color_h">订单将在 <span class="payCountdown"></span> 后超时取消</span>' + 
+						'</div>' + 
+						'<label style="font-size: 13px; margin-bottom: 0;"><input type="radio" checked="checked"/> 我确认还没有付款给对方</label>',
+					function(){
+						window.history.go(-1);
+					}, function() {
+		    		}, '确认离开', '取消');
+			}, false);
+			
+			// 事件：页面唤醒后刷新（解决手机锁屏倒计时停止问题）
+			document.addEventListener("visibilitychange", () => {
+				if (document.hidden) {	// 页面被挂起
+				} else {				// 页面唤醒
+					$.loadData();
+				}
+			});
+			
+			// 函数：底部居中（确保pc显示正常）
+			$.center = function() {
+				var bdiv = $("#bottom_div");
+				var width = $(window).width();
+				width = width > 450 ? 450 : width;
+				bdiv.css("margin-left", - (width / 2));
+			};
+			
+			// 函数：我已付款成功
+			$.payok = function (){
+				$.base_confirm('付款确认', '请确认您已向卖家付款<br><span class="color_m">恶意点击将直接冻结账户</span>', function(){
+		    		$.req('post', '/api/order/payok', {lcOrderId: orderId}, function(msg) {
+		    			window.location.href = "order.html?orderId=" + orderId;
+					});
+		    	}, function(){
+		    		
+				}, '确认');
+			};
+			
+		 	// 函数：初始化页面
+		    $.init = function(msg) {
+				$("#pay_body").setTemplateElement("pay_tmp");
+				$("#pay_body").processTemplate(msg);
+				$.base_money($(".base_money"));
+				$.base_no($(".card_num"));
+				$.copy('.base_copy');
+				$.center();
+				
+			 	// 事件绑定
+			    $("#go_back").on('click', function(){
+			    	window.history.go(-1);
+			    });
+			 	$("#contact_btn").on('click', function(){
+			 		$.base_dialog(msg.wechat);
+			    });
+				$("#pay_ok").on('click', function(){		// 我已付款成功
+					$.payok();
+				});
+			    
+				// 倒计时更新
+			    if (msg.orderStatus == "NEW" && msg.payCountdown > 0) {
+			    	var countdown = function () {
+				    	if (msg.payCountdown <= 0) {
+				    		window.location.href = "order.html?orderId=" + orderId;
+				        } else {
+			            	var s = msg.payCountdown % 60;
+			            	var m = (msg.payCountdown - s) / 60;
+			            	var str = (m < 10 ? "0" : "") + m + " : " + (s < 10 ? "0" : "") + s;
+				        	$('.payCountdown').each(function(){
+				        		$(this).text(str);
+				        	});
+				        	msg.payCountdown--;
+				        }
+				    };
+				    countdown();
+			    	setInterval(countdown, 1000);
+			    }
+		    };
+			
+			// 查询
+			$.loadData = function() {
+				$.req('get', '/api/order/pay', {lcOrderId: orderId}, $.init, function(msg, code) {
+					$.base_dialog(msg, function() {
+						window.location.href = "order.html?orderId=" + orderId;
+					});
+				});
+			};
+			$.loadData();
+			
+			// 打开弹窗
+			$.open();
+		});
+	</script>
+</body>
+</html>

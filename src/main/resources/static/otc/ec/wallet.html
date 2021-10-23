@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>钱包</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- <link rel="shortcut icon" href=""/> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		.my_table {width:100%;border-spacing:0;border-collapse:collapse;border:none;}
+		.my_table thead th {border-bottom:2px solid #ddd;padding:14px 5px;text-align:left;}
+		.my_table td {border-top:1px solid #ddd; padding:12px 1px;}
+		a:hover{text-decoration:none; color: var(--color_m);}
+	</style>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div id="coin" class="back_sm" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px; text-align: center;">钱&nbsp;&nbsp;&nbsp;&nbsp;包</div>
+	<div class="back_sm" style="color: white; padding: 45px 10px 5px 10px; height: 90px; width: 100%;">
+		<table style="width: 100%; height: 75%; text-align: center;">
+			<tr style="height: 45%; font-size: 12px;">
+				<td class="base_money" scale="6" id="availableNum" style="width: 33%;"></td>
+				<td class="base_money" scale="6" id="freezeNum" style="width: 34%; border-left: 1px solid var(--color_qm); border-right: 1px solid var(--color_qm);"></td>
+				<td class="base_money" id="cny" style="width: 33%;"></td>
+			</tr>
+			<tr class="color_qm" style="height: 30%; font-size: 12px;">
+				<td style="">可用</td>
+				<td style="border-left: 1px solid var(--color_qm); border-right: 1px solid var(--color_qm);">冻结</td>
+				<td>折合(CNY)</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div style="height: 50px; text-align: center; margin-bottom: 2px;" class="color_sh font_18">
+		<div id="rechargeApply" style="background-color: white; padding-top: 15px; float: left; height: 100%; width: 49.5%; ">
+			<i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> 充 币
+		</div>
+		<div id="withdrawApply" style="background-color: white; padding-top: 15px; float: right; height: 100%; width: 49.5%; ">
+			<i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> 提 币
+		</div>
+	</div>
+	
+	<!-- 内容:表格 -->
+	<div id="mydetails_tbody">
+	</div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./otc.html">
+				<i class="fa fa-balance-scale fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">市场</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./assets.html">
+				<i class="fa fa-diamond fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">资产</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<!-- 详情弹窗 -->
+	<div class="pop-box-model" id="detailsBox" style="display: none">
+		<div class="pop-box" style="max-width: 450px; top: 0px; bottom: 0px;">
+			<div id="detailsContent" style="display: none">
+				<div class="content">
+					<div class="form-box">
+						<div class="form-content">
+						</div>
+					</div>
+				</div>
+				<!-- 关闭按钮 -->
+				<div class="close closeDetailsBoxBtn"></div>
+			</div>
+		</div>
+	</div>
+	
+	<textarea id="mydetails_template" style="display:none;">
+		{#foreach $T as item}
+			<div class="order_tr" details_id="{$T.item.id}" style="background-color: #fff; margin-bottom: 2px; padding: 10px 10px;">
+			<table style="width: 100%;">
+				<tr>
+					<td style="font-size: 14px;">{$T.item.opDesc}{#if $T.item.op == 'WITHDRAW'}{#if $T.item.txHash == null}-待转账{#elseif $T.item.txHash == '0'}-异常{#/if}{#/if}</td>
+					<td style="font-size: 12px; text-align: right;" class="color_h" colspan="2">{$T.item.createTime}</td>
+				</tr>
+				<tr>
+					<td style="font-size: 12px; padding-top: 5px; width: 35%;">
+						<span class="color_h">当前可用数</span><br>
+						<span class="base_money2" scale="6">{$T.item.availableNum}</span>
+					</td>
+					<td style="font-size: 12px; padding-top: 5px; width: 35%;">
+						<span class="color_h">当前冻结数</span><br>
+						<span class="base_money2" scale="6">{$T.item.freezeNum}</span>
+					</td>
+					<td style="font-size: 12px; padding-top: 5px; text-align: right;">
+						<span class="color_h">总资产变化</span><br>
+						{#if $T.item.changeNum > 0 }
+							+<span class="base_money2" scale="6">{$T.item.changeNum}<span>
+						{#else}
+							<span class="base_money2" scale="6">{$T.item.changeNum}<span>
+						{#/if}
+					</td>
+				</tr>
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+	
+	<textarea id="detail_template" style="display:none">
+		<div class="title color_m" style="font-size: 20px; text-align: left; margin-top: 15px; margin-bottom:0px;">{#if $T.changeNum > 0 }+{#/if}<span class="base_money3" scale="6">{$T.changeNum}</span> {$T.coin}</div>
+		<div class="content">
+			<div class="form-box">
+				<div class="form-content">
+					<div class="show-item font_12"></div>
+					<div class="show-item font_12">类型：<span style="color: #000;">{$T.opDesc}</span></div>
+					<div class="show-item font_12">当前可用数量：<span style="color: #000;"><span class="base_money3">{$T.availableNum}</span> {$T.coin}</span></div>
+					<div class="show-item font_12">当前冻结数量：<span style="color: #000;"><span class="base_money3">{$T.freezeNum}</span> {$T.coin}</span></div>
+					{#if $T.fee > 0 }
+						<div class="show-item font_12">交易手续费：<span style="color: #000;"><span class="base_money3">{$T.fee}</span> {$T.coin}</span></div>
+					{#/if}
+					{#if $T.withdrawAddress}
+						<div class="show-item font_12">提币地址：<span style="color: #000; word-wrap:break-word;width:60%;">{$T.withdrawAddress}</span></div>
+					{#/if}
+					{#if $T.txHash}
+						<div class="show-item font_12">区块链交易ID：<span style="color: #000; word-wrap:break-word;width:60%;">{$T.txHash} <a href="https://tronscan.org/#/transaction/{$T.txHash}">查看</a></span></div>
+					{#/if}
+					<div class="show-item font_12">时间：<span style="color: #000;">{$T.createTime}</span></div>
+				</div>
+			</div>
+		</div>
+		<!-- 关闭按钮 -->
+		<div class="close closeDetailsBoxBtn"></div>
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../jslib/clipboard/clipboard.min.js" ></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/user.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			// 登录
+			if (! $.getCookie("token")) {
+				$.showLogin();
+				return;
+			}
+			
+			// 余额
+			var coin = $.getParam('coin');
+			$.loadData = function() {
+				$.req('get', '/api/wallet/' + coin, null, function(msg) {
+					$("#coin").text(msg.coin);
+					$("#availableNum").text(msg.availableNum);
+					$("#freezeNum").text(msg.freezeNum);
+					$("#cny").text(msg.cny);
+					$.base_money($(".base_money"));
+				});
+			}
+			$.loadData();
+			
+			// 列表数据
+			var mydetails = [];
+			var mydetailsmap = [];
+			var current = 1;
+			var stop = false;
+			$.showData = function() {
+				// 停止查询
+				if (stop) {
+					return;
+				}
+				
+				// 分页参数
+				var data = {
+					current: current,
+					size: 15,
+					coin: coin
+				};
+				
+				// 查询
+				$.req('get', '/api/wallet/mydetails', data, function(msg) {
+					// 翻页逻辑
+					if (stop) {
+						return;
+					}
+					if (msg.records.length == 15) {	// 满页-下一页可能还有数据
+						current++;
+					} else {						// 未满-不需要查下一页了
+						stop = true;
+					}
+					
+					// 滚动列表
+					for (var i = 0; i < msg.records.length; i++) {
+						mydetails.push(msg.records[i]);
+						mydetailsmap[msg.records[i].id] = msg.records[i];
+					}
+					$("#mydetails_tbody").setTemplateElement("mydetails_template");
+					$("#mydetails_tbody").processTemplate(mydetails);
+					$.base_money($(".base_money2"));
+					
+					// 详情
+					$.base_btn($(".order_tr"), function(_this){
+						var detailsId = _this.attr("details_id");
+						var details = mydetailsmap[detailsId];
+						$("#detailsContent").setTemplateElement("detail_template");
+						$("#detailsContent").processTemplate(details);
+						$.base_money($(".base_money3"));
+						$('.closeDetailsBoxBtn').click(function (event) {
+							$("#detailsBox").hide();
+							$("#detailsContent").hide();
+						});
+						$(".pop-box").height($(window).height());
+		                $("#detailsBox").show();
+		                $("#detailsContent").show();
+					});
+					isScroll = false;
+				});
+			};
+			$.showData();
+			
+			// 充币
+			$("#rechargeApply").click(function (event) {
+				$.showRecharge(coin);
+			});
+
+			// 提币
+			$("#withdrawApply").click(function (event) {
+				if (! $.userinfo().hasPayPassword) {	// 未设支付密码
+					$.updatePayPsw();
+					return;
+				}
+				$.showWithdraw(coin);
+			});
+			
+			// 滚动监听
+			var isScroll = false;
+			$(window).scroll(function(){
+				if ($(document).scrollTop() >= $(document).height() - $(window).height() - 10) {
+					if (! isScroll) {
+						isScroll = true;
+						$.showData();
+					}
+				}
+			});
+			
+			// 打开弹窗
+			$.open();
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+@charset "utf-8";
+
+body {
+	height: 100vh;
+	width: 100vw;
+	background-color: #F0F0F0;
+}
+
+.content {
+	width: 450px;
+	background-color: #fff;
+}
+
+.cropbox {
+	position: relative;
+	height: 450px;
+	width: 450px;
+	background: #fff;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	cursor: move;
+}
+
+.cropbox .thumb_box {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 300px;
+	height: 300px;
+	border-radius: 300px;
+	margin-top: -150px;
+	margin-left: -150px;
+	box-sizing: border-box;
+	border: 1px solid rgb(102, 102, 102);
+	box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+	background: none repeat scroll 0% 0% transparent;
+}
+
+.cropbox .spinner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	text-align: center;
+	line-height: 450px;
+	background: rgba(0, 0, 0, 0.7);
+}
+
+.btn_box {
+	height: 30px;
+	margin-top: 10px;
+}
+
+.btn_box button {
+	float: right;
+	display: inline-block;
+	margin-bottom: 10px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+	color: #FFFFFF;
+	margin: 0px 2px;
+	background-color: #4dbec4;
+	border-radius: 3px;
+	text-decoration: none;
+	cursor: pointer;
+	box-shadow: 0px 0px 5px #B0B0B0;
+	border: 0px #fff solid;
+	outline: none;
+}
+
+/*选择文件上传*/
+.btn_box .upload_box {
+	float: left;
+	text-align: center;
+}
+
+.btn_box .upload_box a {
+	margin: 0px 2px;
+	width: 100px;
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+	color: #FFFFFF;
+	background-color: #4dbec4;
+	border-radius: 3px;
+	text-decoration: none;
+	box-shadow: 0px 0px 5px #B0B0B0;
+}
+
+.btn_box .upload_box a:hover {
+	background-color: #ec7e70;
+}
+
+.btn_box .upload_box label {
+	width: 100%;
+	height: 100%;
+}
+
+.btn_box .upload_box input[type=file] {
+	width: 100px;
+	height: 30px;
+	background: #333;
+	margin: 0 auto;
+	position: absolute;
+	margin-right: -94px;
+	top: 0;
+	right: 0px;
+	margin-right: 0px;
+	width: 10px;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	z-index: 2;
+}
+
+@media screen and (min-width: 450px) {
+    .content {
+        position: absolute;
+		left: 50%;
+		margin-left: -225px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+	.content {
+		width: 100%;
+	}
+	
+	.cropbox {
+		height: 100vw;
+		width: 100vw;
+	}
+	
+	.cropbox .spinner {
+		line-height: 100vw;
+	}
+}

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>头像</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="/jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="./cropbox.css?v=1" />
+	<script type="text/javascript" src="/jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="/js/common.js?v=19"></script>
+	<script type="text/javascript" src="./cropbox.js?v=5"></script>
+	<script type="text/javascript" src="./gesture.js?v=4"></script>
+</head>
+<body>
+<div class="content">
+	<div class="cropbox">
+		<div class="thumb_box"></div>
+		<div class="spinner" style="display: none;">Loading...</div>
+	</div>
+	<div class="otherbox">
+		<div class="btn_box">
+			<button id="btnZoomIn" style="width: 48px; float: left;">+</button>
+			<button id="btnZoomOut" style="width: 48px; float: left;">-</button>
+			<button id="btnReset" style="width: 60px;">重置</button>
+			<button id="btnMoveDown" style="width: 40px;">↓</button>
+			<button id="btnMoveUp" style="width: 40px;">↑</button>
+			<button id="btnMoveRight" style="width: 40px;">→</button>
+			<button id="btnMoveLeft" style="width: 40px;">←</button>
+		</div>
+		<div class="btn_box">
+			<div class="upload_box">
+				<a href="#"><label for="upload-file">选择图片</label></a>
+				<input type="file" accept="image/*" id="upload-file" />
+			</div>
+			<button id="btnCrop" style="width: 120px;">剪切并上传</button>
+		</div>
+		<div class="cropped"></div>
+	</div>
+</div>
+	
+<script type="text/javascript">
+	$(function () {
+		// 布局
+		var cropbox = $(".cropbox");
+		var otherbox = $(".otherbox");
+		otherbox.css("height", ($("body").height() - cropbox.height()) + "px");
+		
+		// 参数
+		var options = {
+			thumb_box: '.thumb_box',
+			spinner: '.spinner',
+			imgSrc: "",	// /image/aaa.jpg
+			loadAfter: function () {
+				$('#btnCrop').click();
+			}
+		};
+		
+		// 创建
+		var cropper = cropbox.cropbox(options);
+		
+		// 选择图片
+		$('#upload-file').on('change', function () {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				options.imgSrc = e.target.result;
+				cropper = cropbox.cropbox(options);
+			}
+			reader.readAsDataURL(this.files[0]);
+			this.files = null;
+		});
+		
+		// 剪切
+		$('#btnCrop').on('click', function () {
+			var HeaderImg = cropper.getDataURL();
+			$('.cropped').html('');
+			$('.cropped').append('<img src="' + HeaderImg + '" style="width:80px; margin-top:4px; border-radius:80px; box-shadow: 0px 0px 12px #7E7E7E;">');
+		});
+
+		// 放大
+		$('#btnZoomIn').on('click', function () {
+			cropper.zoomIn();
+		});
+		
+		// 缩小
+		$('#btnZoomOut').on('click', function () {
+			cropper.zoomOut();
+		});
+		
+		// 左移
+		$('#btnMoveLeft').on('click', function () {
+			cropper.moveLeft();
+		});
+		
+		// 右移
+		$('#btnMoveRight').on('click', function () {
+			cropper.moveRight();
+		});
+		
+		// 上移
+		$('#btnMoveUp').on('click', function () {
+			cropper.moveUp();
+		});
+		
+		// 下移
+		$('#btnMoveDown').on('click', function () {
+			cropper.moveDown();
+		});
+		
+		// 重置
+		$('#btnReset').on('click', function () {
+			cropper.reset();
+		});
+		
+		// 滚动
+		cropbox.autoScroll();
+		
+		// 手势-图片区域
+		$.gesture(cropbox, function(scale, rotation) {
+			cropper.zoom(scale);
+		}, function(movePosition) {
+			cropper.move(movePosition[0], movePosition[1]);
+		});
+		
+		// 手势-空白区域
+		$.gesture(otherbox, null, null);
+	});
+</script>
+</body>
+</html>

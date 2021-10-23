@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>管理员管理</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- <link rel="shortcut icon" href=""/> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div class="back_m" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px;">
+		<span style="float: left; padding-left: 15px;">管 理 员 管 理</span>
+		<span style="float: right; padding-right: 15px; width: 70px; text-align: center;" id="createAdminBtn">＋创建</span>
+	</div>
+	
+	<div id="my_tbody" style="padding-top: 40px; "></div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./withdraw.html">
+				<i class="fa fa-sign-out fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">提币管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./user.html">
+				<i class="fa fa-users fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">用户管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<textarea id="my_template" style="display:none;">
+		{#foreach $T as item}
+			<div style="background-color: white; margin-top: 2px; padding: 10px 10px;">
+			<table style="width: 100%;">
+				<tr>
+					<td style="font-size: 16px;">用户名：{$T.item.username}</td>
+					<td class="color_h" style="font-size: 12px; float: right;">创建日期：{$T.item.createTime}</td>
+				</tr>
+				<tr>
+					<td class="color_h" style="font-size: 12px;">
+						{#if $T.item.createUsername != null}
+							创建者：{$T.item.createUsername}
+						{#else}
+							&nbsp;
+						{#/if}
+					</td>
+					<td class="color_h" style="font-size: 12px; float: right;">
+						{#if $T.item.loginTime != null}
+							最近登录：{$T.item.loginTime}
+						{#/if}
+					</td>
+				</tr>
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/admin.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			var mydetails = [];
+			var xmap = [];
+			var current = 1;
+			var stop = false;
+			$.loadData = function() {
+				// 停止查询
+				if (stop) {
+					return;
+				}
+				
+				// 登录
+				if (! $.getCookie("admin_token")) {
+					$.showLogin();
+					return;
+				}
+				
+				// 分页参数
+				var data = {
+					current: current,
+					size: 10
+				};
+				
+				// 查询
+				$.req('get', '/api/admin/list', data, function(msg) {
+					// 翻页逻辑
+					if (stop) {
+						return;
+					}
+					if (msg.records.length == 10) {	// 满页-下一页可能还有数据
+						current++;
+					} else {						// 未满-不需要查下一页了
+						stop = true;
+					}
+					
+					// 滚动列表
+					for (var i = 0; i < msg.records.length; i++) {
+						mydetails.push(msg.records[i]);
+						xmap[msg.records[i].id] = msg.records[i];
+					}
+					$("#my_tbody").setTemplateElement("my_template");
+					$("#my_tbody").processTemplate(mydetails);
+					isScroll = false;
+				});
+			};
+			$.loadData();
+			
+			$.flushData = function() {
+				mydetails = [];
+				xmap = [];
+				current = 1;
+				stop = false;
+				$.loadData();
+			};
+			
+			//弹出添加账号
+			$("#createAdminBtn").click(function (event) {
+				$.box
+					.build("createAdmin", "创建管理员")
+					.addInput("username", "用户名")
+					.addInput("password", "密码", null, null, true)
+					.addBtn("确定", function(box){
+						// get username
+						var username = box.find('.username').val();
+						if (! username) {
+							$.base_dialog('请输入用户名');
+							return;
+						}
+						
+						// get password
+						var password = box.find('.password').val();
+						if (! password) {
+							$.base_dialog('请输入密码');
+							return;
+						}
+						
+						// req
+						var data = {
+								username: username,
+								password: password
+						};
+						$.req('post', '/api/admin/createAdmin', data, function(msg) {
+							box.find('.username').val("");
+							box.find('.password').val("");
+							$.base_dialog('创建成功');
+							box.hide();
+							$.flushData();
+						});
+					})
+					.show();
+			});
+			
+			// 滚动监听
+			var isScroll = false;
+			$(window).scroll(function(){
+				if ($(document).scrollTop() >= $(document).height() - $(window).height() - 10) {
+					if (! isScroll) {
+						isScroll = true;
+						$.loadData();
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>

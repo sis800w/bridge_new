@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>配置管理</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- <link rel="shortcut icon" href=""/> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		.btn_small {
+			font-size: 12px;
+			height: 22px;
+			width: 34px;
+			padding: 1px 4px;
+		}
+	</style>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div class="back_m" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px; padding-left: 15px; text-align: center;">当前生效配置</div>
+	
+	<!-- 内容:表格 -->
+	<div id="mydetails_tbody" style="padding-top: 42px;">
+	</div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./withdraw.html">
+				<i class="fa fa-sign-out fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">提币管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./user.html">
+				<i class="fa fa-users fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">用户管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<textarea id="mydetails_template" style="display:none;">
+		{#foreach $T as item}
+			<div style="background-color: white; margin-top: 2px; padding: 10px 10px; color: #000;">
+			<table style="width: 100%;">
+				<tr>
+					<td style="font-size: 14px;">{$T.item.desc}</td>
+					<td colspan="2" config_name="{$T.item.name}" config_value="{$T.item.value}" style="font-size: 14px; text-align: right;">
+						<button class="btn_small histroy" style="width: 40px; background-color: var(--color_h);" >历史</button>
+						<button class="btn_small update" style="width: 40px;" >修改</button>
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 12px; width:45%;">
+						<span class="color_h">配置名</span><br>
+						<span>{$T.item.name}</span>
+					</td>
+					<td style="font-size: 12px; width:33%;">
+						<span class="color_h">当前值</span><br>
+						<span style="white-space:normal; word-break:break-all; width:33%;">{$T.item.value}</span>
+					</td>
+					<td style="font-size: 12px; text-align: right;">
+						<span class="color_h">生效期</span><br>
+						<span>{$T.item.takeEffectDate}</span>
+					</td>
+				</tr>
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/admin.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			$.loadData = function() {
+				// 登录
+				if (! $.getCookie("admin_token")) {
+					$.showLogin();
+					return;
+				}
+				
+				// 查询
+				$.req('get', '/api/config/effectives', null, function(msg) {
+					$("#mydetails_tbody").setTemplateElement("mydetails_template");
+					$("#mydetails_tbody").processTemplate(msg);
+					$.base_btn($(".histroy"), function(_this){
+						var configName = _this.parent().attr("config_name");
+						window.location.href = "./history.html?name=" + configName;
+					});
+					$.base_btn($(".update"), function(_this){
+						var box = _this.parent();
+						$.box
+							.build("update", "修改配置")
+							.addInput("name", "配置名", null, box.attr("config_name"), null, true)
+							.addInput("value", "配置值", null, box.attr("config_value"))
+							.addInput("takeEffectDate", "生效期", "格式：2020-01-01")
+							.addBtn("修改", function(box){
+								// get takeEffectDate
+								var takeEffectDate = box.find('.takeEffectDate').val();
+								if (! takeEffectDate) {
+									$.base_dialog('请输入生效日期');
+									return;
+								}
+								
+								// get value
+								var value = box.find('.value').val();
+								if (! value) {
+									$.base_dialog('请输入配置值');
+									return;
+								}
+								
+								var data = {
+										takeEffectDate: takeEffectDate,
+										name: box.find(".name").val(),
+										value: value
+										
+								};
+								$.req('post', '/api/config/update', data, function(msg) {
+									box.find('.takeEffectDate').val("");
+									$.base_dialog('修改成功');
+									box.hide();
+									$.loadData();
+								});
+							})
+							.show();
+					});
+				});
+			};
+			$.loadData();
+		});
+	</script>
+</body>
+</html>

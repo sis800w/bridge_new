@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>市场</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- <link rel="shortcut icon" href=""/> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		.btn:hover {
+			color: white;
+		}
+		#entrustbox .form-item {
+			margin: 10px auto;
+		}
+		#entrustbox .form-item span, #entrustbox .form-item label {
+			font-size: 14px;
+		}
+		#entrustbox .pop-box {
+			padding: 10px 5px 5px 5px;
+		}
+	</style>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div class="back_m" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px; text-align: center;">市&nbsp;&nbsp;&nbsp;&nbsp;场</div>
+	
+	<!-- 标题背景 -->
+	<div class="back_m" style="color: white; position: fixed; height: 55px; width: 100%; padding: 8px 15px; max-width: 450px; margin-top: 40px; ">
+		<table style="width: 100%;">
+			<tr>
+				<td class="tabs2" tab="SELL" style="width: 90px; vertical-align: bottom; ">
+					<div style="font-size: 24px;">我要买</div>
+				</td>
+				<td class="tabs2" tab="BUY" style="width: 60px; vertical-align: bottom; ">
+					<div style="font-size: 14px;">我要卖</div>
+				</td>
+				<td></td>
+				<td style="text-align: right; width: 40px; display: none;">
+					<div class="replace_btn" style="font-size: 12px; padding-right: 1px;"><i class="fa fa-filter fa-fw fa-lg"></i></div>
+					<div class="replace_btn" style="font-size: 10px;">筛选</div>
+				</td>
+				<td style="text-align: right; width: 40px;" id="entrust">
+					<div class="replace_btn" style="font-size: 12px; padding-right: 1px;"><i class="fa fa-plus-square-o fa-fw fa-lg"></i></div>
+					<div class="replace_btn" style="font-size: 10px;">发布</div>
+				</td>
+				<td style="text-align: right; width: 40px;" class="base_btn" href="orders.html">
+					<div class="contact_btn" style="font-size: 12px; padding-right: 1px;"><i class="fa fa-paper-plane-o fa-fw fa-lg"></i></div>
+					<div class="contact_btn" style="font-size: 10px;">订单</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="tabs" class="color_sh" style="font-weight: 600; position: fixed; height: 30px; width: 100%; margin-top: 95px; background: #fff; text-align: center; border-bottom:1px solid #ddd;">
+	</div>
+	
+	<!-- 内容:表格 -->
+	<div id="my_tbody" style="padding-top: 125px;">
+	</div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="#">
+				<i class="fa fa-balance-scale fa-fw fa-lg" aria-hidden="true"></i>
+				<span class="text">市场</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./assets.html">
+				<i class="fa fa-diamond fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">资产</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<textarea id="my_template" style="display:none;">
+		{#foreach $T as item}
+			<div lc_entrust_id="{$T.item.id}" style="background-color: white; margin-bottom: 2px; padding: 5px 10px;">
+			<table style="width: 100%;">
+				<tr>
+					<td style="font-size: 14px;">{$T.item.nickname}</td>
+					<td class="order_tr color_h" style="font-size: 12px; text-align: right;">
+						{$T.item.successNumDay30}&nbsp;&nbsp;|&nbsp;&nbsp;{$T.item.successRate}%
+					</td>
+				</tr>
+				<tr>
+					<td class="order_tr color_h" style="font-size: 12px;">
+						数量 <span class="base_money" scale="6">{$T.item.entrustNum}</span><br>
+						限额 ￥<span class="base_money">{$T.item.limitAmountMin}</span> - ￥<span class="base_money">{$T.item.limitAmountMax}</span> 
+					</td>
+					<td class="order_tr color_h" style="font-size: 12px; text-align: right;">
+						单价<br>
+						<span class="color_m">￥<span class="font_18 base_money">{$T.item.entrustPrice}</span></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="order_tr">
+						{#foreach $T.item.limitAccountTypes as item2}
+							<span style="background-image: url('/image/account/{$T.item2}.png'); background-size: 14px; background-repeat: no-repeat; padding-left: 20px;"></span>
+						{#/for}
+					</td>
+					<td class="order_tr" style="text-align: right;">
+						{#if $T.item.entrustType == 'BUY'}
+							<button class="btn_small trade" style="width: 80px; padding: 0 6px;">出售</button>
+						{#else}
+							<button class="btn_small trade" style="width: 80px; padding: 0 6px;">购买</button>
+						{#/if}
+					</td>
+				</tr>
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+	
+	<textarea id="trade_tmp" style="display:none;">
+		<div style="margin: 10px 15px 0px 15px">
+			<table style="width: 100%;">
+				<tr>
+					<td>
+						<div class="font_20">{#if $T.entrustType == 'BUY'}出售{#else}购买{#/if}{$T.coin}</div>
+						<div>单价 <span class="color_m">￥<span class="base_money">{$T.entrustPrice}</span></span></div>
+					</td>
+					<td></td>
+					<td style="text-align: right;">
+						<img src="/image/coin/{$T.coin}.png" width="40"/>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="color_sh" style="background-color: #fff; padding: 15px 15px 5px 15px;">
+			<div>
+				<div class="tabs3 color_m" tab="MONEY" style="float: left; width: 70px; border-bottom: 3px solid var(--color_m);">按金额{#if $T.entrustType == 'BUY'}出售{#else}购买{#/if}</div>
+				<div style="float: left; width: 30px; border-bottom: 3px solid #F7F6FB;">&nbsp;</div>
+				<div class="tabs3" tab="NUM" style="float: left; width: 70px; border-bottom: 3px solid #F7F6FB;"><span>按数量{#if $T.entrustType == 'BUY'}出售{#else}购买{#/if}</span></div>
+				<div style="clear: both;"></div>
+			</div>
+			<div style="margin-top: 15px; padding: 8px; border: 1px solid var(--color_m); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+				<input placeholder="请输入{#if $T.entrustType == 'BUY'}出售{#else}购买{#/if}金额" style="border: 0; width: 140px;" type="number"/>
+				<div style="float: right;">
+					<span class="unit" style="color: #000;">CNY</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span class="color_m all_trade">全部{#if $T.entrustType == 'BUY'}售出{#else}买入{#/if}</span>
+				</div>
+				<div style="clear: both;"></div>
+			</div>
+			<div style="padding-top: 3px;">限额 ￥<span class="base_money">{$T.limitAmountMin}</span> - ￥<span class="base_money">{$T.limitAmountMax}</span></div>
+			<div style="padding: 13px 0px 6px 0px;">
+				<div style="float: left;">交易数量</div>
+				<div style="float: right; color: #000;"><span class="base_money2 tradeNum" scale="6">0</span> {$.coin}</div>
+				<div style="clear: both;"></div>
+			</div>
+			<div style="padding-top: 6px; border-top: 1px solid #F7F6FB;">
+				<div style="float: left;">实付款</div>
+				<div style="float: right;" class="color_m">￥<span class="font_18 base_money2 tradeAmount">0</span></div>
+				<div style="clear: both;"></div>
+			</div>
+			<div style="padding-top: 12px">
+				<button class="btn cancel" style="width: 48%; height: 40px; background-color: #fff; border: 1px solid #C6CFD6; color: #000;"></button>
+				<button class="btn trade" disabled="disabled" style="width: 48%; height: 40px; background-color: #C6CFD6; float: right; color: #fff;" >下单</button>
+			</div>
+		</div>
+	</textarea>
+	
+	<textarea id="coins_template" style="display:none;">
+		{#foreach $T as item}
+			{#if $T.item$index == 0}
+				<div tab="{$T.item}" style="float: left; width: {100 / $T.item$total}%;"><p class="color_m" style="height: 30px; width: {$T.item.length * 10 - 1}px; border-bottom: 3px solid var(--color_m);">{$T.item}</p></div>
+			{#else}
+				<div tab="{$T.item}" style="float: left; width: {100 / $T.item$total}%;"><p style="height: 30px; width: {$T.item.length * 10 - 1}px;">{$T.item}</p></div>
+			{#/if}
+		{#/for}
+	</textarea>
+	
+	<textarea id="select_coin_template" style="display:none;">
+		{#foreach $T as item}
+			<option value="{$T.item}">{$T.item}</option>
+		{#/for}
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/user.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			var mydetails = [];
+			var mydetailsmap = [];
+			var current = 1;
+			var stop = false;
+			var coin = "TRX";
+			var entrustType = "SELL";
+			var tradeMode = "MONEY";
+			var availableNum = 0;
+			
+			// 标签页
+			$("#tabs").setTemplateElement("coins_template");
+			$("#tabs").processTemplate($.coins().listedCoins);
+			coin = $("#tabs .color_m").text();
+			$.tabs('tabs', function(tab) {	// 标签点击
+				coin = tab;
+				$.flushData();
+			});
+			
+			// 交易
+			var trade = function(lcEntrustId, entrustPrice, tradeAmount, payPassword, isContinue) {
+				var data = {
+					lcEntrustId: lcEntrustId,
+					entrustPrice: entrustPrice,
+					tradeAmount: tradeAmount,
+					isContinue: isContinue,
+					payPassword: payPassword
+				};
+				$.req('post', '/api/order/trade', data, function(msg) {
+					window.location.href = "order.html?orderId=" + msg;
+				}, function(errorMessage, errorCode) {
+					if (errorCode == 'DIALOG_OK_FLUSH') {
+						$.base_dialog(errorMessage, function() {
+							window.location.reload();
+						});
+					} else if (errorCode == 'CONFIRM_CANCEL_FLUSH') {
+						$.base_confirm('是否继续', errorMessage, function() {
+							trade(lcEntrustId, entrustPrice, tradeAmount, accountId, true, payPassword);
+							window.location.reload();
+						}, function() {
+							window.location.reload();
+						});
+					} else if (errorCode == "CONFIRM_ADD_ACCOUNT") {
+						$.base_confirm('添加收款方式', errorMessage, function() {
+							window.location.href = "account.html";
+						}, function() {
+							$("#trade").dialog("close");
+						}, "去添加");
+					} else {
+						$.base_dialog(errorMessage);
+					}
+				});
+			};
+			
+			$.loadData = function() {
+				// 停止查询
+				if (stop) {
+					return;
+				}
+				
+				// 分页参数
+				var data = {
+					current: current,
+					size: 10,
+					coin: coin,
+					entrustType: entrustType
+				};
+				
+				// 查询
+				$.req('get', '/api/entrust/list', data, function(msg) {
+					// 翻页逻辑
+					if (stop) {
+						return;
+					}
+					if (msg.records.length == 10) {	// 满页-下一页可能还有数据
+						current++;
+					} else {						// 未满-不需要查下一页了
+						stop = true;
+					}
+					
+					// 滚动列表
+					for (var i = 0; i < msg.records.length; i++) {
+						mydetails.push(msg.records[i]);
+						mydetailsmap[msg.records[i].id] = msg.records[i];
+					}
+					$("#my_tbody").setTemplateElement("my_template");
+					$("#my_tbody").processTemplate(mydetails);
+					$.base_money($(".base_money"));
+					
+					// 交易
+					$.base_btn($(".order_tr"), function(_this){
+						if (! $.getCookie("token")) {				// 登录
+							$.showLogin();
+							return;
+						}
+						if (entrustType == "BUY") {
+							if (! $.userinfo().hasPayPassword) {	// 未设支付密码
+								$.updatePayPsw();
+								return;
+							}	
+						}
+						if (! $.userinfo().realname) {
+							$.realnameAuth();
+							return;
+						}
+						if (! $.userinfo().wechat) {
+							$.updateInfo();
+							return;
+						}
+						
+					 	// 样式
+						var lcEntrustId = _this.parent().parent().parent().parent().attr("lc_entrust_id");
+						var entrust = mydetailsmap[lcEntrustId];
+						var winbox = $.base_window("trade", 350, "");
+						winbox.setTemplateElement("trade_tmp");
+						winbox.processTemplate(entrust);
+						$.base_money($(".base_money"));
+						var input = winbox.find("input");
+						
+						// 倒计时
+						var time = 60;
+						var cancelBtn = winbox.find(".cancel");
+					    $.countdown = function () {
+					    	if (time <= 0) {
+					    		cancelBtn.click();
+					        } else {
+					        	cancelBtn.text(time + "s后自动取消");
+					            time--;
+					        }
+					    };
+					    $.countdown();
+				    	var iid = setInterval($.countdown, 1000);
+						
+						// 点击标签（按金额/按数量）
+						$(".tabs3").each(function(){
+							var _this = $(this);
+							_this.on('click', function() {
+								$(".tabs3").each(function(){
+									$(this).css('border-bottom', '3px solid #F7F6FB');
+									$(this).removeClass("color_m");
+								});
+								_this.css('border-bottom', '3px solid var(--color_m)');
+								_this.addClass("color_m");
+								input.val(null);
+								input.keyup();
+								tradeMode = _this.attr("tab");
+								var placeholder = input.attr("placeholder");
+								if (tradeMode == "MONEY") {
+									input.attr("placeholder", placeholder.replace("数量", "金额"));
+									winbox.find(".unit").text("CNY");
+								} else if (tradeMode == "NUM") {
+									input.attr("placeholder", placeholder.replace("金额", "数量"));
+									winbox.find(".unit").text(entrust.coin);
+								}
+							})
+						});
+						
+						// 点击全部
+						winbox.find(".all_trade").on('click', function(){
+							if (entrustType == "BUY") {
+								var maxAmount = entrust.limitAmountMax;
+								if (tradeMode == "MONEY") {
+									var availableAmount = $.setScale($.floatMul(availableNum, entrust.entrustPrice), 2, "roundhalfup");
+									input.val(maxAmount > availableAmount ? availableAmount : maxAmount);
+								} else if (tradeMode == "NUM") {
+									var maxNum = $.setScale($.floatDiv(maxAmount, entrust.entrustPrice), 18, "roundhalfup");
+									var tradeNum = maxNum > availableNum ? availableNum : maxNum;
+									input.val($.setScale(tradeNum, 6, "roundhalfup"));
+								}
+							} else if (entrustType == "SELL") {
+								if (tradeMode == "MONEY") {
+									input.val(entrust.limitAmountMax);
+								} else if (tradeMode == "NUM") {
+									var tradeNum = $.setScale($.floatDiv(entrust.limitAmountMax, entrust.entrustPrice), 6, "roundhalfup");
+									input.val(tradeNum);
+								}
+							}
+							input.keyup();
+						});
+						
+						// 输入
+						var btn = winbox.find(".trade");
+						input.on('keyup', function(){
+							if ($(this).val().length > 0) {
+								btn.css('background-color', 'var(--color_m)');
+								btn.attr('disabled', null);
+								if (tradeMode == "MONEY") {
+									var money = input.val();
+									winbox.find(".tradeNum").text($.setScale($.floatDiv(money, entrust.entrustPrice), 6, "roundhalfup"));
+									winbox.find(".tradeAmount").text(money);
+								} else if (tradeMode == "NUM") {
+									var num = input.val();
+									winbox.find(".tradeNum").text(num);
+									winbox.find(".tradeAmount").text($.setScale($.floatMul(num, entrust.entrustPrice), 2, "roundhalfup"));
+								}
+							} else {
+								btn.css('background-color', '#C6CFD6');
+								btn.attr('disabled', 'disabled');
+								winbox.find(".tradeNum").text(0);
+								winbox.find(".tradeAmount").text(0);
+							}
+							$.base_money($(".base_money2"));
+						});
+						
+						// 点击下单
+						btn.on('click', function(){
+							winbox.dialog("close");
+							var entrustPrice = entrust.entrustPrice;
+							var tradeAmount = null;
+							switch (tradeMode) {
+								case "NUM" : tradeAmount = $.setScale($.floatMul(input.val(), entrust.entrustPrice), 2, "roundhalfup"); break;
+								case "MONEY" : tradeAmount = input.val(); break;
+							}
+							if (entrustType == 'BUY') {
+								var inputPayPsw = $.base_window("inputPayPsw", 172, 
+										'<div style="background-color: #fff; padding: 10px 15px 10px 15px">' + 
+											'<div class="font_18">安全验证</div>' + 
+											'<div class="font_12" style="margin-top: 10px;">支付密码</div>' + 
+											'<div class="form-item" style="margin: 0 0 0 0;"><input type="password" placeholder="输入支付密码" style="font-weight: 400;"/></div>' + 
+											'<button class="btn" style="margin-top: 15px; height: 40px; font-size: 16px;">确定</button>' +
+										'</div>'
+								);
+								inputPayPsw.find(".btn").on('click', function(){
+									var payPassword = inputPayPsw.find("input").val();
+									trade(lcEntrustId, entrustPrice, tradeAmount, payPassword, false);
+								});
+							} else {
+								trade(lcEntrustId, entrustPrice, tradeAmount, null, false);
+							}
+						});
+						
+						// 取消
+						cancelBtn.on('click', function(){
+							winbox.dialog("close");
+							clearInterval(iid);
+						});
+					});
+					isScroll = false;
+				});
+			};
+			
+			$.flushData = function() {
+				if ($.getCookie("token")) {				// 登录
+					$.req('get', '/api/wallet/availableNum', {coin: coin}, function(msg) {	// 每次刷新取一次可用数量
+						availableNum = msg;
+					});
+				}
+				mydetails = [];
+				mydetailsmap = [];
+				current = 1;
+				stop = false;
+				$.loadData();
+			};
+			
+			$.flushData();
+			setInterval($.flushData, 60000);
+			
+			// 买卖标签
+			$(".tabs2").each(function(){
+				var _this = $(this);
+				_this.on('click', function() {
+					$(".tabs2").each(function(){
+						$(this).css('width', '60px');
+						$(this).find("div").css('font-size', '14px');
+					});
+					_this.css('width', '90px');
+					_this.find("div").css('font-size', '24px');
+					entrustType = _this.attr("tab");
+					$.flushData();
+				})
+			});
+			
+			// 发布
+			$("#entrust").on('click', function(){
+				if (! $.userinfo().hasPayPassword) {	// 未设支付密码
+					$.base_dialog("请先设置支付密码", function() {
+						$.updatePayPsw();
+					});
+					return;
+				}
+				if (! $.userinfo().wechat) {
+					$.base_dialog("请先设置联系方式", function() {
+						$.updateInfo();
+					});
+					return;
+				}
+				
+				$.box
+					.build("entrust", "发 布 广 告")
+					.addHtml('<div class="form-item">' + 
+						'<span>交易类型：</span><select class="entrustType" style="font-weight: 200; width: 65%;" >' + 
+							'<option value="BUY">购买</option>' + 	
+							'<option value="SELL">出售</option>' + 
+						'</select></div>')
+					.addHtml('<div class="form-item">' + 
+						'<span>交易币种：</span><select id="select_coin" class="coin" style="font-weight: 200; width: 65%;" >' + 
+						'</select></div>')
+					.addInput("entrustNum", "交易数量")
+					.addInput("entrustPrice", "交易价格")
+					.addInput("limitAmountMax", "单笔限额上限")
+					.addInput("limitAmountMin", "单笔限额下限")
+					.addHtml('<div id="selectAccountTypes" class="form-item"><span>限制付款方式：</span><div style="width: 65%; margin: 0;">' + 
+							'<label style="margin: 0;"><input name="limitAccountTypes" type="checkbox" value="ALIPAY" style="font-weight: 200; width: 100%;" /> 支付宝</label>&nbsp;' + 
+							'<label style="margin: 0;"><input name="limitAccountTypes" type="checkbox" value="WECHAT" style="font-weight: 200; width: 100%;" /> 微信</label>&nbsp;' + 
+							'<label style="margin: 0;"><input name="limitAccountTypes" type="checkbox" value="UNIONPAY" style="font-weight: 200; width: 100%;" /> 云闪付</label>&nbsp;' + 
+							'<label style="margin: 0;"><input name="limitAccountTypes" type="checkbox" value="BANKCARD" style="font-weight: 200; width: 100%;" /> 银行卡</label>&nbsp;' + 
+						'</div></div>')
+					.addInput("payPassword", "支付密码", null, null, true)
+					.addBtn("确定", function(obj) {
+						var entrustType = obj.find('.entrustType').val();
+						var coin = obj.find('.coin').val();
+						
+						// entrustNum
+						var entrustNum = obj.find(".entrustNum").val();
+						if (! entrustNum) {
+							$.base_dialog('请输入交易数量');
+							return;
+						}
+						
+						// entrustPrice
+						var entrustPrice = obj.find(".entrustPrice").val();
+						if (! entrustPrice) {
+							$.base_dialog('请输入交易价格');
+							return;
+						}
+						
+						// limitAmountMax
+						var limitAmountMax = obj.find(".limitAmountMax").val();
+						if (! limitAmountMax) {
+							$.base_dialog('请输入单笔限额上限');
+							return;
+						}
+						
+						// limitAmountMin
+						var limitAmountMin = obj.find(".limitAmountMin").val();
+						if (! limitAmountMin) {
+							$.base_dialog('请输入单笔限额下限');
+							return;
+						}
+						
+						// 下限不能大于上限
+						if (Number(limitAmountMin) > Number(limitAmountMax)) {
+							$.base_dialog('单笔限额下限不能大于上限');
+							return;
+						}
+						
+						// limitAccountTypes
+						var limitAccountTypes = [];
+						if (entrustType == "BUY") {
+							var checkeds = obj.find('input[type=checkbox]:checked');
+							if (checkeds.length < 1) {
+								$.base_dialog('请至少选择一种限制付款方式');
+								return;
+							}
+							checkeds.each(function(){
+								limitAccountTypes.push($(this).val());
+							});
+						}
+						
+						// payPassword
+						var payPassword = obj.find(".payPassword").val();
+						if (! payPassword) {
+							$.base_dialog('请输入支付密码');
+							return;
+						}
+						
+						// 请求
+						var data = {
+								entrustType: entrustType,
+								coin: coin,
+								entrustNum: entrustNum, 
+								entrustPrice: entrustPrice,
+								limitAmountMax: limitAmountMax,
+								limitAmountMin: limitAmountMin,
+								payModes: limitAccountTypes,
+								payPassword: payPassword,
+						};
+						$.req('post', '/api/entrust/add', data, function(msg) {
+							obj.find(".entrustNum").val("");
+							obj.find(".entrustPrice").val("");
+							obj.find(".limitAmountMax").val("");
+							obj.find(".limitAmountMin").val("");
+							obj.find(".payPassword").val("");
+							$.base_dialog('发布成功');
+							obj.hide();
+						}, function(errorMessage, errorCode){
+							if (errorCode == "TO_ACCOUNT") {
+								$.base_dialog(errorMessage, function() {
+									window.location.href = "account.html";
+								});
+							} else if (errorCode == "NUM_NOT_ENOUGH") {
+								$.base_dialog(errorMessage, function() {
+									$.showRecharge(coin);
+								});
+							} else {
+								$.base_dialog(errorMessage);
+							}
+						});
+					})
+					.show(function(obj) {
+						$("#select_coin").setTemplateElement("select_coin_template");
+						if ($.userinfo().advertiser) {
+							$("#select_coin").processTemplate($.coins().listedCoins);
+						} else {
+							$("#select_coin").processTemplate($.coins().freeTradeCoins);
+						}
+						
+						obj.box.find('.entrustType').on('change', function() {
+							var entrustType = $(this).val();
+							if (entrustType == "BUY") {
+								obj.box.find('#selectAccountTypes').show();
+							} else {
+								if (! $.userinfo().realname) {
+									$.base_dialog("请先实名认证", function() {
+										$.realnameAuth();
+									});
+								}
+								obj.box.find('#selectAccountTypes').hide();
+							}
+						});
+						
+						obj.box.find('.entrustPrice').on('keyup', function(){
+							var entrustPrice = $(this).val();
+							var entrustNum = obj.box.find('.entrustNum').val();
+							if (entrustNum) {
+								var max = $.floatMul(entrustPrice, entrustNum);
+								max = $.setScale(max, 2, "roundhalfup")
+								obj.box.find('.limitAmountMax').attr('placeholder', '最大值 ' + max);
+							}
+						});
+						
+						obj.box.find('.entrustNum').on('keyup', function(){
+							var entrustNum = $(this).val();
+							var entrustPrice = obj.box.find('.entrustPrice').val();
+							if (entrustPrice) {
+								var max = $.floatMul(entrustPrice, entrustNum);
+								max = $.setScale(max, 2, "roundhalfup")
+								obj.box.find('.limitAmountMax').attr('placeholder', '最大值 ' + max);
+							}
+						});
+					});
+			});
+			
+			// 滚动监听
+			var isScroll = false;
+			$(window).scroll(function(){
+				if ($(document).scrollTop() >= $(document).height() - $(window).height() - 10) {
+					if (! isScroll) {
+						isScroll = true;
+						$.loadData();
+					}
+				}
+			});
+			
+			// 打开弹窗
+			$.open();
+		});
+	</script>
+</body>
+</html>

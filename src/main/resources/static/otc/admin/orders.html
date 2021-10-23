@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>订单管理</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		#detailsBox .show-item {
+			margin: 3px auto;
+			font-size: 14px;
+		}
+		#detailsBox .title {
+			margin-top: 0px;
+			margin-bottom: 0px;
+		}
+		#detailsBox .pop-box {
+			padding: 10px 5px 5px 5px;
+		}
+	</style>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<!-- 标题背景 -->
+	<div id="title" class="back_m" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px; text-align: center;">订 单 管 理</div>
+	<div id="tabs" class="color_sh" style="font-weight: 600; position: fixed; height: 30px; width: 100%; margin-top: 40px; background: #fff; text-align: center; border-bottom:1px solid #ddd;">
+		<div tab="NEW" style="float: left; width: 20%;"><p style="height: 30px; width:48px;">待付款</p></div>
+		<div tab="PAY" style="float: left; width: 20%;"><p style="height: 30px; width:48px;">待确认</p></div>
+		<div tab="APPEAL" style="float: left; width: 20%;"><p class="color_m" style="height: 30px; width:64px; border-bottom: 3px solid var(--color_m);">申诉处理</p></div>
+		<div tab="SUCCESS" style="float: left; width: 20%;"><p style="height: 30px; width:48px;">已完成</p></div>
+		<div tab="FAIL" style="float: left; width: 20%;"><p style="height: 30px; width:48px;">已取消</p></div>
+	</div>
+	
+	<div id="myorder_tbody" style="padding-top: 70px;"></div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a id="orders_all" href="#">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg" aria-hidden="true"></i>
+				<span class="text">订单管理</span>
+			</a>
+			<a id="orders_part" href="./orders.html" style="display: none;">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./withdraw.html">
+				<i class="fa fa-sign-out fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">提币管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./user.html">
+				<i class="fa fa-users fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">用户管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<!-- 详情弹窗 -->
+	<div class="pop-box-model" id="detailsBox" style="display: none">
+		<div class="pop-box" style="max-width: 450px; top: 0px; bottom: 0px;">
+			<div id="detailsContent" style="display: none">
+				<div class="title">订单详情</div>
+				<div class="content">
+					<div class="form-box">
+						<div class="form-content" id="ele_mydetails">
+						</div>
+					</div>
+				</div>
+				<!-- 关闭按钮 -->
+				<div class="close closeDetailsBoxBtn"></div>
+			</div>
+		</div>
+	</div>
+	
+	<textarea id="mydetails_template" style="display:none;">
+		<div class="show-item">下单时间：<span>{$T.startTime}</span></div>
+		<div class="show-item">买家：<span>{$T.buyUserNickname}-{$T.buyUserPhone}</span></div>
+		<div class="show-item">卖家：<span>{$T.sellUserNickname}-{$T.sellUserPhone}</span></div>
+		<div class="show-item">
+			{#if $T.accountType == 'ALIPAY'}
+				收款方式：<span>支付宝</span>
+			{#elseif $T.accountType == 'WECHAT'}
+				收款方式：<span>微信</span>
+			{#elseif $T.accountType == 'UNIONPAY'}
+				收款方式：<span>云闪付</span>
+			{#elseif $T.accountType == 'BANKCARD'}
+				收款方式：<span>{$T.bank}{#if $T.subbranch}-{$T.subbranch}{#/if}</span>
+			{#/if}
+		</div>
+		<div class="show-item">收款账号：<span>{$T.accountNo}</span></div>
+		<div class="show-item">收款账号实名：<span>{$T.realName}</span></div>
+		<div class="show-item">交易金额：<span>￥<span class="base_money_2">{$T.payAmount}</span></span></div>
+		<div class="show-item">交易价格：<span>￥<span class="base_money_2">{$T.coinPrice}</span></span></div>
+		<div class="show-item">交易数量：<span><span class="base_money_2" scale="6">{$T.coinNum}</span> {$T.coin}</span></div>
+		<div class="show-item">买家手续费：<span><span class="base_money_2" scale="6">{$T.buyFee}</span> {$T.coin}</span></div>
+		<div class="show-item">卖家手续费：<span><span class="base_money_2" scale="6">{$T.sellFee}</span> {$T.coin}</span></div>
+		{#if $T.orderStatus == 'NEW'}
+			{#if $T.payTime == null}
+				<div class="show-item">订单状态：<span>待付款</span></div>
+			{#else}
+				<div class="show-item">订单状态：<span>待确认</span></div>
+				<div class="show-item">付款时间：<span>{$T.payTime}</span></div>
+				{#if $T.appealCause}
+					<div class="show-item">申诉原因：<span>
+						{#if $T.appealCause == 'NOT_PAY'}
+							买家未付款
+						{#elseif $T.appealCause == 'AMOUNT_ERROR'}
+							付款金额不符
+						{#elseif $T.appealCause == 'INFO_ERROR'}
+							付款信息不符
+						{#else}
+							其它
+						{#/if}
+					</span></div>
+					{#if $T.handleTime}
+						<div class="show-item">申诉处理时间：<span>{$T.handleTime}</span></div>
+					{#/if}
+					{#if $T.handleDesc}
+						<div class="show-item">申诉处理备注：<span>{$T.handleDesc}</span></div>
+					{#/if}
+					<div style="margin-bottom: 10px;">
+						<button id="success_btn" style="width:30%; background-color:green;">已支付</button>
+						<button id="dont_know_btn" style="width:30%;">不确定</button>
+						<button id="cancel_btn" style="width:30%; background-color:red;">未支付</button>
+					</div>
+				{#/if}
+			{#/if}
+		{#elseif $T.orderStatus == 'FAIL'}
+			<div class="show-item">订单状态：<span>已取消</span></div>
+			<div class="show-item">取消时间：<span>{$T.endTime}</span></div>
+			{#if $T.failCause == 'TIMEOUT'}
+				<div class="show-item">取消原因：<span>超时未确认支付</span></div>
+			{#elseif $T.failCause == 'JUDGE'}
+				<div class="show-item">取消原因：<span>平台判定未支付</span></div>
+			{#else}
+				<div class="show-item">取消原因：<span>
+					{#if $T.cancelCause == 'ACCOUNT_ERROR'}
+						收款方式信息有误
+					{#elseif $T.cancelCause == 'PAY_FAIL'}
+						支付失败
+					{#elseif $T.cancelCause == 'TIME_LIMIT'}
+						时间不足
+					{#else}
+						放弃购买
+					{#/if}
+				</span></div>
+			{#/if}
+		{#elseif $T.orderStatus == 'SUCCESS'}
+			<div class="show-item">订单状态：<span>已完成</span></div>
+			<div class="show-item">完成时间：<span>{$T.endTime}</span></div>
+		{#else}
+			未知
+		{#/if}
+	</textarea>
+	
+	<textarea id="myorder_template" style="display:none;">
+		{#foreach $T as item}
+			<div class="order_tr" lc_order_id="{$T.item.id}" style="background-color: #fff; margin-bottom: 2px; padding: 5px;">
+			<table style="width: 100%;">
+				<tr>
+					<td style="font-size: 16px;" colspan="2">单号：{$T.item.orderSn}</td>
+					<td style="font-size: 12px; color: #777; text-align: right;">
+						{#if $T.item.orderStatus == 'NEW'}
+							{#if $T.item.payTime}
+								<span style="color:red;">● 待确认</span> <span class="color_h">&gt;</span>
+							{#else}
+								<span style="color:red;">●</span> 待付款 <span class="color_h">&gt;</span>
+							{#/if}
+						{#elseif $T.item.orderStatus == 'FAIL'}
+							<span style="color:red;">●</span> 已取消 <span class="color_h">&gt;</span>
+						{#elseif $T.item.orderStatus == 'SUCCESS'}
+							<span style="color:red;">●</span> 已完成 <span class="color_h">&gt;</span>
+						{#else}
+							<span style="color:red;">●</span> 未知 <span class="color_h">&gt;</span>
+						{#/if}
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 12px;">
+						<span class="color_h">时间</span><br>
+						{$T.item.startTime}
+					</td>
+					<td style="font-size: 12px;">
+						<span class="color_h">数量({$T.item.coin})</span><br>
+						<span class="base_money" scale="6">{$T.item.coinNum}</span>
+					</td>
+					<td style="font-size: 12px; text-align: right;">
+						<span class="color_h">交易总额(CNY)</span><br>
+						<span class="base_money">{$T.item.payAmount}</span>
+					</td>
+				</tr>
+				{#if $T.item.orderStatus == 'NEW'}
+					{#if $T.item.handleDesc}
+						<tr style="border-top:1px solid #ddd;"><td class="color_sh" style="font-size: 12px;" colspan="3">处理备注：{$T.item.handleDesc}</td></tr>
+					{#/if}
+				{#elseif $T.item.orderStatus == 'FAIL'}
+					<tr style="border-top:1px solid #ddd;"><td class="color_sh" style="font-size: 12px;" colspan="3">
+					{#if $T.item.failCause == 'TIMEOUT'}
+						取消原因：超时未确认支付
+					{#elseif $T.item.failCause == 'JUDGE'}
+						取消原因：平台判定未支付
+					{#else}
+						取消原因：
+							{#if $T.item.cancelCause == 'ACCOUNT_ERROR'}
+								收款方式信息有误
+							{#elseif $T.item.cancelCause == 'PAY_FAIL'}
+								支付失败
+							{#elseif $T.item.cancelCause == 'TIME_LIMIT'}
+								时间不足
+							{#else}
+								放弃购买
+							{#/if}
+					{#/if}
+					</td></tr>
+				{#/if}
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/admin.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			var mydetails = [];
+			var mydetailsmap = [];
+			var current = 1;
+			var stop = false;
+			var orderStatus = "NEW";
+			var pay = true;
+			var appeal = true;
+			var userId = $.getParam("userId");
+			if (userId) {
+				$("#title").text("订单管理 ( " + $.getParam("phone") + " )");
+				$("#orders_all").hide();
+				$("#orders_part").show();
+			}
+			var entrustId = $.getParam("entrustId");
+			if (entrustId) {
+				$("#title").text("订单管理 ( eq:" + entrustId + " )");
+				$("#orders_all").hide();
+				$("#orders_part").show();
+			}
+			
+			$.loadData = function() {
+				// 停止查询
+				if (stop) {
+					return;
+				}
+				
+				// 登录
+				if (! $.getCookie("admin_token")) {
+					$.showLogin();
+					return;
+				}
+				
+				// 分页参数
+				var data = {
+					current: current,
+					size: 10,
+					orderStatus: orderStatus,
+					appeal: appeal,
+					pay: pay,
+					userId: userId,
+					entrustId: entrustId
+				};
+				
+				// 查询
+				$.req('get', '/api/order/admin/search', data, function(msg) {
+					// 翻页逻辑
+					if (stop) {
+						return;
+					}
+					if (msg.records.length == 10) {	// 满页-下一页可能还有数据
+						current++;
+					} else {						// 未满-不需要查下一页了
+						stop = true;
+					}
+					
+					// 滚动列表
+					for (var i = 0; i < msg.records.length; i++) {
+						mydetails.push(msg.records[i]);
+						mydetailsmap[msg.records[i].id] = msg.records[i];
+					}
+					$("#myorder_tbody").setTemplateElement("myorder_template");
+					$("#myorder_tbody").processTemplate(mydetails);
+					$.base_money($(".base_money"));
+					
+					// 详情
+					$.base_btn($(".order_tr"), function(_this){
+						var lcOrderId = _this.attr("lc_order_id");
+						var order = mydetailsmap[lcOrderId];
+						$("#ele_mydetails").setTemplateElement("mydetails_template");
+						$("#ele_mydetails").processTemplate(order);
+						$.base_money($(".base_money_2"));
+						var successBtn = $("#success_btn");
+						var cancelBtn = $("#cancel_btn");
+						var dontKnowBtn = $("#dont_know_btn");
+						
+						if (successBtn) {
+							successBtn.on('click', function(){
+								$.disputeHandle(lcOrderId, 1);
+							});
+						}
+						if (cancelBtn) {
+							cancelBtn.on('click', function(){
+								$.disputeHandle(lcOrderId, -1);
+							});
+						}
+						if (dontKnowBtn) {
+							dontKnowBtn.on('click', function(){
+								$.base_confirm('备注', '<textarea id="handle_desc" style="width: 100%;"></textarea>', function(){
+									$.disputeHandle(lcOrderId, 0, $("#handle_desc").val());
+						    	});
+							});
+						}
+						$(".pop-box").height($(window).height());
+		                $("#detailsBox").show();
+		                $("#detailsContent").show();
+					});
+					isScroll = false;
+				});
+			};
+			$.loadData();
+			
+			$.flushData = function() {
+				mydetails = [];
+				mydetailsmap = [];
+				current = 1;
+				stop = false;
+				$.loadData();
+			};
+			
+			// 标签点击
+			$.tabs('tabs', function(tab) {
+				if (tab == 'APPEAL') {
+					orderStatus = 'NEW';
+					pay = true;
+					appeal = true;
+				} else if (tab == 'PAY') {
+					orderStatus = 'NEW';
+					pay = true;
+					appeal = false;
+				} else if (tab == 'NEW') {
+					orderStatus = 'NEW';
+					pay = false;
+				} else {
+					orderStatus = tab;
+				}
+				$.flushData();
+			});
+			
+			$.disputeHandle = function(lcOrderId, isPay, handleDesc){
+				var data = {
+						lcOrderId: lcOrderId, 
+						isPay: isPay,
+						handleDesc: handleDesc
+				}
+				$.req('post', '/api/order/admin/disputeHandle', data, function(msg) {
+					$.base_dialog('执行成功');
+					$.flushData();
+					$("#detailsBox").hide();
+					$("#detailsContent").hide();
+				});
+			};
+			
+			// 滚动监听
+			var isScroll = false;
+			$(window).scroll(function(){
+				if ($(document).scrollTop() >= $(document).height() - $(window).height() - 10) {
+					if (! isScroll) {
+						isScroll = true;
+						$.loadData();
+					}
+				}
+			});
+			
+			//关闭添加账号
+			$('.closeDetailsBoxBtn').click(function (event) {
+				$("#detailsBox").hide();
+				$("#detailsContent").hide();
+			});
+		});
+	</script>
+</body>
+</html>

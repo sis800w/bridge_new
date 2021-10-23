@@ -1,0 +1,37 @@
+* {margin: 0; padding: 0;}
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {display: block}
+audio, canvas, progress, video {display: inline-block; vertical-align: baseline}
+html {height: 100%;}
+body {height: 100%; font-size: 14px; color: #333; font-family: 'Microsoft Yahei', 'Helvetica Neue', Helvetica, STHeiTi, Arial, sans-serif}
+input, select, textarea {font-family: 'Microsoft Yahei', 'Helvetica Neue', Helvetica, STHeiTi, Arial, sans-serif}
+table {border-collapse: collapse; border-spacing: 0}
+ul, ol, li {list-style: none}
+img {border: 0; vertical-align: middle}
+a {color: #333; text-decoration: none; outline: 0; -webkit-tap-highlight-color: transparent}
+a:active {outline: 0}
+em {font-style: normal}
+pre {white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-break: break-all; word-wrap: break-word;}
+input,select,textarea {outline: none;}
+input[type="text"], input[type="tel"] {-webkit-tap-highlight-color: rgba(0, 0, 0, 0)}
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none !important; margin: 0}
+input::-moz-placeholder, textarea::-moz-placeholder {color: #ccc}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {color: #ccc}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {color: #ccc}
+
+
+/** class */
+.blank {width: 100%; height: 10px; clear: both; overflow: hidden;}
+.clear {width: 100%; height: 0px; clear: both; overflow: hidden;}
+.clearfix {*zoom: 1}
+.clearfix:after {clear: both; content: "020"; display: block; height: 0; visibility: hidden; line-height: 0; font-size: 1px}
+
+/** 带边框的盒子 */
+.base_box {padding: 0; border: 1px solid #ddd; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; overflow: auto;}
+/** 标题栏 */
+.base_box_title {padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold;}
+/** 工具栏（放搜索表单、按钮等） */
+.base_box_toolbar {padding: 10px; border-bottom: 1px solid #ddd; }
+/** 页脚栏（放分页链接等） */
+.base_box_footer {text-align: center; border-top: 1px solid #ddd;}
+/** 加载中图标. */
+.base_loading {width: 32px; height: 32px; line-height: 32px; display: inline-block; display: -moz-inline-stack; zoom: 1; *display: inline; background: url(img/base_loading.gif) center no-repeat;}

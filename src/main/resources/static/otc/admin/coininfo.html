@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>币种配置</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="#000000" />
+	<link rel="stylesheet" href="../jslib/bootstrap/bootstrap.min.css"/>
+	<link rel="stylesheet" href="../jslib/jquery.ui/jquery-ui.css"/>
+	<link rel="stylesheet" href="../jslib/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="../css/style.css?v=8"/>
+	<style type="text/css">
+		#updateCoininfobox .form-item {
+			margin: 5px auto;
+		}
+		#updateCoininfobox .form-item span, #updateCoininfobox .form-item label {
+			font-size: 14px;
+		}
+		#updateCoininfobox .pop-box {
+			padding: 10px 5px 5px 5px;
+		}
+		#updateCoininfobox input {
+			width: 60%;
+		}
+	</style>
+</head>
+<body style="background: #F0F0F0; padding-bottom: 55px">
+	<div id="title" class="back_m" style="color: white; position: fixed; height: 40px; width: 100%; padding-top: 8px; padding-left: 15px; text-align: center;">币 种 配 置</div>
+	
+	<!-- 内容:表格 -->
+	<div id="myorder_tbody" style="padding-top: 40px;">
+	</div>
+	
+	<!-- 页脚:标签页 -->
+	<div class="toolbar-container" data-spm="toolbar">
+		<span class="tab">
+			<a href="./orders.html">
+				<i class="fa fa-paper-plane-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">订单管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./withdraw.html">
+				<i class="fa fa-sign-out fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">提币管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./user.html">
+				<i class="fa fa-users fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">用户管理</span>
+			</a>
+		</span>
+		<span class="tab">
+			<a href="./my.html">
+				<i class="fa fa-user-circle-o fa-fw fa-lg color_sh" aria-hidden="true"></i>
+				<span class="text color_sh">我的</span>
+			</a>
+		</span>
+	</div>
+	
+	<textarea id="myorder_template" style="display:none;">
+		{#foreach $T as item}
+			<div class="order_tr" coininfo_id="{$T.item.id}" style="background-color: #fff; margin-bottom: 2px; padding: 5px;">
+			<table style="width: 100%;">
+				<tr>
+					<td style="font-size: 12px; width: 40%;">
+						<span class="color_h">币种</span><br>
+					</td>
+					<td style="font-size: 12px; width: 30%;">
+						<span class="color_h">链类型</span><br>
+					</td>
+					<td style="font-size: 12px; text-align: right;">
+						<span class="color_h">资产</span><br>
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 12px;">
+						{$T.item.coin}
+					</td>
+					<td style="font-size: 12px;">
+						{$T.item.chain}
+					</td>
+					<td style="font-size: 12px; text-align: right;">
+						{$T.item.assetsDesc}
+					</td>
+				</tr>
+			</table>
+			</div>
+		{#/for}
+	</textarea>
+	
+	<script type="text/javascript" src="../jslib/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../jslib/jquery.jtemplates/jquery-jtemplates.js"></script>
+	<script type="text/javascript" src="../jslib/clipboard/clipboard.min.js" ></script>
+	<script type="text/javascript" src="../js/common.js?v=8"></script>
+	<script type="text/javascript" src="../js/admin.js?v=8"></script>
+	<script type="text/javascript">
+		$(function () {
+			var mydetailsmap = [];
+			$.loadData = function() {
+				// 登录
+				if (! $.getCookie("admin_token")) {
+					$.showLogin();
+					return;
+				}
+				
+				// 查询
+				$.req('get', '/api/coininfo/admin/list', null, function(msg) {
+					for (var i = 0; i < msg.length; i++) {
+						mydetailsmap[msg[i].id] = msg[i];
+					}
+					$("#myorder_tbody").setTemplateElement("myorder_template");
+					$("#myorder_tbody").processTemplate(msg);
+					
+					// 详情
+					$.base_btn($(".order_tr"), function(_this){
+						var coininfoId = _this.attr("coininfo_id");
+						var coininfo = mydetailsmap[coininfoId];
+						var box = $.box
+							.build("updateCoininfo", "币种配置")
+							.attr("coininfo_id", coininfoId)
+							.addInput("coin", "币种", null, coininfo.coin, null, true)
+							.addInput("chain", "链类型", null, coininfo.chain, null, true)
+							//.addInput("assetsDesc", "资产", null, coininfo.assetsDesc, null, true)
+							//.addInput("transferConfirmNum", "到账确认次数", null, coininfo.transferConfirmNum, null, true)
+							//.addInput("withdrawConfirmNum", "提币确认次数", null, coininfo.withdrawConfirmNum, null, true)
+							.addInput("rechargeNumMin", "最小充币数", null, coininfo.rechargeNumMin)
+							.addInput("withdrawNumMin", "最小提币数", null, coininfo.withdrawNumMin)
+							.addInput("withdrawFee", "提币手续费", null, coininfo.withdrawFee)
+							.addInput("takerBuyFeeRate", "主买手续费率", "OTC主买手续费率", coininfo.takerBuyFeeRate)
+							.addInput("takerSellFeeRate", "主卖手续费率", "OTC主卖手续费率", coininfo.takerSellFeeRate)
+							.addInput("makerBuyFeeRate", "被买手续费率", "OTC被买手续费率", coininfo.makerBuyFeeRate)
+							.addInput("makerSellFeeRate", "被卖手续费率", "OTC被卖手续费率", coininfo.makerSellFeeRate)
+							.addInput("otcFeeNumMin", "最小计费数量", "OTC最小计费数量", coininfo.otcFeeNumMin)
+							.addInput("takerBuyOrderNumMax", "最大主买单量", "每日最大主买下单量", coininfo.takerBuyOrderNumMax)
+							.addInput("takerSellOrderNumMax", "最大主卖单量", "每日最大主卖下单量", coininfo.takerSellOrderNumMax)
+							.addInput("collectionNumMin", "最小归集数量", "钱包余额低于此数不归集", coininfo.collectionNumMin)
+							.addInput("freeTrade", "开放自由交易", "true-允许所有人发布广告", coininfo.freeTrade)
+							.addBtn("确定", function(obj) {
+								// get rechargeNumMin
+								var rechargeNumMin = obj.find('.rechargeNumMin').val();
+								if (! rechargeNumMin) {
+									$.base_dialog('请输入最小充币数');
+									return;
+								}
+								
+								// get withdrawNumMin
+								var withdrawNumMin = obj.find('.withdrawNumMin').val();
+								if (! withdrawNumMin) {
+									$.base_dialog('请输入最小提币数');
+									return;
+								}
+								
+								// get withdrawFee
+								var withdrawFee = obj.find('.withdrawFee').val();
+								if (! withdrawFee) {
+									$.base_dialog('请输入提币手续费');
+									return;
+								}
+								
+								// get takerBuyFeeRate
+								var takerBuyFeeRate = obj.find('.takerBuyFeeRate').val();
+								if (! takerBuyFeeRate) {
+									$.base_dialog('请输入OTC主买手续费率');
+									return;
+								}
+								
+								// get takerSellFeeRate
+								var takerSellFeeRate = obj.find('.takerSellFeeRate').val();
+								if (! takerSellFeeRate) {
+									$.base_dialog('请输入OTC主卖手续费率');
+									return;
+								}
+								
+								// get makerBuyFeeRate
+								var makerBuyFeeRate = obj.find('.makerBuyFeeRate').val();
+								if (! makerBuyFeeRate) {
+									$.base_dialog('请输入OTC被买手续费率');
+									return;
+								}
+								
+								// get makerSellFeeRate
+								var makerSellFeeRate = obj.find('.makerSellFeeRate').val();
+								if (! makerSellFeeRate) {
+									$.base_dialog('请输入OTC被卖手续费率');
+									return;
+								}
+								
+								// get otcFeeNumMin
+								var otcFeeNumMin = obj.find('.otcFeeNumMin').val();
+								if (! otcFeeNumMin) {
+									$.base_dialog('请输入OTC最小计费数量');
+									return;
+								}
+								
+								// get takerBuyOrderNumMax
+								var takerBuyOrderNumMax = obj.find('.takerBuyOrderNumMax').val();
+								if (! takerBuyOrderNumMax) {
+									$.base_dialog('请输入每日最大主买下单量');
+									return;
+								}
+								
+								// get takerSellOrderNumMax
+								var takerSellOrderNumMax = obj.find('.takerSellOrderNumMax').val();
+								if (! takerSellOrderNumMax) {
+									$.base_dialog('请输入每日最大主卖下单量');
+									return;
+								}
+								
+								// get collectionNumMin
+								var collectionNumMin = obj.find('.collectionNumMin').val();
+								if (! collectionNumMin) {
+									$.base_dialog('请输入最小归集数量');
+									return;
+								}
+								
+								// get freeTrade
+								var freeTrade = obj.find('.freeTrade').val();
+								if (! freeTrade) {
+									$.base_dialog('请输入开放自由交易');
+									return;
+								}
+
+								// req
+								var data = {
+										coininfoId: obj.attr("coininfo_id"),
+										rechargeNumMin: rechargeNumMin,
+										withdrawNumMin: withdrawNumMin,
+										withdrawFee: withdrawFee,
+										takerBuyFeeRate: takerBuyFeeRate,
+										takerSellFeeRate: takerSellFeeRate,
+										makerBuyFeeRate: makerBuyFeeRate,
+										makerSellFeeRate: makerSellFeeRate,
+										otcFeeNumMin: otcFeeNumMin,
+										takerBuyOrderNumMax: takerBuyOrderNumMax,
+										takerSellOrderNumMax: takerSellOrderNumMax,
+										collectionNumMin: collectionNumMin,
+										freeTrade: freeTrade
+								};
+								$.req('post', '/api/coininfo/admin/update', data, function(msg) {
+									obj.find('.rechargeNumMin').val("");
+									obj.find('.withdrawNumMin').val("");
+									obj.find('.withdrawFee').val("");
+									obj.find('.takerBuyFeeRate').val("");
+									obj.find('.takerSellFeeRate').val("");
+									obj.find('.makerBuyFeeRate').val("");
+									obj.find('.makerSellFeeRate').val("");
+									obj.find('.otcFeeNumMin').val("");
+									obj.find('.takerBuyOrderNumMax').val("");
+									obj.find('.takerSellOrderNumMax').val("");
+									obj.find('.collectionNumMin').val("");
+									obj.find('.freeTrade').val("");
+									$.base_dialog('配置成功');
+									$.loadData();
+									obj.hide();
+								});
+							})
+							.show();
+						if (coininfo.chain) {
+							box.find(".chain").parent().show();
+						} else {
+							box.find(".chain").parent().hide();
+						}
+					});
+				});
+			};
+			$.loadData();
+		});
+	</script>
+</body>
+</html>
