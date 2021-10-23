@@ -215,7 +215,7 @@
 								password: password,
 								newPassword: newPassword
 						};
-						$.req('post', '/api/user/updatePwd', data, function(msg) {
+						$.post('user/updatePwd', data, function(msg) {
 							obj.find('.password').val("");
 							obj.find('.newPassword').val("");
 							obj.find('.newPassword2').val("");
@@ -252,7 +252,7 @@
 								password: password,
 								newPhone: newPhone
 						};
-						$.req('post', '/api/user/updatePhone', data, function(msg) {
+						$.post('user/updatePhone', data, function(msg) {
 							obj.find('.password').val("");
 							obj.find('.newPhone').val("");
 							$.base_dialog('修改成功');

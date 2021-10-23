@@ -139,7 +139,7 @@
 				};
 				
 				// 查询
-				$.req('get', '/api/order/orders', data, function(msg) {
+				$.get('order/orders', data, function(msg) {
 					// 翻页逻辑
 					if (stop) {
 						return;

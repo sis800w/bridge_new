@@ -151,7 +151,7 @@
 			// 函数：我已付款成功
 			$.payok = function (){
 				$.base_confirm('付款确认', '请确认您已向卖家付款<br><span class="color_m">恶意点击将直接冻结账户</span>', function(){
-		    		$.req('post', '/api/order/payok', {lcOrderId: orderId}, function(msg) {
+		    		$.post('order/payok', {lcOrderId: orderId}, function(msg) {
 		    			window.location.href = "order.html?orderId=" + orderId;
 					});
 		    	}, function(){
@@ -201,7 +201,7 @@
 			
 			// 查询
 			$.loadData = function() {
-				$.req('get', '/api/order/pay', {lcOrderId: orderId}, $.init, function(msg, code) {
+				$.get('order/pay', {lcOrderId: orderId}, $.init, function(msg, code) {
 					$.base_dialog(msg, function() {
 						window.location.href = "order.html?orderId=" + orderId;
 					});

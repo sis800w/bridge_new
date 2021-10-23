@@ -284,7 +284,7 @@
 				};
 				
 				// 查询
-				$.req('get', '/api/order/admin/search', data, function(msg) {
+				$.get('order/admin/search', data, function(msg) {
 					// 翻页逻辑
 					if (stop) {
 						return;
@@ -374,7 +374,7 @@
 						isPay: isPay,
 						handleDesc: handleDesc
 				}
-				$.req('post', '/api/order/admin/disputeHandle', data, function(msg) {
+				$.post('order/admin/disputeHandle', data, function(msg) {
 					$.base_dialog('执行成功');
 					$.flushData();
 					$("#detailsBox").hide();

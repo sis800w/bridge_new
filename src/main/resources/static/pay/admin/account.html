@@ -172,7 +172,7 @@
 				};
 				
 				// 查询
-				$.req('get', '/api/account/admin/list', data, function(msg) {
+				$.get('account/admin/list', data, function(msg) {
 					// 翻页逻辑
 					if (stop) {
 						return;
@@ -196,7 +196,7 @@
 					$.base_btn($(".block"), function(_this){
 						var accountId = _this.parent().parent().parent().parent().parent().attr("account_id");
 						var block = _this.attr("block");
-						$.req('post', '/api/account/admin/updateBlock', {accountId: accountId, block: block}, function(msg) {
+						$.post('account/admin/updateBlock', {accountId: accountId, block: block}, function(msg) {
 							$.flushData();
 						});
 					});

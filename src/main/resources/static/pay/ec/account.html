@@ -157,7 +157,7 @@
 				}
 				
 				// 查询
-				$.req('get', '/api/account', null, function(msg) {
+				$.get('account', null, function(msg) {
 					for (var i = 0; i < msg.length; i++) {
 						mydetailsmap[msg[i].id] = msg[i];
 					}
@@ -168,7 +168,7 @@
 					// 激活
 					$.base_btn($(".enable"), function(_this){
 						var accountId = _this.parent().parent().parent().parent().parent().attr("account_id");
-						$.req('post', '/api/account/enable/' + accountId, {enable: _this.attr('enable')}, function(msg) {
+						$.post('account/enable/' + accountId, {enable: _this.attr('enable')}, function(msg) {
 							$.flushData();
 						});
 					});
@@ -195,7 +195,7 @@
 						var unbindBtn = $("#unbind_account");
 						$("#unbind_account").on('click', function(){
 							$.base_confirm('确定', '确定删除收款方式？', function(){
-								$.req('delete', '/api/account/' + accountId, null, function(msg) {
+								$.del('account/' + accountId, null, function(msg) {
 									$.flushData();
 									$("#detailsBox").hide();
 									$("#detailsContent").hide();

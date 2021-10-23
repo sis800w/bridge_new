@@ -138,7 +138,7 @@
 				};
 				
 				// 查询
-				$.req('get', '/api/wallet/admin/assets', data, function(msg) {
+				$.get('wallet/admin/assets', data, function(msg) {
 					// 翻页逻辑
 					if (stop) {
 						return;

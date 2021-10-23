@@ -34,7 +34,7 @@ $(function(){
 						username: username,
 						password: password
 				};
-				$.req('post', '/api/admin/login', data, function(msg) {
+				$.post('admin/login', data, function(msg) {
 					$.setUserinfo(msg);
 					window.location.reload();
 				});
@@ -54,7 +54,7 @@ $(function(){
 	
 	// 登出按钮
 	$("#logout_btn").on('click', function(){
-		$.req('post', '/api/admin/logout', null, function() {
+		$.post('admin/logout', null, function() {
 			$.logout();
 		});
 	});

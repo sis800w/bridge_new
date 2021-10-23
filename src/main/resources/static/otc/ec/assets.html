@@ -116,7 +116,7 @@
 				}
 				
 				// 查询
-				$.req('get', '/api/wallet/myAssets', {coins: $.coins().listedCoins}, function(msg) {
+				$.get('wallet/myAssets', {coins: $.coins().listedCoins}, function(msg) {
 					$("#myaccount_tbody").setTemplateElement("myaccount_template");
 					$("#myaccount_tbody").processTemplate(msg.wallets);
 					$("#btc").text(msg.btc);

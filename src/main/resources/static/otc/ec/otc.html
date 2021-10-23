@@ -228,7 +228,7 @@
 					isContinue: isContinue,
 					payPassword: payPassword
 				};
-				$.req('post', '/api/order/trade', data, function(msg) {
+				$.post('order/trade', data, function(msg) {
 					window.location.href = "order.html?orderId=" + msg;
 				}, function(errorMessage, errorCode) {
 					if (errorCode == 'DIALOG_OK_FLUSH') {
@@ -269,7 +269,7 @@
 				};
 				
 				// 查询
-				$.req('get', '/api/entrust/list', data, function(msg) {
+				$.get('entrust/list', data, function(msg) {
 					// 翻页逻辑
 					if (stop) {
 						return;
@@ -443,7 +443,7 @@
 			
 			$.flushData = function() {
 				if ($.getCookie("token")) {				// 登录
-					$.req('get', '/api/wallet/availableNum', {coin: coin}, function(msg) {	// 每次刷新取一次可用数量
+					$.get('wallet/availableNum', {coin: coin}, function(msg) {	// 每次刷新取一次可用数量
 						availableNum = msg;
 					});
 				}
@@ -577,7 +577,7 @@
 								payModes: limitAccountTypes,
 								payPassword: payPassword,
 						};
-						$.req('post', '/api/entrust/add', data, function(msg) {
+						$.post('entrust/add', data, function(msg) {
 							obj.find(".entrustNum").val("");
 							obj.find(".entrustPrice").val("");
 							obj.find(".limitAmountMax").val("");

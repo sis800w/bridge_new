@@ -161,7 +161,7 @@
 			
 			// 余额
 			$.loadData = function() {
-				$.req('get', '/api/wallet/admin/info', {userId: userId}, function(msg) {
+				$.get('wallet/admin/info', {userId: userId}, function(msg) {
 					$("#availableNum").text(msg.availableNum);
 					$("#freezeNum").text(msg.freezeNum);
 					$.base_money($(".base_money"));
@@ -188,7 +188,7 @@
 				};
 				
 				// 查询
-				$.req('get', '/api/wallet/admin/details', data, function(msg) {
+				$.get('wallet/admin/details', data, function(msg) {
 					// 翻页逻辑
 					if (stop) {
 						return;

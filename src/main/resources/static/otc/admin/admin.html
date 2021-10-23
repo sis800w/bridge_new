@@ -107,7 +107,7 @@
 				};
 				
 				// 查询
-				$.req('get', '/api/admin/list', data, function(msg) {
+				$.get('admin/list', data, function(msg) {
 					// 翻页逻辑
 					if (stop) {
 						return;
@@ -164,7 +164,7 @@
 								username: username,
 								password: password
 						};
-						$.req('post', '/api/admin/createAdmin', data, function(msg) {
+						$.post('admin/createAdmin', data, function(msg) {
 							box.find('.username').val("");
 							box.find('.password').val("");
 							$.base_dialog('创建成功');

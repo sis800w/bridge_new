@@ -145,7 +145,7 @@
 				};
 				
 				// 查询
-				$.req('get', '/api/entrust/myAd', data, function(msg) {
+				$.get('entrust/myAd', data, function(msg) {
 					// 翻页逻辑
 					if (stop) {
 						return;
@@ -174,7 +174,7 @@
 									'<span>确认撤销吗？</span><br>' +
 								'</div>', 
 							function(obj){
-								$.req('post', '/api/entrust/cancel', {lcEntrustId: lcEntrustId}, function(msg) {
+								$.post('entrust/cancel', {lcEntrustId: lcEntrustId}, function(msg) {
 									$.flushData();
 								});
 							}

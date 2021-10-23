@@ -304,7 +304,7 @@
 							sign: sign,
 							cancelCause: obj.find('input:radio:checked').val()
 						};
-						$.req('post', '/api/order/cancel', data, function(msg) {
+						$.post('order/cancel', data, function(msg) {
 							$.loadData();
 						});
 					}, function() {
@@ -314,7 +314,7 @@
 			// 函数：我已付款成功
 			$.payok = function (){
 				$.base_confirm('付款确认', '请确认您已向卖家付款<br><span class="color_m">恶意点击将直接冻结账户</span>', function(){
-					$.req('post', '/api/order/payok', {orderId: orderId, orderSn: orderSn, sign: sign}, function(msg) {
+					$.post('order/payok', {orderId: orderId, orderSn: orderSn, sign: sign}, function(msg) {
 						$.loadData();
 					});
 		    	}, function(){
@@ -349,7 +349,7 @@
 								orderId: orderId,
 								payPassword: payPassword
 							};
-							$.req('post', '/api/order/success', data, function(msg) {
+							$.post('order/success', data, function(msg) {
 								inputPayPsw.dialog( "close" );
 								$.loadData();
 							});
@@ -419,7 +419,7 @@
 			
 			// 查询
 			$.loadData = function() {
-				$.req('get', '/api/order/query', {orderId: orderId, orderSn: orderSn, sign: sign}, $.init);
+				$.get('order/query', {orderId: orderId, orderSn: orderSn, sign: sign}, $.init);
 			};
 			$.loadData();
 			

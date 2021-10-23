@@ -63,16 +63,23 @@
 				// 提交
 				$.ajax({
 					type: "POST",
-					url: "/api/order/appeal",
+					url: $.baseUrl + "order/appeal",
 					data: fd,
 					processData: false,
 					contentType: false,
 					success: function(msg){
-						$.reqSuccess(msg, function(data){
+						if (msg.success) {
 							$.base_dialog("申诉成功", function() {
 				    			$.redirect();
 				    		});
-						});
+						} else {
+							console.log(msg);
+							if (msg.errorCode == 'LOGIN' && $.logout) {
+								$.logout();
+							} else {
+								$.base_dialog(msg.errorMessage);
+							}
+						}
 					}
 				});
 			});

@@ -3,10 +3,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class StaticApp {
+public class StaticApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StaticApp.class, args);
+		SpringApplication.run(StaticApplication.class, args);
 	}
 	
 }

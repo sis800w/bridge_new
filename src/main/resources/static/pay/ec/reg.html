@@ -113,7 +113,7 @@
 						password: password,
 						sn: userSn
 				};
-				$.req('post', '/api/user/register', data, function(msg) {
+				$.post('user/register', data, function(msg) {
 					$.setUserinfo(msg);
 					window.location.href = "./my.html?open=updatePayPsw";
 				});

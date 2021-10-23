@@ -82,7 +82,7 @@
 				}
 				
 				// 查询
-				$.req('get', '/api/config/history', {name: name}, function(msg) {
+				$.get('config/history', {name: name}, function(msg) {
 					$("#mydetails_tbody").setTemplateElement("mydetails_template");
 					$("#mydetails_tbody").processTemplate(msg);
 				});

@@ -132,7 +132,7 @@
 				$("#div_username").text(userinfo);
 				
 				// 查询
-				$.req('get', '/api/admin/myInfo', null, function(msg) {
+				$.get('admin/myInfo', null, function(msg) {
 					// 统计数据填充
 					$("#sumPayAmountNew").text(msg.sumPayAmountNew);
 					$("#sumPayAmountSuccessToday").text(msg.sumPayAmountSuccessToday);
@@ -196,7 +196,7 @@
 								password: password,
 								newPassword: newPassword
 						};
-						$.req('post', '/api/admin/updatePwd', data, function(msg) {
+						$.post('admin/updatePwd', data, function(msg) {
 							box.find('.password').val("");
 							box.find('.newPassword').val("");
 							box.find('.newPassword2').val("");

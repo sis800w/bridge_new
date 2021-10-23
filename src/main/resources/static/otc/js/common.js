@@ -1,4 +1,6 @@
 $(function(){
+	$.baseUrl = window.location.protocol + "//" + window.location.host + ":9090/api/";
+	
 	// 默认样式
 	$("body").css("--color_h", "#9EA1C0");
 	$("body").css("--color_sh", "#75799D");
@@ -48,49 +50,63 @@ $(function(){
 		document.cookie = name + "=;expires=" + expires.toGMTString() + ";path=/";
 	};
 	
-	//ajax方法（请求方法、请求地址、请求参数、成功回调、错误回调、操作按钮、加载中图标）
+	//ajax方法
 	$.req = function (method, url, data, successCallback, errorCallback, opBtn, isJsonp) {
-		// console.log("调用接口开始，method=" + method + "，url=" + url + "，data=" + JSON.stringify(data) + "，isJsonp=" + isJsonp);
+		url = $.baseUrl + url;
+		console.log("start." + method + (isJsonp ? ".jsonp" : "") + "，url=" + url + "，data=" + JSON.stringify(data));
 		$.ajax({
 			type: method,
 			url: url,
 			data: data,
 			dataType : isJsonp ? "jsonp" : null,
 			traditional: true,
+			xhrFields: {
+				withCredentials: true
+			},
+			crossDomain: true,
 			beforeSend : function (xhr) {
 				if (opBtn) {
 					opBtn.attr("disabled", "disabled");
 				}
-				//$.showLoading();
 			},
 			success: function(msg){
-				// console.log("调用接口成功，method=" + method + "，url=" + url + "，data=" + JSON.stringify(data) + "，isJsonp=" + isJsonp + "，result=" + JSON.stringify(msg));
-				$.reqSuccess(msg, successCallback, errorCallback);
+				console.log("success." + method + (isJsonp ? ".jsonp" : "") + "，url=" + url + "，data=" + JSON.stringify(data) + "，result=" + JSON.stringify(msg));
+				if (msg.success) {
+					if (successCallback) {
+						successCallback(msg.data);
+					}
+				} else {
+					if (msg.errorCode == 'LOGIN' && $.logout) {
+						$.logout();
+					} else if (errorCallback) {
+						errorCallback(msg.errorMessage, msg.errorCode);
+					} else {
+						$.base_dialog(msg.errorMessage);
+					}
+				}
 			},
 			complete: function(xhr, ts) {
 				if (opBtn) {
 					opBtn.removeAttr("disabled");
 				}
-				//$.hideLoading();
 			}
 		});
-		// console.log("调用接口结束，method=" + method + "，url=" + url + "，data=" + JSON.stringify(data) + "，isJsonp=" + isJsonp);
+		console.log("end." + method + (isJsonp ? ".jsonp" : "") + "，url=" + url + "，data=" + JSON.stringify(data));
 	};
-	$.reqSuccess = function (msg, successCallback, errorCallback) {	//请求成功处理
-		if (msg.success) {
-			if (successCallback) {
-				successCallback(msg.data);
-			}
-		} else {
-			console.log(msg);
-			if (msg.errorCode == 'LOGIN' && $.logout) {
-				$.logout();
-			} else if (errorCallback) {
-				errorCallback(msg.errorMessage, msg.errorCode);
-			} else {
-				$.base_dialog(msg.errorMessage);
-			}
-		}
+	$.get = function(url, data, successCallback) {
+		$.req("get", url, data, successCallback, null, null, false);
+	};
+	$.post = function(url, data, successCallback, errorCallback, opBtn) {
+		$.req("post", url, data, successCallback, errorCallback, opBtn, false);
+	};
+	$.del = function(url, data, successCallback, errorCallback, opBtn) {
+		$.req("delete", url, data, successCallback, errorCallback, opBtn, false);
+	};
+	$.jsonpGet = function(url, data, successCallback) {
+		$.req("get", url, data, successCallback, null, null, true);
+	};
+	$.jsonpPost = function(url, data, successCallback, errorCallback, opBtn) {
+		$.req("post", url, data, successCallback, errorCallback, opBtn, true);
 	};
 	
 	// 定制标记
@@ -138,7 +154,7 @@ $(function(){
 			$.removeCookie("m");
 			$.removeCookie("sm");
 			$.removeCookie("qm");
-			$.req('get', '/api/style', null, function(msg) {
+			$.get('style', null, function(msg) {
 				$.setCookie("style", $.tag)
 				$.updateStyle();
 			});
@@ -807,7 +823,7 @@ $(function(){
 	$.imgKey = $.uuid();
 	$(".imgCaptcha_btn").each(function(){
 		$(this).on("click", function () {
-			$(this).attr("src", "/captcha?imgKey=" + $.imgKey + "&r=" + new Date().getTime());
+			$(this).attr("src", $.baseUrl + "captcha?imgKey=" + $.imgKey + "&r=" + new Date().getTime());
 		});
 	});
 	

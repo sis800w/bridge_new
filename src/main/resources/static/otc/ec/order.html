@@ -326,7 +326,7 @@
 							lcOrderId: lcOrderId,
 							cancelCause: obj.find('input:radio:checked').val()
 						};
-						$.req('post', '/api/order/cancel', data, function(msg) {
+						$.post('order/cancel', data, function(msg) {
 							$.loadData();
 						});
 					}, function() {
@@ -336,7 +336,7 @@
 			// 函数：我已付款成功
 			$.payok = function (lcOrderId){
 				$.base_confirm('付款确认', '请确认您已向卖家付款<br><span class="color_m">恶意点击将直接冻结账户</span>', function(){
-					$.req('post', '/api/order/payok', {lcOrderId: lcOrderId}, function(msg) {
+					$.post('order/payok', {lcOrderId: lcOrderId}, function(msg) {
 						$.loadData();
 					});
 		    	}, function(){
@@ -371,7 +371,7 @@
 								lcOrderId: lcOrderId,
 								payPassword: payPassword
 							};
-							$.req('post', '/api/order/success', data, function(msg) {
+							$.post('order/success', data, function(msg) {
 								inputPayPsw.dialog( "close" );
 								$.loadData();
 							});
@@ -382,7 +382,7 @@
 			// 函数：选择收款方式
 		    $.accountSelect = function(lcOrderId){
 		    	var data = {lcOrderId: lcOrderId};
-				$.req('get', '/api/order/limitAccount', data, function(msg) {
+				$.get('order/limitAccount', data, function(msg) {
 					var selectAccount = $.base_window("selectAccount", msg.length * 48, "");
 					selectAccount.setTemplateElement("select_account_tmp");
 					selectAccount.processTemplate(msg);
@@ -393,11 +393,11 @@
 								lcOrderId: lcOrderId,
 								sellAccountId: $(this).attr("accountId")
 							};
-							$.req('post', '/api/order/changeAccount', data, function(msg3) {
+							$.post('order/changeAccount', data, function(msg3) {
 								selectAccount.dialog("close");
 								if (! msg3) return;
 								var at = $("#accountType");
-								at.css("background-image", "url('/image/account/" + msg3.accountType + ".png')");
+								at.css("background-image", "url('../image/account/" + msg3.accountType + ".png')");
 								var accountTypeName;
 								switch(msg3.accountType) {
 									case "ALIPAY" : accountTypeName = "支付宝"; break;
@@ -481,7 +481,7 @@
 			
 			// 查询
 			$.loadData = function() {
-				$.req('get', '/api/order/query', {lcOrderId: $.getParam("orderId")}, $.init);
+				$.get('order/query', {lcOrderId: $.getParam("orderId")}, $.init);
 			};
 			$.loadData();
 			

@@ -34,7 +34,7 @@ $(function(){
 						phone: phone,
 						password: password
 				};
-				$.req('post', '/api/user/login', data, function(msg) {
+				$.post('user/login', data, function(msg) {
 					$.setUserinfo(msg);
 					window.location.reload();
 				});
@@ -55,7 +55,7 @@ $(function(){
 	
 	// 登出按钮
 	$("#logout_btn").on('click', function(){
-		$.req('post', '/api/user/logout', null, function() {
+		$.post('user/logout', null, function() {
 			$.logout();
 		});
 	});
@@ -104,7 +104,7 @@ $(function(){
 	$.loadCoins = function() {
 		if ($.tag) {
 			if (! localStorage.coinsTag || localStorage.coinsTag != $.tag) {
-				$.req('get', '/api/coininfo/coins', {tag: $.tag}, function(msg) {
+				$.get('coininfo/coins', {tag: $.tag}, function(msg) {
 					$.setCoins(msg, $.tag);
 					window.location.reload();
 				});
@@ -127,7 +127,7 @@ $(function(){
 	
 	// 币信息
 	$.coininfo = function(coin, callback) {
-		$.req('get', '/api/coininfo/' + coin, null, function(msg) {
+		$.get('coininfo/' + coin, null, function(msg) {
 			callback(msg);
 		});
 	};
@@ -155,7 +155,7 @@ $(function(){
 						//'<li style="margin-bottom: 0px;">你的充币地址不会变化，可以重复充币。</li>' +
 					'</ul>')
 				.addBtn("我已转入", function(obj) {
-					$.req('post', '/api/wallet/quickRecharge', {coin: coin}, function(time) {
+					$.post('wallet/quickRecharge', {coin: coin}, function(time) {
 						$.base_dialog('等待区块链网络节点确认，请稍后刷新查看余额变化');
 						obj.hide();
 						setTimeout($.loadData, time * 1000 * 2);
@@ -163,9 +163,9 @@ $(function(){
 				})
 				.show(function(obj) {	// 填充
 					$("#" + id + "title").css('margin-bottom', '5px');
-					$.req('get', '/api/wallet/address', {coin: coin}, function(address) {
+					$.get('wallet/address', {coin: coin}, function(address) {
 						$('#' + id + '_address').text(address);
-						$('#' + id + '_qrcode').attr("src", "/qrcode/" + address);
+						$('#' + id + '_qrcode').attr("src", $.baseUrl + "qrcode/" + address);
 						$.copy('.address_copy');
 					});
 				});
@@ -216,7 +216,7 @@ $(function(){
 							payPassword: payPassword,
 							coin: coin
 					};
-					$.req('post', '/api/wallet/withdraw', data, function(msg) {
+					$.post('wallet/withdraw', data, function(msg) {
 						obj.find(".withdrawNum").val("");
 						obj.find(".withdrawAddress").val("");
 						obj.find(".payPassword").val("");
@@ -327,12 +327,12 @@ $(function(){
 				// 提交
 				$.ajax({
 					type: "POST",
-					url: "/api/account/add",
+					url: $.baseUrl + "account/add",
 					data: fd,
 					processData: false,
 					contentType: false,
 					success: function(msg){
-						$.reqSuccess(msg, function(data){
+						if (msg.success) {
 							$.base_dialog('添加成功');
 							obj.find('.payPassword').val("")
 							obj.find('.accountNo').val("")
@@ -340,7 +340,14 @@ $(function(){
 							obj.find('.subbranch').val("")
 							$.loadData();
 							obj.hide();
-						});
+						} else {
+							console.log(msg);
+							if (msg.errorCode == 'LOGIN' && $.logout) {
+								$.logout();
+							} else {
+								$.base_dialog(msg.errorMessage);
+							}
+						}
 					}
 				});
 			})
@@ -418,7 +425,7 @@ $(function(){
 						nickname: nickname,
 						wechat: wechat
 				};
-				$.req('post', '/api/user/updateInfo', data, function(msg) {
+				$.post('user/updateInfo', data, function(msg) {
 					obj.find('.nickname').val("");
 					obj.find('.wechat').val("");
 					$.base_dialog('设置成功');
@@ -462,7 +469,7 @@ $(function(){
 						idcard: idcard,
 						realname: realname
 				};
-				$.req('post', '/api/user/realnameAuth', data, function(msg) {
+				$.post('user/realnameAuth', data, function(msg) {
 					obj.find('.idcard').val("");
 					obj.find('.realname').val("");
 					$.base_dialog('通过认证');
@@ -511,7 +518,7 @@ $(function(){
 						payPassword: payPassword,
 						newPayPassword: newPayPassword
 				};
-				$.req('post', '/api/user/updatePayPwd', data, function(msg) {
+				$.post('user/updatePayPwd', data, function(msg) {
 					var user = $.userinfo();
 					user.hasPayPassword = true;
 					$.setUserinfo(user);

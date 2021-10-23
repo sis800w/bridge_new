@@ -109,7 +109,7 @@
 				}
 				
 				// 查询
-				$.req('get', '/api/coininfo/admin/list', null, function(msg) {
+				$.get('coininfo/admin/list', null, function(msg) {
 					for (var i = 0; i < msg.length; i++) {
 						mydetailsmap[msg[i].id] = msg[i];
 					}
@@ -241,7 +241,7 @@
 										collectionNumMin: collectionNumMin,
 										freeTrade: freeTrade
 								};
-								$.req('post', '/api/coininfo/admin/update', data, function(msg) {
+								$.post('coininfo/admin/update', data, function(msg) {
 									obj.find('.rechargeNumMin').val("");
 									obj.find('.withdrawNumMin').val("");
 									obj.find('.withdrawFee').val("");

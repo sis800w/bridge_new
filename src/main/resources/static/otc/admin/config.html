@@ -102,7 +102,7 @@
 				}
 				
 				// 查询
-				$.req('get', '/api/config/effectives', null, function(msg) {
+				$.get('config/effectives', null, function(msg) {
 					$("#mydetails_tbody").setTemplateElement("mydetails_template");
 					$("#mydetails_tbody").processTemplate(msg);
 					$.base_btn($(".histroy"), function(_this){
@@ -137,7 +137,7 @@
 										value: value
 										
 								};
-								$.req('post', '/api/config/update', data, function(msg) {
+								$.post('config/update', data, function(msg) {
 									box.find('.takeEffectDate').val("");
 									$.base_dialog('修改成功');
 									box.hide();

@@ -131,7 +131,7 @@
 				$("#div_username").text(userinfo);
 				
 				// 查询
-				$.req('get', '/api/admin/myInfo', null, function(msg) {
+				$.get('admin/myInfo', null, function(msg) {
 					$("#totalAmountSuccess").text(msg.totalAmountSuccess);
 					$("#totalAmountSuccessToday").text(msg.totalAmountSuccessToday);
 					$.base_money($(".base_money"));
@@ -207,7 +207,7 @@
 								password: password,
 								newPassword: newPassword
 						};
-						$.req('post', '/api/admin/updatePwd', data, function(msg) {
+						$.post('admin/updatePwd', data, function(msg) {
 							box.find('.password').val("");
 							box.find('.newPassword').val("");
 							box.find('.newPassword2').val("");
