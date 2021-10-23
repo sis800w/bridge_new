@@ -89,7 +89,7 @@
 .base_radio_item {
 	padding-left: 22px; 
 	display: inline-block;
-	background: transparent url(/image/base_radio.png) no-repeat left top;
+	background: transparent url(../image/base_radio.png) no-repeat left top;
 	height: 19px;
 	line-height:20px;
 	cursor: pointer; 

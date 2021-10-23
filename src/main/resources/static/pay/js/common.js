@@ -754,7 +754,7 @@ $(function(){
 			tip = $(
 				'<div id="weixin-tip" style="height: ' + $(window).height() + ';display: none; position: fixed; left:0; top:0; bottom:0; background: rgba(0,0,0,0.8); filter:alpha(opacity=80);  height: 100%; width: 100%; z-index: 100000000;">' + 
 					'<p style="text-align: center; margin-top: 10%; padding:0 5%;">' + 
-						'<img src="/image/live_weixin.png" alt="微信打开" style="max-width: 100%; height: auto;"/>' + 
+						'<img src="../image/live_weixin.png" alt="微信打开" style="max-width: 100%; height: auto;"/>' + 
 					'</p>' + 
 				'</div>');
 			tip.appendTo($("body"));

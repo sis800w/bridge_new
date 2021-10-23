@@ -116,7 +116,7 @@
 			<table style="width: 100%;">
 				<tr style="height: 50px; border-top: 1px solid #F0F0F0;">
 					<td colspan="2">
-						<div style="background-image: url('/image/coin/{$T.coin}.png'); background-size: 20px; background-position: 0px 3px; background-repeat: no-repeat; padding-left: 30px; font-size: 16px;">
+						<div style="background-image: url('../image/coin/{$T.coin}.png'); background-size: 20px; background-position: 0px 3px; background-repeat: no-repeat; padding-left: 30px; font-size: 16px;">
 							{#if $T.buyer}购买{#else}出售{#/if}{$T.coin}
 						</div>
 					</td>
@@ -200,7 +200,7 @@
 					<tr {#if $T.buyer}id="accountSelect"{#/if} style="height: 35px;">
 						<td class="color_sh">收款方式</td>
 						<td style="text-align: right;">
-							<span id="accountType" style="background-image: url('/image/account/{$T.accountType}.png'); background-size: 16px; background-position: 0px 2px; background-repeat: no-repeat; padding-left: 20px;">
+							<span id="accountType" style="background-image: url('../image/account/{$T.accountType}.png'); background-size: 16px; background-position: 0px 2px; background-repeat: no-repeat; padding-left: 20px;">
 								{#if $T.accountType == 'ALIPAY'}	
 									支付宝
 								{#elseif $T.accountType == 'WECHAT'}
