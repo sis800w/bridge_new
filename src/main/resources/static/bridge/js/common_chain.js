@@ -163,9 +163,9 @@ $(function(){
 		if (ethereum) {
 			try {
 				// connect wallet
-				$.lodding("Connect Wallet...", 0, true);
+				$.loading("Connect Wallet...", 0, true);
 				ethereum.enable().then(accounts => {
-					$.hideLodding();
+					$.hideLoading();
 					$.web3 = new Web3(ethereum);
 					
 					// network changed

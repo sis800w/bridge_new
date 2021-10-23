@@ -1,0 +1,91 @@
+/* basic */
+body {background-image:radial-gradient(circle at 50% 100%,var(--blue) -50%, white 50%);}
+
+/* color */
+:root {
+    --color: color;
+    --blue: #0052ff;
+}
+
+/* pop */
+pop {}
+pop-main {}
+pop-title {}
+pop-title h3 {}
+pop-title a {}
+pop-cont {}
+pop-solve {}
+
+/* btn */
+.btn {border-radius: 100px;background-color: var(--blue);}
+
+/* title */
+.title-flex {padding: .1rem;}
+.title-flex h3 {text-transform: uppercase;font-size: .22rem;}
+.title em {}
+.title span {}
+
+/* name */
+name {height: 1.2rem;justify-content: center;align-items: center;box-shadow: 0 0 0;}
+name h3 {text-align: center;font-weight: 300;line-height: 100%;border: 0;}
+name h3 span {display: block;font-size: .16rem;color: var(--red);}
+name a {}
+name a.btn {width: auto;padding: 0 .2rem;height: .5rem;line-height: .5rem;margin: 0 .15rem;}
+name-logo {height: 1.2rem;}
+
+/*address*/
+.address {padding: .5rem;}
+.address h5 {flex: 1;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; text-transform: none;font-weight: normal;}
+
+/*bet*/
+.bet {margin: .2rem;padding: .1rem 0;border-bottom-width: 1px;}
+.bet i {width: .8rem;height: .8rem;background-image: url(../images/eth.svg);}
+.bet h5 {font-size: .26rem;text-transform: uppercase;margin: 0 .2rem;}
+.bet input {flex: 1;text-align: right;font-size: .26rem;font-weight: bold;}
+
+/*wallet*/
+.wallet {padding: .2rem;}
+
+/*power*/
+.power {background-image:radial-gradient(circle at 90% 20%,var(--blue) -50%, #dce7ff 50%);margin: .2rem;padding: .2rem;border-radius: .2rem;}
+.power h5 {text-align: center;}
+.power ul {padding: .2rem 0;}
+.power li {display: flex;margin: .1rem 0;}
+.power li span {flex: 1;}
+.power li em {padding: 0 .1rem;}
+.power a {height: .6rem;line-height: .6rem;}
+
+.power-pop pop-cont {padding: .3rem .2rem;border-radius: .2rem;}
+.power-pop pop-cont i {font-size: .48rem;margin: 0 auto .2rem;display: block;}
+.power-pop pop-cont p {text-align: center;}
+
+/*rule*/
+.rule {}
+.rule-cont {height: 80vh;overflow: auto;padding: .2rem;}
+.rule-cont h3 {text-align: center;padding: .2rem 0;}
+.rule-cont p {padding: .1rem 0;}
+.rule-cont ul {padding: .1rem 0;}
+.rule-cont li {line-height: 180%;text-indent: 2em;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
