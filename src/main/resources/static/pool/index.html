@@ -22,7 +22,7 @@
 	        <a class="btn rule-open">rules</a>
 	    </name>
 	    <div class="address center">
-	        <h5 id="address"></h5>
+	        <h5 id="address">Click 「」to copy and share your url！</h5>
 	        <a class="ico ico-archive-empty copy" id="copy_target" data-clipboard-target="#copy_target"></a>
 	    </div>
 	    <div class="title-flex"><h3>eth you have earned:</h3></div>
@@ -146,7 +146,7 @@
 			$.accountsChanged = function(addr){
 				$.walletAddress = addr;
 				var refLink = window.location.protocol + "//" + window.location.host + "/index.html?ref=" + $.walletAddress;
-				$("#address").text($.walletAddress);
+				//$("#address").text($.walletAddress);
 				$("#copy_target").attr("data-clipboard-text", refLink);
 				
 				$.queryAccount(function(obj){
