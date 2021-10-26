@@ -64,6 +64,23 @@ $(function () {
 					fee: "5%", 
 					address: "0x0E792F672357CC90f151454a7Fc30bd5202a0F06", 
 					ref: "0x9293aa9221C7eB219B702db5CA6B5986759C72F4"
+				}, {
+					name: "多级多质押币种-1", 
+					stake: {name: "TEST2", address: "0xc80af98BdD271B4c84FFf51a519CA400d72C8A10"}, 
+					reward: {name: "ERC20", address: "0xdB5556A2d8765BCE5f5c4b239A815D3C5d3eA812"}, 
+					apy: "500%", 
+					fee: "5%", 
+					address: "0x1BDe48C1D7C65e2DC2C6Dd56fc42fc45B45347eC", 
+					ref: "0x9293aa9221C7eB219B702db5CA6B5986759C72F4"
+				}, {
+					name: "多级多质押币种-2", 
+					stake: {name: "TEST3", address: "0xA67276127fefe1a40702FE5D72D134eCb29ceA40"}, 
+					reward: {name: "ERC20", address: "0xdB5556A2d8765BCE5f5c4b239A815D3C5d3eA812"}, 
+					apy: "500%", 
+					fee: "5%", 
+					address: "0x1BDe48C1D7C65e2DC2C6Dd56fc42fc45B45347eC", 
+					ref: "0x9293aa9221C7eB219B702db5CA6B5986759C72F4",
+					index: 1
 				}
 			]},
 			{name: "DeFi Chain", nativeCurrencyName: "DFC", chainId: 518, projects: []},
