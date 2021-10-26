@@ -302,6 +302,15 @@ contract FarmMultitokenMultilevel is Ownable, ReentrancyGuard {
     
     // 新增质押币类型
     function addStakedToken(ERC20 _stakedToken, bool _isStakedERC20) external onlyOwner {
+        if (_isStakedERC20) {
+            for (uint i; i < stakes.length; i++) {
+                require(! stakes[i].isERC20 || address(stakes[i].token) != address(_stakedToken), "Added");
+            }
+        } else {
+            for (uint i; i < stakes.length; i++) {
+                require(stakes[i].isERC20, "Added");
+            }
+        }
         users.push();
         stakes.push(Coin(_stakedToken, _isStakedERC20, 0));
         emit NewStakedToken(_stakedToken, _isStakedERC20, stakes.length);
