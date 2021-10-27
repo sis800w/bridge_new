@@ -69,7 +69,6 @@ contract FarmMultitokenMultilevel2 is Ownable, ReentrancyGuard {
         ERC20 token;
         bool isERC20;
         uint totalAmount;
-        
     }
     // 质押代币
     Coin[] public stakes;
