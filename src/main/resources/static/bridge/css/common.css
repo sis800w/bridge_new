@@ -12,7 +12,7 @@ body {
 	margin: 0 auto;
 	background-color: #2c313b!important;
 	background-image: radial-gradient(50% 50% at 50% 50%,rgba(255,0,0,.1) 10%,hsla(0,0%,100%,0) 100%);
-	background-image: url("../img/background.png");
+	background-image: url("../img/background.jpg");
 	background-size: cover;
 	background-position: center center;
 }
