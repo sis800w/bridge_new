@@ -4,19 +4,23 @@ $(function(){
 	$(".div_main").setTemplateElement("project_template");
 	$(".div_main").processTemplate($.config.currChain);
 	
-	$.init = function() {
-		var i = 0;
-		if ($.config.currChain.projects.length > 0) {
-			$.tips("query user info");
-			for (var project of $.config.currChain.projects) {
-				$.queryUser(project, function(obj) {
-					var div = $("#index_" + i);
-					div.find(".stake_coin_balance").text($.setScale(obj.stakedBalance, 6));
-					div.find(".reward_coin_balance").text($.setScale(obj.rewardBalance, 6));
-					if (++i == $.config.currChain.projects.length) $.hideTips();
-				});
+	$.queryContract = function(index) {
+		$.queryUser($.config.currChain.projects[index], function(obj) {
+			var div = $("#index_" + index);
+			div.find(".stake_coin_balance").text($.setScale(obj.stakedBalance, 6));
+			div.find(".reward_coin_balance").text($.setScale(obj.rewardBalance, 6));
+			if (index < $.config.currChain.projects.length - 1) {
+				$.queryContract(++index);
+			} else {
+				$.hideTips();
 			}
+		});
+	};
+	$.init = function() {
+		if ($.config.currChain.projects.length > 0) {
 			$("#a_invitation").show();
+			$.tips("Query user info");
+			$.queryContract(0);
 		}
 	};
 	$.connectWallet($.config.currChain.chainId, $.config.currChain.name, $.init);

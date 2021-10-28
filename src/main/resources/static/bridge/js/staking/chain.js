@@ -61,7 +61,7 @@ $(function () {
 	$.deposit = function(project, amount, ref) {
 		var amountWei = $.toWei(amount, project.stake.unit, project.stake.decimals);
 		var sendParam = {from: $.walletAddress};
-		if (! project.stake.address) {
+		if (project.stake.address == "0x") {
 			sendParam.value = amountWei;
 		}
 		$.tips(amount == "0" ? "Claim...": "Deposit...");
