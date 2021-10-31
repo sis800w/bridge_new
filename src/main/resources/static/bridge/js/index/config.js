@@ -137,26 +137,25 @@ $(function () {
 	};
 	
 	// param
-	var fromCoin = $.getParam("fromCoin");
 	var fromChain = $.getParam("fromChain");
 	if (! fromChain) fromChain = $.getCookie("chain");
 	
 	// default from/to
-	$.updateFromTo = function(fromChain, fromCoin) {
+	$.updateFromTo = function(fromChain) {
 		for(var pair of $.config.pairs) {
-			if ((! fromChain || pair[0].chain == fromChain) && (! fromCoin || pair[0].coin == fromCoin)) {
+			if (! fromChain || pair[0].chain == fromChain) {
 				$.config.from = pair[0];
 				$.config.to = pair[1];
 				break;
 			}
-			if ((! fromChain || pair[1].chain == fromChain) && (! fromCoin || pair[1].coin == fromCoin)) {
+			if (! fromChain || pair[1].chain == fromChain) {
 				$.config.from = pair[1];
 				$.config.to = pair[0];
 				break;
 			}
 		}
 	};
-	$.updateFromTo(fromChain, fromCoin);
+	$.updateFromTo(fromChain);
 	
 	// Cookie & No pair
 	if ($.config.from) {
