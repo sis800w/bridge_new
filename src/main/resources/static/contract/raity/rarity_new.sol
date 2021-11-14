@@ -6,7 +6,7 @@ import "./ERC721Enumerable.sol";
 import "./libraries/Base64.sol";
 import "./libraries/Strings.sol";
 
-contract rarity is ERC721Enumerable {
+contract rarityNew is ERC721Enumerable {
     using Strings for uint256;
     
     string constant public name = "Rarity Manifested";
