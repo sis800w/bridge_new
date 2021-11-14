@@ -58,7 +58,6 @@ contract rarityNew is ERC721Enumerable {
         require(1 <= _race && _race <= 8);
         require(isClassAvailable(_race, _class));
         require(0 <= _gender && _gender <= 1);
-        require(balanceOf(_ref) > 0 || next_summoner < 5, "Referrer Required");
         User storage user = users[msg.sender];
         require(user.activated || users[_ref].activated, "Referrer is not activated");
         
