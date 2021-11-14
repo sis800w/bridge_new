@@ -172,15 +172,24 @@ contract rarityNew is ERC721Enumerable {
         }
     }
     
+    // 性别描述
+    function genders(uint id) public pure returns (string memory description) {
+        if (id == 0) {
+            return "female";
+        } else if (id == 1) {
+            return "male";
+        }
+    }
+    
     // tokenURI
     function tokenURI(uint256 _summoner) public view returns (string memory) {
         string[11] memory parts;
         parts[0] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
         parts[1] = string(abi.encodePacked("class", " ", classes(summoners[_summoner].class)));
         parts[2] = '</text><text x="10" y="40" class="base">';
-        parts[3] = string(abi.encodePacked("race", " ", classes(summoners[_summoner].race)));
+        parts[3] = string(abi.encodePacked("race", " ", races(summoners[_summoner].race)));
         parts[4] = '</text><text x="10" y="60" class="base">';
-        parts[5] = string(abi.encodePacked("gender", " ", classes(summoners[_summoner].gender)));
+        parts[5] = string(abi.encodePacked("gender", " ", genders(summoners[_summoner].gender)));
         parts[6] = '</text><text x="10" y="80" class="base">';
         parts[7] = string(abi.encodePacked("level", " ", Strings.toString(summoners[_summoner].level)));
         parts[8] = '</text><text x="10" y="100" class="base">';
