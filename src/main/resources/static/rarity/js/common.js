@@ -310,4 +310,60 @@ $(function(){
 		$(".class_div_popup").hide();
 	};
 	
+	$.radio = function($ele_radio) {
+		$ele_radio.each(function() {
+			var width = $(this).attr("width");
+			if (! $(this).attr("y")) {
+				$(this).css({
+					"display": "flex",
+					"flex-wrap": "wrap"
+				});
+			}
+			$(':radio + label', this).each(function() {
+				var that = $(this);
+				that.css("display", "flex");
+				that.css("font-size", "16px");
+				that.css("line-height", "36px");
+				if (width) that.css("width", width);
+				var text = that.text();
+				that.html('');
+				
+				var span1 = $("<span>");
+				span1.css("width", "20px");
+				span1.appendTo(that);
+				var i = $("<i>");
+				i.addClass("fa");
+				i.addClass("fa-circle-o");
+				i.appendTo(span1);
+				
+				var span2 = $("<span>");
+				span2.css("padding-right", "20px");
+				span2.text(text);
+				span2.appendTo(that);
+				
+				if (that.prev().is(":checked")) {
+					i.removeClass("fa-circle-o");
+					i.addClass("fa-dot-circle-o");
+					i.css("color", "rgba(217,119,6)");
+				}
+			}).click(function(event) {
+				var that = $(this);
+				var is = that.parent().find("i");
+				is.removeClass("fa-dot-circle-o");
+				is.addClass("fa-circle-o");
+				is.css("color", "");
+				that.siblings().attr("checked", null);
+				
+				if (! that.prev().is(':checked')) {
+					var i = that.find("i");
+					i.removeClass("fa-circle-o");
+					i.addClass("fa-dot-circle-o");
+					i.css("color", "rgba(217,119,6)");
+					that.prev().attr("checked", "checked");
+				}
+				event.stopPropagation();
+			}).prev().hide();
+		});
+	};
+	$.radio($('.radio'));
 });

@@ -13,6 +13,7 @@
 	<link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+	<link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css" />
 	<style data-href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&amp;display=swap">
 		@font-face {
 			font-family:'Comic Neue';
@@ -53,6 +54,8 @@
 		body {
 			margin: 0;
 			line-height: 1.5;
+			display: flex;
+			justify-content: center;
 		}
 		fieldset, ol, ul {
 			margin: 0;
@@ -127,6 +130,36 @@
 			font-size: .875rem!important;
 			line-height: 1.25rem!important;
 		}
+		header > div:nth-child(2){
+			display: flex;
+			justify-content: center;
+		}
+		header nav {
+			display: flex;
+			width: 200px;
+		}
+		header nav > button {
+			width: 50%;
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
+			padding-left: .25rem;
+			padding-right: .25rem;
+			font-size: 1rem;
+			line-height: 1.5rem;
+			border-style: none;
+			background-color: rgba(156,163,175)!important;
+		}
+		header .select {
+			background-color: rgba(217,119,6)!important;
+		}
+		header nav > button:first-child {
+			border-top-left-radius: .75rem;
+			border-bottom-left-radius: .75rem;
+		}
+		header nav > button:last-child {
+			border-top-right-radius: .75rem;
+			border-bottom-right-radius: .75rem;
+		}
 		main {
 			--tw-text-opacity: 1!important;
 			color: rgba(255,255,255,var(--tw-text-opacity))!important;
@@ -141,13 +174,11 @@
 		main > div {
 			text-align: center!important;
 			padding: 1rem!important;
-			--tw-border-opacity: 1!important;
-			border-color: rgba(31,41,55,var(--tw-border-opacity))!important;
+			border-color: rgba(31,41,55);
 			border-width: 2px!important;
 		}
 		main > div:hover {
-			--tw-border-opacity:1!important;
-			border-color:rgba(255,255,255,var(--tw-border-opacity))!important;
+			border-color:rgba(255,255,255);
 		}
 		main > div > div:first-child {
 			--tw-text-opacity: 1!important;
@@ -171,7 +202,7 @@
 			padding-bottom: 1.5rem!important;
 			padding-top: 1.5rem!important;
 		}
-		footer > div:first-child {
+		footer > div:not(:last-child) {
 			--tw-text-opacity: 1!important;
 			color: rgba(229,231,235,var(--tw-text-opacity))!important;
 			font-size: 1rem!important;
@@ -216,6 +247,62 @@
 				grid-template-columns: repeat(4,minmax(0,1fr))!important;
 			}
 		}
+		.div_form {
+			width: 290px; 
+			border-radius: .75rem!important;
+			border-width: 1px!important;
+			--tw-border-opacity: 1!important;
+			border-color: rgba(217,119,6,var(--tw-border-opacity))!important;
+			--tw-bg-opacity: 0.95!important;
+			background-color: rgba(75,85,99,var(--tw-bg-opacity))!important;
+			position: fixed;
+			margin-top: calc(50vh - 181px);
+			padding: 10px;
+			display: none;
+			z-index: 10001;
+		}
+		.div_form > div {
+			padding: 5px 0px 10px 0px;
+			border-bottom: 1px solid rgba(217,119,6,.3);
+			color: #fff;
+		}
+		.div_form > div > div:first-child {
+			line-height: 36px;
+			font-size: 16px;
+		}
+		.div_form input, button {
+			-webkit-appearance: none;
+			border-radius: 0;
+		}
+		.div_form input[type=text]{
+			resize: none;
+			border: 0;
+			color: #fff;
+		    font: inherit;
+		    background-color: rgba(242,239,255,.2);
+		    caret-color: #fff;
+		    height: 36px;
+			padding: 0 10px;
+			width: 100%;
+			font-size: 16px;
+		}
+		.div_form input[type=text]:focus{
+			outline: none;
+		}
+		.div_form button {
+			margin: 15px 0 5px 0;
+			width: 100%;
+			color: #fff;
+			background: rgba(217,119,6,.2);
+			border: 0;
+			border-radius: 18px;
+			height: 36px;
+			font-size: 16px;
+			box-shadow: 0px 0px 5px rgba(217,119,6,.2);
+		}
+		#div_addr {
+			display: none;
+		}
 	</style>
 </head>
 <body>
@@ -235,69 +322,77 @@
 					<li><img src="img/menu/dungeon.png"/><a>Dungeon</a></li>
 					<li><img src="img/menu/summon.png"/><a>Summon</a></li>
 					<li><img src="img/menu/profile.png"/><a>Summoners</a></li>
-					<li><div>Connect Wallet</div></li>
+					<li><div id="connect">Connect Wallet</div></li>
 				</ul>
+			</div>
+			<div>
+				<nav>
+					<button sex="1" class="select">male</button>
+					<button sex="0">female</button>
+				</nav>
 			</div>
 			<div></div>
 		</header>
+		
 		<main>
-			<div>
+			<div cls="1">
 				<div>Barbarian</div>
 				<img src="img/class/barbarian.png"/>
 				<div>Rage is a power that fuels not just a battle frenzy but also uncanny reflexes, resilience, and feats of strength.</div>
 			</div>
-			<div>
+			<div cls="2">
 				<div>Bard</div>
 				<img src="img/class/bard.png"/>
 				<div>Not only can they charm their way out of any situation, they can also sling spells across the battlefield, and support their allies by giving them helpful buffs</div>
 			</div>
-			<div>
+			<div cls="3">
 				<div>Cleric</div>
 				<img src="img/class/cleric.png"/>
 				<div>Clerics are powerful healers due to the large number of healing and curative magics available to them</div>
 			</div>
-			<div>
+			<div cls="4">
 				<div>Druid</div>
 				<img src="img/class/druid.png"/>
 				<div>Guardians of the wilderness, druids saw themselves less as masters of the natural order and more as an extension of its will</div>
 			</div>
-			<div>
+			<div cls="5">
 				<div>Fighter</div>
 				<img src="img/class/fighter.png"/>
 				<div>Unparalleled mastery with weapons and armor, and a thorough knowledge of the skills of combat</div>
 			</div>
-			<div>
+			<div cls="6">
 				<div>Monk</div>
 				<img src="img/class/monk.png"/>
 				<div>Monks are united in their ability to magically harness the energy that flows in their bodies</div>
 			</div>
-			<div>
+			<div cls="7">
 				<div>Paladin</div>
 				<img src="img/class/paladin.png"/>
 				<div>Paladin swear to uphold justice and righteousness, to stand with the good things of the world against the encroaching darkness</div>
 			</div>
-			<div>
+			<div cls="8">
 				<div>Ranger</div>
 				<img src="img/class/ranger.png"/>
 				<div>A ranger’s true calling is to defend the outskirts of civilization from the ravages of monsters and humanoid hordes that press in from the wild.</div>
 			</div>
-			<div>
+			<div cls="9">
 				<div>Rogue</div>
 				<img src="img/class/rogue.png"/>
 				<div>A rogue would rather make one precise strike, placing it exactly where the attack will hurt the target most, than wear an opponent down with many smaller strikes</div>
 			</div>
-			<div>
+			<div cls="10">
 				<div>Sorcerer</div>
 				<img src="img/class/sorcerer.png"/>
 				<div>Sorcerers carry a magical birthright conferred upon them by an exotic bloodline, some otherworldly influence, or exposure to unknown cosmic forces</div>
 			</div>
-			<div>
+			<div cls="11">
 				<div>Wizard</div>
 				<img src="img/class/wizard.png"/>
 				<div>Wizards are supreme magic-users, defined and united as a class by the spells they cast.</div>
 			</div>
 		</main>
 		<footer>
+			<div id="div_addr">Your Address: <span id="addr">0x9293aa9221c7eb219b702db5ca6b5986759c72f4</span></div>
 			<div>Donation Address: 0x381da664f749fea4e7cf12c9f3e7032780045b57</div>
 			<div>
 				Made with ❤️<a href="https://twitter.com/YieldBouncer" target="_blank">@YieldBouncer</a>
@@ -305,8 +400,31 @@
 			</div>
 		</footer>
 	</div>
+	<div class="div_form class_div_popup">
+		<div>
+			<div>Name：</div>
+			<input id="name" type="text" />
+		</div>
+		<div>
+			<div>Race：</div>
+			<div id="race" class="radio" width="134">
+				<input name='race' type="radio" value="1" /><label>Human</label>
+				<input name='race' type="radio" value="2" /><label>Dwarf</label>
+				<input name='race' type="radio" value="3" /><label>Night Elf</label>
+				<input name='race' type="radio" value="4" /><label>Gnome</label>
+				<input name='race' type="radio" value="5" /><label>Orc</label>
+				<input name='race' type="radio" value="6" /><label>Undead</label>
+				<input name='race' type="radio" value="7" /><label>Tauren</label>
+				<input name='race' type="radio" value="8" /><label>Troll</label>
+			</div>
+		</div>
+		<button>Create</button>
+	</div>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.4/dist/web3.min.js"></script>
 	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/common_chain.js"></script>
+	<script type="text/javascript" src="js/chain.js"></script>
 	<script type="text/javascript">
 		$(function () {
 			var header = $("header");
@@ -320,6 +438,75 @@
 					ul.css("display", "none");
 					div.css("display", "none");
 				}
+			});
+			
+			$.hideRace = function(inputs, arr) {
+				console.log(arr);
+				inputs.each(function(index){
+					if ($.inArray(index + 1, arr) == -1) {
+						$(this).show();
+					} else {
+						$(this).hide();
+					}
+				});
+			};
+			
+			var MAIN_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"newName","type":"string"}],"name":"NewSummonerName","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":false,"internalType":"uint256","name":"level","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"summoner","type":"uint256"}],"name":"leveled","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":false,"internalType":"uint256","name":"class","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"summoner","type":"uint256"}],"name":"summoned","type":"event"},{"inputs":[{"internalType":"uint256","name":"_summoner","type":"uint256"}],"name":"adventure","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_summoner","type":"uint256"}],"name":"level_up","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_summoner","type":"uint256"},{"internalType":"uint256","name":"_xp","type":"uint256"}],"name":"spend_xp","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"_race","type":"uint256"},{"internalType":"uint256","name":"_class","type":"uint256"},{"internalType":"uint256","name":"_gender","type":"uint256"},{"internalType":"address","name":"_ref","type":"address"}],"name":"summon","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"},{"internalType":"string","name":"_name","type":"string"}],"name":"updateSummonerName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"classes","outputs":[{"internalType":"string","name":"description","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"genders","outputs":[{"internalType":"string","name":"description","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"next_summoner","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"races","outputs":[{"internalType":"string","name":"description","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"summoners","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"class","type":"uint256"},{"internalType":"uint256","name":"race","type":"uint256"},{"internalType":"uint256","name":"gender","type":"uint256"},{"internalType":"uint256","name":"xp","type":"uint256"},{"internalType":"uint256","name":"level","type":"uint256"},{"internalType":"uint256","name":"adventurers_log","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_summoner","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"users","outputs":[{"internalType":"bool","name":"activated","type":"bool"},{"internalType":"address","name":"ref","type":"address"},{"internalType":"uint256","name":"invitedCount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"curent_level","type":"uint256"}],"name":"xp_required","outputs":[{"internalType":"uint256","name":"xp_to_next_level","type":"uint256"}],"stateMutability":"pure","type":"function"}];
+			var MAIN_ADDR = "0xeA0970777cdB440C70a781722fF7d98d25197896";
+			
+			var cls;
+			$("#connect").on('click', function () {
+				$.connectWallet(97, "Smart Chain - Testnet", function() {
+					$.mainContract = new $.web3.eth.Contract(MAIN_ABI, MAIN_ADDR);
+					$("#addr").text($.walletAddress);
+					$("#div_addr").show();
+					$("#connect").hide();
+					
+					$("main").children().each(function() {
+						var _this = $(this);
+						_this.on('click', function(){
+							cls = _this.attr("cls");
+							var inputs = $("#race").find("label");
+							if (cls == 2) {
+								$.hideRace(inputs, [3,4,5,6,7,8]);
+							} else if (cls == 3) {
+								$.hideRace(inputs, [1,4,6]);
+							} else if (cls == 4) {
+								$.hideRace(inputs, [7]);
+							} else if (cls == 5) {
+								$.hideRace(inputs, [4,5,7]);
+							} else if (cls == 6) {
+								$.hideRace(inputs, [1,2,3,4,5,6,7,8]);
+							} else if (cls == 7) {
+								$.hideRace(inputs, [1,2,3,4,6]);
+							} else if (cls == 8) {
+								$.hideRace(inputs, [2,3,5,7]);
+							} else if (cls == 9) {
+								$.hideRace(inputs, [2,3,7,8]);
+							} else if (cls == 10) {
+								$.hideRace(inputs, [1,2,3,4,5,6,7,8]);
+							} else if (cls == 11) {
+								$.hideRace(inputs, [1,2,4,5,6,8]);
+							}
+							$(".div_form").show();
+							$.showOverlay();
+						});
+					});
+				});
+			});
+			
+			var sex = 1;
+			$("header").find("nav").find("button").each(function(){
+				var _this = $(this);
+				_this.on('click', function(){
+					sex = _this.attr("sex");
+					_this.parent().children().removeClass("select");
+					_this.addClass("select");
+				});
+			});
+			
+			$(".div_form").find("button").on('click', function(){
+				
 			});
 		});
 	</script>
