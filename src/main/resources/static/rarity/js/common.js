@@ -344,21 +344,24 @@ $(function(){
 				if (that.prev().is(":checked")) {
 					i.removeClass("fa-circle-o");
 					i.addClass("fa-dot-circle-o");
-					i.css("color", "rgba(217,119,6)");
+					that.css("color", "rgba(217,119,6)");
 				}
 			}).click(function(event) {
 				var that = $(this);
+				if (that.prev().attr("disabled")) return;
 				var is = that.parent().find("i");
 				is.removeClass("fa-dot-circle-o");
 				is.addClass("fa-circle-o");
-				is.css("color", "");
-				that.siblings().attr("checked", null);
+				that.siblings().each(function() {
+					if (! $(this).prev().attr("disabled")) $(this).css("color", "");
+					$(this).attr("checked", null);
+				});
 				
 				if (! that.prev().is(':checked')) {
 					var i = that.find("i");
 					i.removeClass("fa-circle-o");
 					i.addClass("fa-dot-circle-o");
-					i.css("color", "rgba(217,119,6)");
+					that.css("color", "rgba(217,119,6)");
 					that.prev().attr("checked", "checked");
 				}
 				event.stopPropagation();

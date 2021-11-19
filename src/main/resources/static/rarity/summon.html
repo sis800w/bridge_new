@@ -14,27 +14,27 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
 	<link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css" />
-	<style data-href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&amp;display=swap">
+	<style>
 		@font-face {
 			font-family:'Comic Neue';
 			font-style:normal;
 			font-weight:400;
 			font-display:swap;
-			src:url(https://fonts.gstatic.com/s/comicneue/v3/4UaHrEJDsxBrF37olUeDx64.woff) format('woff')
+			src:url(font/4UaHrEJDsxBrF37olUeDx64.woff) format('woff')
 		}
 		@font-face {
 			font-family:'Comic Neue';
 			font-style:normal;
 			font-weight:700;
 			font-display:swap;
-			src:url(https://fonts.gstatic.com/s/comicneue/v3/4UaErEJDsxBrF37olUeD_xHMwpg.woff) format('woff')
+			src:url(font/4UaErEJDsxBrF37olUeD_xHMwpg.woff) format('woff')
 		}
 		@font-face {
 			font-family:'Comic Neue';
 			font-style:normal;
 			font-weight:400;
 			font-display:swap;
-			src:url(https://fonts.gstatic.com/s/comicneue/v3/4UaHrEJDsxBrF37olUeD96rp57F2IwM.woff2) format('woff2');
+			src:url(font/4UaHrEJDsxBrF37olUeD96rp57F2IwM.woff2) format('woff2');
 			unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD
 		}
 		@font-face {
@@ -42,7 +42,7 @@
 			font-style:normal;
 			font-weight:700;
 			font-display:swap;
-			src:url(https://fonts.gstatic.com/s/comicneue/v3/4UaErEJDsxBrF37olUeD_xHM8pxULilENlY.woff2) format('woff2');
+			src:url(font/4UaErEJDsxBrF37olUeD_xHM8pxULilENlY.woff2) format('woff2');
 			unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD
 		}
 	</style>
@@ -427,8 +427,26 @@
 	<script type="text/javascript" src="js/chain.js"></script>
 	<script type="text/javascript">
 		$(function () {
+			// func: race style
+			$.hideRace = function(labels, arr) {
+				labels.each(function(index){
+					$(this).prev().attr("checked", false);
+					var i = $(this).find("i");
+					i.removeClass("fa-dot-circle-o");
+					i.addClass("fa-circle-o");
+					if ($.inArray(index + 1, arr) == -1) {
+						$(this).css("color", "#fff");
+						$(this).prev().removeAttr("disabled");
+					} else {
+						$(this).css("color", "#888");
+						$(this).prev().attr("disabled", "disabled");
+					}
+				});
+			};
+			
+			// bind: menu btn
 			var header = $("header");
-			header.find("button").on('click', function(){
+			header.find("button").first().on('click', function(){
 				var ul = header.find("ul");
 				var div = header.children("div:last-child");
 				if (ul.css("display") == "none") {
@@ -440,61 +458,22 @@
 				}
 			});
 			
-			$.hideRace = function(inputs, arr) {
-				console.log(arr);
-				inputs.each(function(index){
-					if ($.inArray(index + 1, arr) == -1) {
-						$(this).show();
-					} else {
-						$(this).hide();
-					}
-				});
-			};
-			
+			// bind: connect btn
 			var MAIN_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"newName","type":"string"}],"name":"NewSummonerName","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":false,"internalType":"uint256","name":"level","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"summoner","type":"uint256"}],"name":"leveled","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":false,"internalType":"uint256","name":"class","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"summoner","type":"uint256"}],"name":"summoned","type":"event"},{"inputs":[{"internalType":"uint256","name":"_summoner","type":"uint256"}],"name":"adventure","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_summoner","type":"uint256"}],"name":"level_up","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_summoner","type":"uint256"},{"internalType":"uint256","name":"_xp","type":"uint256"}],"name":"spend_xp","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"_race","type":"uint256"},{"internalType":"uint256","name":"_class","type":"uint256"},{"internalType":"uint256","name":"_gender","type":"uint256"},{"internalType":"address","name":"_ref","type":"address"}],"name":"summon","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"},{"internalType":"string","name":"_name","type":"string"}],"name":"updateSummonerName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"classes","outputs":[{"internalType":"string","name":"description","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"genders","outputs":[{"internalType":"string","name":"description","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"next_summoner","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"races","outputs":[{"internalType":"string","name":"description","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"summoners","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"class","type":"uint256"},{"internalType":"uint256","name":"race","type":"uint256"},{"internalType":"uint256","name":"gender","type":"uint256"},{"internalType":"uint256","name":"xp","type":"uint256"},{"internalType":"uint256","name":"level","type":"uint256"},{"internalType":"uint256","name":"adventurers_log","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_summoner","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"users","outputs":[{"internalType":"bool","name":"activated","type":"bool"},{"internalType":"address","name":"ref","type":"address"},{"internalType":"uint256","name":"invitedCount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"curent_level","type":"uint256"}],"name":"xp_required","outputs":[{"internalType":"uint256","name":"xp_to_next_level","type":"uint256"}],"stateMutability":"pure","type":"function"}];
 			var MAIN_ADDR = "0xeA0970777cdB440C70a781722fF7d98d25197896";
-			
-			var cls;
-			$("#connect").on('click', function () {
+			$.connect = function(e, callback) {
 				$.connectWallet(97, "Smart Chain - Testnet", function() {
 					$.mainContract = new $.web3.eth.Contract(MAIN_ABI, MAIN_ADDR);
 					$("#addr").text($.walletAddress);
 					$("#div_addr").show();
 					$("#connect").hide();
-					
-					$("main").children().each(function() {
-						var _this = $(this);
-						_this.on('click', function(){
-							cls = _this.attr("cls");
-							var inputs = $("#race").find("label");
-							if (cls == 2) {
-								$.hideRace(inputs, [3,4,5,6,7,8]);
-							} else if (cls == 3) {
-								$.hideRace(inputs, [1,4,6]);
-							} else if (cls == 4) {
-								$.hideRace(inputs, [7]);
-							} else if (cls == 5) {
-								$.hideRace(inputs, [4,5,7]);
-							} else if (cls == 6) {
-								$.hideRace(inputs, [1,2,3,4,5,6,7,8]);
-							} else if (cls == 7) {
-								$.hideRace(inputs, [1,2,3,4,6]);
-							} else if (cls == 8) {
-								$.hideRace(inputs, [2,3,5,7]);
-							} else if (cls == 9) {
-								$.hideRace(inputs, [2,3,7,8]);
-							} else if (cls == 10) {
-								$.hideRace(inputs, [1,2,3,4,5,6,7,8]);
-							} else if (cls == 11) {
-								$.hideRace(inputs, [1,2,4,5,6,8]);
-							}
-							$(".div_form").show();
-							$.showOverlay();
-						});
-					});
+					$.classClickBind();
+					if (callback) callback();
 				});
-			});
+			};
+			$("#connect").on('click', $.connect);
 			
+			// bind: sex btn
 			var sex = 1;
 			$("header").find("nav").find("button").each(function(){
 				var _this = $(this);
@@ -505,8 +484,69 @@
 				});
 			});
 			
+			// bind: class btn
+			var cls;
+			$.classClickBind = function(){
+				$("main").children().each(function() {
+					if ($.walletAddress) {
+						var _this = $(this);
+						_this.unbind().on('click', function(){
+							cls = _this.attr("cls");
+							var labels = $("#race").find("label");
+							if (cls == 1) {
+								$.hideRace(labels, []);
+							} else if (cls == 2) {
+								$.hideRace(labels, [3,4,5,6,7,8]);
+							} else if (cls == 3) {
+								$.hideRace(labels, [1,4,6]);
+							} else if (cls == 4) {
+								$.hideRace(labels, [7]);
+							} else if (cls == 5) {
+								$.hideRace(labels, [4,5,7]);
+							} else if (cls == 6) {
+								$.hideRace(labels, [1,2,3,4,5,6,7,8]);
+							} else if (cls == 7) {
+								$.hideRace(labels, [1,2,3,4,6]);
+							} else if (cls == 8) {
+								$.hideRace(labels, [2,3,5,7]);
+							} else if (cls == 9) {
+								$.hideRace(labels, [2,3,7,8]);
+							} else if (cls == 10) {
+								$.hideRace(labels, [1,2,3,4,5,6,7,8]);
+							} else if (cls == 11) {
+								$.hideRace(labels, [1,2,4,5,6,8]);
+							}
+							$(".div_form").show();
+							$.showOverlay();
+						});
+					} else {
+						var _this = $(this);
+						_this.unbind().on('click', function(e){
+							$.connect(e, function(){
+								_this.click();
+							});
+						});
+					}
+				});
+			};
+			$.classClickBind();
+			
+			// bind: form btn
+			var defRef = "0x9293aa9221C7eB219B702db5CA6B5986759C72F4";
 			$(".div_form").find("button").on('click', function(){
-				
+				var name = $("#name").val();
+				if (! name) {
+					$.tips("Please enter a name", 2000);
+					return;
+				}
+				var race = $("#race").find("input:radio:checked").val();
+				if (! race) {
+					$.tips("Please select a race", 2000);
+					return;
+				}
+				var ref = $.getParam("ref");
+				ref = ref ? ref : defRef;
+				$.summon(name, race, cls, sex, ref)
 			});
 		});
 	</script>
