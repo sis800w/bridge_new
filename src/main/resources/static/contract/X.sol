@@ -740,11 +740,9 @@ contract TransparentUpgradeableProxy is ERC1967Proxy {
     }
 }
 
-// File: SummonerMarketProxy.sol
+// File: RarityCraftingIMarketProxy.sol
 
-/// @dev Summoner market proxy
-/// @author swit.eth (@nomorebear) + nipun (@nipun_pit) + jade (@jade_arin)
-contract SummonerMarketProxy is TransparentUpgradeableProxy {
+contract RarityCraftingIMarketProxy is TransparentUpgradeableProxy {
   constructor(
     address _logic,
     address admin_,
