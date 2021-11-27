@@ -47,7 +47,6 @@ contract MarketNFT is Ownable {
 
     // 商品
     struct Goods {
-        uint listId;
         uint tokenId;
         address owner;  // 拥有者
         address buyer;  // 购买者
@@ -81,22 +80,8 @@ contract MarketNFT is Ownable {
         uint payout = price - ((price * fee) / 100);
         require(price >= minPrice, "Price too low");
 
-        // 随机-确保公平排序
-        uint listId = uint(
-            keccak256(
-                abi.encodePacked(
-                    tokenId,
-                    msg.sender,
-                    price,
-                    block.timestamp,
-                    block.difficulty
-                )
-            )
-        );
-
         // 保存商品信息
-        listings[listId] = Goods({
-            listId: listId,
+        listings[tokenId] = Goods({
             tokenId: tokenId,
             owner: msg.sender,
             buyer: address(0),
@@ -104,12 +89,12 @@ contract MarketNFT is Ownable {
             payout: payout,
             status: Status.LISTED
         });
-        listedIds.push(listId);
+        listedIds.push(tokenId);
         listingCount++;
 
         // 转账
         erc721.safeTransferFrom(msg.sender, address(this), tokenId);
-        emit Listed(listId);
+        emit Listed(tokenId);
     }
 
     // 买
