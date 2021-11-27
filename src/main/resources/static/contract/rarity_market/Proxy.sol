@@ -4,6 +4,7 @@ pragma solidity 0.8.3;
 
 abstract contract Proxy {
 
+    // 委托
     function _delegate(address implementation) internal virtual {
         assembly {
             calldatacopy(0, 0, calldatasize())

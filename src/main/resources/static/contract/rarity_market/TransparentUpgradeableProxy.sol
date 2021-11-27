@@ -4,6 +4,7 @@ pragma solidity 0.8.3;
 
 import "./ERC1967Proxy.sol";
 
+// 透明可升级代理
 contract TransparentUpgradeableProxy is ERC1967Proxy {
 
     constructor(
