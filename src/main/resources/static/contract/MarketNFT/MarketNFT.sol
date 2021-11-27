@@ -19,20 +19,20 @@ contract MarketNFT is Ownable {
     /* ******************* 可改配置 ****************** */
 
     // 手续费率 * 100
-    uint256 private fee;
+    uint private fee;
     // 最低价格
-    uint256 private minPrice;
+    uint private minPrice;
 
 
 
     /* ******************* 业务数据 ****************** */
 
     // 列表计数
-    uint256 private listingCount;
+    uint private listingCount;
     // 列表id
-    uint256[] public listedIds;
+    uint[] public listedIds;
     // listId ==> Item
-    mapping(uint256 => Goods) private listings;
+    mapping(uint => Goods) private listings;
 
 
 
@@ -47,28 +47,28 @@ contract MarketNFT is Ownable {
 
     // 商品
     struct Goods {
-        uint256 listId;
-        uint256 tokenId;
+        uint listId;
+        uint tokenId;
         address owner;  // 拥有者
         address buyer;  // 购买者
-        uint256 price;  // 价格
-        uint256 payout; // 支出 = 价格 - 手续费
+        uint price;     // 价格
+        uint payout;    // 支出 = 价格 - 手续费
         Status status;
     }
 
     // 事件
-    event Bought(uint256 listId);               // 购买
-    event Listed(uint256 listId);               // 上架
-    event Unlisted(uint256 listId);             // 下架
-    event FeeChanged(uint256 fee);              // 修改手续费率
-    event MinPriceChanged(uint256 minPrice);    // 修改最低价格
+    event Bought(uint listId);               // 购买
+    event Listed(uint listId);               // 上架
+    event Unlisted(uint listId);             // 下架
+    event FeeChanged(uint fee);              // 修改手续费率
+    event MinPriceChanged(uint minPrice);    // 修改最低价格
 
 
 
     /* ********************* 写函数 ******************** */
 
     // 构造
-    constructor(ERC721 erc721_, ERC20 erc20_, uint8 fee_, uint256 minPrice_) {
+    constructor(ERC721 erc721_, ERC20 erc20_, uint8 fee_, uint minPrice_) {
         erc721 = erc721_;
         erc20 = erc20_;
         fee = fee_;
@@ -77,12 +77,12 @@ contract MarketNFT is Ownable {
 
     // 挂卖
     function list(uint tokenId, uint price) external {
-        require(erc721.ownerOf(tokenId) == msg.sender, "Summoner is not yours");
+        require(erc721.ownerOf(tokenId) == msg.sender, "Token is not yours");
         uint payout = price - ((price * fee) / 100);
         require(price >= minPrice, "Price too low");
 
         // 随机-确保公平排序
-        uint256 listId = uint256(
+        uint listId = uint(
             keccak256(
                 abi.encodePacked(
                     tokenId,
@@ -115,7 +115,7 @@ contract MarketNFT is Ownable {
     // 买
     function buy(uint listId) external {
         Goods memory item = listings[listId];
-        require(item.status == Status.LISTED, "summoner not listed");
+        require(item.status == Status.LISTED, "token not listed");
         
         // 修改商品信息及平台收益
         item.status = Status.SOLD;
@@ -131,7 +131,7 @@ contract MarketNFT is Ownable {
     }
 
     // 下架
-    function unlist(uint256 listId) external {
+    function unlist(uint listId) external {
         Goods memory item = listings[listId];
         require(msg.sender == item.owner);
         require(item.status == Status.LISTED);
@@ -153,7 +153,7 @@ contract MarketNFT is Ownable {
     // 获取商品
     function getGoods(uint listId) public view returns (Goods memory) {
         Goods memory token = listings[listId];
-        require(token.owner != address(0), "No summoner for that id");
+        require(token.owner != address(0), "No token for that id");
         return token;
     }
 
@@ -205,7 +205,7 @@ contract MarketNFT is Ownable {
     }
 
     // 公共数据查询
-    function query_summary() external view returns (uint, uint, uint, uint) {
+    function query_summary() public view returns (uint, uint, uint, uint) {
         return (fee, minPrice, listingCount, listedIds.length);
     }
 
