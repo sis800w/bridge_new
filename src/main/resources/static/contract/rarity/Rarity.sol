@@ -6,7 +6,7 @@ import "./ERC721Enumerable.sol";
 import "./libraries/Base64.sol";
 import "./libraries/Strings.sol";
 
-contract rarityNew is ERC721Enumerable {
+contract Rarity is ERC721Enumerable {
     using Strings for uint256;
     
     string constant public name = "Rarity Manifested";
@@ -20,7 +20,7 @@ contract rarityNew is ERC721Enumerable {
     uint constant DAY = 1 days;
     
     
-    
+
     /* ******************* 计算 ****************** */
     
     // 激活用户总数

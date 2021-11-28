@@ -6,7 +6,7 @@ import "./ERC721.sol";
 import "./libraries/Base64.sol";
 import "./libraries/Strings.sol";
 
-contract rarity is ERC721 {
+contract RarityOld is ERC721 {
     using Strings for uint256;
     
     // 下一个召唤师id
