@@ -2,8 +2,8 @@ pragma solidity ^0.8.7;
 
 // SPDX-License-Identifier: MIT
 
-import "./interfaces/IERC721.sol";
-import "./interfaces/IERC721Receiver.sol";
+import "./IERC721.sol";
+import "./IERC721Receiver.sol";
 
 contract ERC721 is IERC721 {
     mapping(uint256 => address) private _owners;

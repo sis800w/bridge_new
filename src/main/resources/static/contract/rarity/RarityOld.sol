@@ -3,8 +3,8 @@
 pragma solidity ^0.8.7;
 
 import "./ERC721.sol";
-import "./libraries/Base64.sol";
-import "./libraries/Strings.sol";
+import "./Base64.sol";
+import "./Strings.sol";
 
 contract RarityOld is ERC721 {
     using Strings for uint256;

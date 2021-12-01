@@ -3,8 +3,8 @@
 pragma solidity ^0.8.7;
 
 import "./ERC721Enumerable.sol";
-import "./libraries/Base64.sol";
-import "./libraries/Strings.sol";
+import "./Base64.sol";
+import "./Strings.sol";
 
 contract Rarity is ERC721Enumerable {
     using Strings for uint256;
