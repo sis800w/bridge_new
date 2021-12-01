@@ -3,11 +3,12 @@
 pragma solidity ^0.8.4;
 
 import "./Ownable.sol";
+import "./ReentrancyGuard.sol";
 import "./interfaces/ERC721.sol";
 import "./interfaces/ERC20.sol";
 import "./libraries/SafeERC20.sol";
 
-contract MarketNFT is Ownable {
+contract MarketNFT is Ownable, ReentrancyGuard {
     using SafeERC20 for ERC20;
 
     /* ******************* 写死配置 ****************** */
@@ -75,7 +76,7 @@ contract MarketNFT is Ownable {
     }
 
     // 挂卖
-    function list(uint tokenId, uint price) external {
+    function list(uint tokenId, uint price) external nonReentrant {
         require(erc721.ownerOf(tokenId) == msg.sender, "Token is not yours");
         uint payout = price - ((price * fee) / 100);
         require(price >= minPrice, "Price too low");
@@ -98,7 +99,7 @@ contract MarketNFT is Ownable {
     }
 
     // 买
-    function buy(uint listId) external {
+    function buy(uint listId) external nonReentrant {
         Goods memory item = listings[listId];
         require(item.status == Status.LISTED, "token not listed");
         
@@ -116,7 +117,7 @@ contract MarketNFT is Ownable {
     }
 
     // 下架
-    function unlist(uint listId) external {
+    function unlist(uint listId) external nonReentrant {
         Goods memory item = listings[listId];
         require(msg.sender == item.owner);
         require(item.status == Status.LISTED);
