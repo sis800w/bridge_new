@@ -4,9 +4,9 @@ pragma solidity ^0.8.4;
 
 import "./Ownable.sol";
 import "./ReentrancyGuard.sol";
-import "./interfaces/ERC721.sol";
-import "./interfaces/ERC20.sol";
-import "./libraries/SafeERC20.sol";
+import "./ERC721.sol";
+import "./ERC20.sol";
+import "./SafeERC20.sol";
 
 contract MarketNFT is Ownable, ReentrancyGuard {
     using SafeERC20 for ERC20;
