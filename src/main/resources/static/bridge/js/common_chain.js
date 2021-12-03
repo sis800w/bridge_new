@@ -39,14 +39,36 @@ $(function(){
 		}],
 		128: [{
 			chainId: '0x80',
-			chainName: 'Heco',
+			chainName: 'Heco Chain',
 			nativeCurrency: {
 				name: 'HT',
 				symbol: 'HT',
 				decimals: 18
 			},
 			rpcUrls: ['https://http-mainnet.hecochain.com/'],
-			blockExplorerUrls: ['https://scan.hecochain.com']
+			blockExplorerUrls: ['https://hecoinfo.com/']
+		}],
+		250: [{
+			chainId: '0xfa',
+			chainName: 'FANTOM',
+			nativeCurrency: {
+				name: 'FTM',
+				symbol: 'FTM',
+				decimals: 18
+			},
+			rpcUrls: ['https://rpcapi.fantom.network'],
+			blockExplorerUrls: ['https://ftmscan.com']
+		}],
+		256: [{
+			chainId: '0x100',
+			chainName: 'Heco Chain Testnet',
+			nativeCurrency: {
+				name: 'HT',
+				symbol: 'HT',
+				decimals: 18
+			},
+			rpcUrls: ['https://http-testnet.hecochain.com/'],
+			blockExplorerUrls: ['https://testnet.hecoinfo.com/']
 		}],
 		518: [{
 			chainId: '0x206',
