@@ -33,13 +33,11 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
             super.supportsInterface(interfaceId);
     }
 
-    // 钱包持有的NFT数量
     function balanceOf(address owner) public view virtual override returns (uint256) {
         require(owner != address(0), "ERC721: balance query for the zero address");
         return _balances[owner];
     }
 
-    // NFT的持有者
     function ownerOf(uint256 tokenId) public view virtual override returns (address) {
         address owner = _owners[tokenId];
         require(owner != address(0), "ERC721: owner query for nonexistent token");

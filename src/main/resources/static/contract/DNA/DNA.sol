@@ -9,7 +9,7 @@ import "./Base64.sol";
 
 contract DNA is ERC721Enumerable, ReentrancyGuard, Ownable {
 
-    mapping(uint => uint) public tokenDnas;
+    mapping(uint => uint) private tokenDnas;
 
     constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) {
     }
@@ -26,6 +26,11 @@ contract DNA is ERC721Enumerable, ReentrancyGuard, Ownable {
         require(tokenId > 8000 && tokenId <= 8888, "Token ID invalid");
         _safeMint(owner, tokenId);
         tokenDnas[tokenId] = random(tokenId);
+    }
+
+    // 获取DNA
+    function dna(uint tokenId) external view returns (string memory) {
+        return Strings.toString(tokenDnas[tokenId]);
     }
 
     // 获取二进制DNA
@@ -104,10 +109,7 @@ contract DNA is ERC721Enumerable, ReentrancyGuard, Ownable {
                 abi.encodePacked (
                     tokenId,
                     block.timestamp,
-                    block.difficulty,
-                    block.number,
-                    block.gaslimit,
-                    block.coinbase
+                    block.difficulty
                 )
             )
         );
