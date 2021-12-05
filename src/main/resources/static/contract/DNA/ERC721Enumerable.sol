@@ -15,6 +15,10 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
     // tokenId => index2
     mapping(uint256 => uint256) private _allTokensIndex;
 
+    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC721) returns (bool) {
+        return interfaceId == type(IERC721Enumerable).interfaceId || super.supportsInterface(interfaceId);
+    }
+
     function tokenOfOwnerByIndex(address owner, uint256 index) public view virtual override returns (uint256) {
         require(index < ERC721.balanceOf(owner), "ERC721Enumerable: owner index out of bounds");
         return _ownedTokens[owner][index];
