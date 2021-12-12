@@ -94,7 +94,7 @@ contract MarketNFT is Ownable, ReentrancyGuard {
         listingCount++;
 
         // 转账
-        erc721.safeTransferFrom(msg.sender, address(this), tokenId);
+        erc721.transferFrom(msg.sender, address(this), tokenId);
         emit Listed(tokenId);
     }
 
@@ -110,7 +110,7 @@ contract MarketNFT is Ownable, ReentrancyGuard {
         listingCount--;
 
         // 转账
-        erc721.safeTransferFrom(address(this), msg.sender, item.tokenId);
+        erc721.transferFrom(address(this), msg.sender, item.tokenId);
         erc20.safeTransferFrom(msg.sender, address(this), item.price);
         erc20.transfer(item.owner, item.payout);
         emit Bought(listId);
@@ -128,7 +128,7 @@ contract MarketNFT is Ownable, ReentrancyGuard {
         listingCount--;
 
         // 转账
-        erc721.safeTransferFrom(address(this), item.owner, item.tokenId);
+        erc721.transferFrom(address(this), item.owner, item.tokenId);
         emit Unlisted(listId);
     }
 

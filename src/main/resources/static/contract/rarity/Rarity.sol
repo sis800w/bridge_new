@@ -116,6 +116,18 @@ contract Rarity is ERC721Enumerable {
     
     
     
+    // 信息查询
+    function summoner(uint tokenId) public view returns(string memory, string memory, string memory, string memory, uint, uint, uint) {
+        Summoner storage s = summoners[tokenId];
+        return (s.name, 
+                classes(s.class), 
+                races(s.race), 
+                genders(s.gender), 
+                s.xp, 
+                s.level, 
+                s.adventurers_log);
+    }
+
     // 升级必须经验
     function xp_required(uint curent_level) public pure returns (uint xp_to_next_level) {
         xp_to_next_level = curent_level * 1000e18;

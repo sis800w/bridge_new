@@ -113,7 +113,7 @@ $(function(){
 		if (unit) {
 			return $.web3.utils.toWei(amount, unit);
 		} else if (decimals) {
-			return $.floatMul(amount, Math.pow(10, decimals));
+			return $.floatMul(amount, Math.pow(10, decimals)) + "";
 		} else {
 			return $.web3.utils.toWei(amount);
 		}

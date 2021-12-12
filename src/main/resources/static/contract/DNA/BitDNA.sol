@@ -6,19 +6,29 @@ import "./ERC721Enumerable.sol";
 import "./ReentrancyGuard.sol";
 import "./Ownable.sol";
 import "./Base64.sol";
+import "./ERC20.sol";
+import "./SafeERC20.sol";
 
-contract DNA is ERC721Enumerable, ReentrancyGuard, Ownable {
+contract BitDNA is ERC721Enumerable, ReentrancyGuard, Ownable {
+    using SafeERC20 for ERC20;
 
+    ERC20 public token;
+    uint public price;
     mapping(uint => uint) private tokenDnas;
-
-    constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) {
+    
+    constructor(ERC20 token_, string memory name_, string memory symbol_) ERC721(name_, symbol_) {
+        token = token_;
     }
+
+    event NewPrice(uint price);
 
     // 1-8000
     function claim(uint256 tokenId) external nonReentrant {
         require(tokenId > 0 && tokenId <= 8000, "Token ID invalid");
         _safeMint(_msgSender(), tokenId);
         tokenDnas[tokenId] = random(tokenId);
+        if (price == 0) return;
+        token.safeTransferFrom(_msgSender(), address(this), price);
     }
     
     // 8001-8888
@@ -26,6 +36,17 @@ contract DNA is ERC721Enumerable, ReentrancyGuard, Ownable {
         require(tokenId > 8000 && tokenId <= 8888, "Token ID invalid");
         _safeMint(owner, tokenId);
         tokenDnas[tokenId] = random(tokenId);
+    }
+
+    // 更新价格
+    function updatePrice(uint _price) external onlyOwner {
+        price = _price;
+        emit NewPrice(_price);
+    }
+
+    // 归集
+    function collect() external onlyOwner {
+        token.transfer(owner, token.balanceOf(address(this)));
     }
 
     // 获取DNA

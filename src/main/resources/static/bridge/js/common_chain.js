@@ -125,7 +125,7 @@ $(function(){
 		if (unit) {
 			return $.web3.utils.fromWei(amount, unit);
 		} else if (decimals) {
-			return $.floatDiv(amount, Math.pow(10, decimals));
+			return $.floatDiv(amount, Math.pow(10, decimals)) + "";
 		} else {
 			return $.web3.utils.fromWei(amount);
 		}
