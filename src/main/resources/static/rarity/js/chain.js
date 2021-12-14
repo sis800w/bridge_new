@@ -32,8 +32,7 @@ $(function () {
 		var obj = {
 			tokenId: goods.tokenId,
 			price: $.fromWei(goods.price),
-			status: goods.status,
-			my: (goods.status == 0 && goods.owner.toLowerCase() == $.walletAddress) ? true : false,
+			my: goods.owner.toLowerCase() == $.walletAddress ? true : false,
 			name: result[0],
 			clazz: result[1],
 			race: result[2],

@@ -16,6 +16,7 @@ contract MarketNFT is Ownable, ReentrancyGuard {
     ERC721 public erc721;
     ERC20 public erc20;
 
+
     
     /* ******************* 可改配置 ****************** */
 
@@ -28,32 +29,22 @@ contract MarketNFT is Ownable, ReentrancyGuard {
 
     /* ******************* 业务数据 ****************** */
 
-    // 列表计数
-    uint private listingCount;
-    // 列表id
-    uint[] public listedIds;
-    // listId ==> Item
+    // index => tokenId
+    uint[] public tokenIds;
+    // tokenId ==> Item
     mapping(uint => Goods) private listings;
 
 
 
     /* ********************* 定义 ******************** */
 
-    // 状态
-    enum Status {
-        LISTED,         // 上市的
-        UNLISTED,       // 未上市的
-        SOLD            // 售出
-    }
-
     // 商品
     struct Goods {
+        uint index;
         uint tokenId;
         address owner;  // 拥有者
-        address buyer;  // 购买者
         uint price;     // 价格
         uint payout;    // 支出 = 价格 - 手续费
-        Status status;
     }
 
     // 事件
@@ -83,15 +74,13 @@ contract MarketNFT is Ownable, ReentrancyGuard {
 
         // 保存商品信息
         listings[tokenId] = Goods({
+            index: tokenIds.length,
             tokenId: tokenId,
             owner: msg.sender,
-            buyer: address(0),
             price: price,
-            payout: payout,
-            status: Status.LISTED
+            payout: payout
         });
-        listedIds.push(tokenId);
-        listingCount++;
+        tokenIds.push(tokenId);
 
         // 转账
         erc721.transferFrom(msg.sender, address(this), tokenId);
@@ -99,77 +88,56 @@ contract MarketNFT is Ownable, ReentrancyGuard {
     }
 
     // 买
-    function buy(uint listId) external nonReentrant {
-        Goods memory item = listings[listId];
-        require(item.status == Status.LISTED, "token not listed");
-        
-        // 修改商品信息及平台收益
-        item.status = Status.SOLD;
-        item.buyer = msg.sender;
-        listings[listId] = item;
-        listingCount--;
-
-        // 转账
-        erc721.transferFrom(address(this), msg.sender, item.tokenId);
-        erc20.safeTransferFrom(msg.sender, address(this), item.price);
-        erc20.transfer(item.owner, item.payout);
-        emit Bought(listId);
+    function buy(uint tokenId) external nonReentrant {
+        Goods memory goods = listings[tokenId];
+        require(goods.owner != address(0), "token not listed");
+        erc721.transferFrom(address(this), msg.sender, goods.tokenId);
+        erc20.safeTransferFrom(msg.sender, address(this), goods.price);
+        erc20.transfer(goods.owner, goods.payout);
+        remove(tokenId);
+        emit Bought(tokenId);
     }
 
     // 下架
-    function unlist(uint listId) external nonReentrant {
-        Goods memory item = listings[listId];
-        require(msg.sender == item.owner);
-        require(item.status == Status.LISTED);
-        
-        // 修改商品信息
-        item.status = Status.UNLISTED;
-        listings[listId] = item;
-        listingCount--;
-
-        // 转账
-        erc721.transferFrom(address(this), item.owner, item.tokenId);
-        emit Unlisted(listId);
+    function unlist(uint tokenId) external nonReentrant {
+        Goods memory goods = listings[tokenId];
+        require(goods.owner == msg.sender, "not owner");
+        erc721.transferFrom(address(this), goods.owner, goods.tokenId);
+        remove(tokenId);
+        emit Unlisted(tokenId);
     }
 
 
 
     /* ********************** 读函数 ********************* */
 
-    // 获取商品
-    function getGoods(uint listId) public view returns (Goods memory) {
-        Goods memory token = listings[listId];
-        require(token.owner != address(0), "No token for that id");
-        return token;
-    }
-
     // 获取卖单(范围)
     function getGoodsRange(uint startIdx, uint endIdx) public view returns (Goods[] memory result) {
         result = new Goods[](endIdx - startIdx);
         for (uint i = startIdx; i < endIdx; i++) {
-            result[i - startIdx] = getGoods(listedIds[i]);
+            result[i - startIdx] = listings[tokenIds[i]];
         }
     }
 
     // 获取卖单(所有)
     function getGoodsAll() public view returns (Goods[] memory) {
-        return getGoodsRange(0, listedIds.length);
+        return getGoodsRange(0, tokenIds.length);
     }
 
     // 获取卖单(分页)
     function getGoodsPage(uint pageIdx, uint pageSize) public view returns (Goods[] memory) {
         uint startIdx = pageIdx * pageSize;
-        require(startIdx <= listedIds.length, "Page number too high");
+        require(startIdx <= tokenIds.length, "Page number too high");
         uint pageEnd = startIdx + pageSize;
-        uint endIdx = pageEnd <= listedIds.length ? pageEnd : listedIds.length;
+        uint endIdx = pageEnd <= tokenIds.length ? pageEnd : tokenIds.length;
         return getGoodsRange(startIdx, endIdx);
     }
 
     // 获取卖单数量(根据地址)
     function getGoodsSizeByOwner(address owner) public view returns (uint) {
         uint size = 0;
-        for (uint i = 0; i < listedIds.length; i++) {
-            if (getGoods(listedIds[i]).owner == owner) {
+        for (uint i = 0; i < tokenIds.length; i++) {
+            if (listings[tokenIds[i]].owner == owner) {
                 size++;
             }
         }
@@ -181,8 +149,8 @@ contract MarketNFT is Ownable, ReentrancyGuard {
         result = new Goods[](getGoodsSizeByOwner(owner));
         uint index = 0;
         Goods memory goods;
-        for (uint i = 0; i < listedIds.length; i++) {
-            goods = getGoods(listedIds[i]);
+        for (uint i = 0; i < tokenIds.length; i++) {
+            goods = listings[tokenIds[i]];
             if (goods.owner == owner) {
                 result[index] = goods;
                 index++;
@@ -191,8 +159,8 @@ contract MarketNFT is Ownable, ReentrancyGuard {
     }
 
     // 公共数据查询
-    function query_summary() public view returns (uint, uint, uint, uint) {
-        return (fee, minPrice, listingCount, listedIds.length);
+    function query_summary() public view returns (uint, uint, uint) {
+        return (fee, minPrice, tokenIds.length);
     }
 
 
@@ -215,6 +183,20 @@ contract MarketNFT is Ownable, ReentrancyGuard {
     function setMinPrice(uint minPrice_) external onlyOwner {
         minPrice = minPrice_;
         emit MinPriceChanged(minPrice);
+    }
+
+
+
+    /* ******************* 私有 ****************** */
+
+    // 移除商品
+    function remove(uint tokenId) private {
+        uint256 tokenIndex = listings[tokenId].index;
+        uint256 lastTokenId = tokenIds[tokenIds.length - 1];    // 最后一个上架NFT
+        tokenIds[tokenIndex] = lastTokenId;                     // 最后一个上架NFT在tokenIds位置前移
+        listings[lastTokenId].index = tokenIndex;               // 当前一个上架NFT在listings位置后移
+        delete listings[tokenId];                               // listings中删除
+        tokenIds.pop();                                         // tokenIds中删除
     }
 
 }
