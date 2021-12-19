@@ -22,20 +22,11 @@ contract BitDNA is ERC721Enumerable, ReentrancyGuard, Ownable {
 
     event NewPrice(uint price);
 
-    // 1-8000
     function claim(uint256 tokenId) external nonReentrant {
-        require(tokenId > 0 && tokenId <= 8000, "Token ID invalid");
         _safeMint(_msgSender(), tokenId);
         tokenDnas[tokenId] = random(tokenId);
         if (price == 0) return;
         token.safeTransferFrom(_msgSender(), address(this), price);
-    }
-    
-    // 8001-8888
-    function ownerClaim(uint256 tokenId) external nonReentrant onlyOwner {
-        require(tokenId > 8000 && tokenId <= 8888, "Token ID invalid");
-        _safeMint(owner, tokenId);
-        tokenDnas[tokenId] = random(tokenId);
     }
 
     // 更新价格
