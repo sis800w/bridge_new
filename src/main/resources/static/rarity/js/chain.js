@@ -54,6 +54,13 @@ $(function () {
 				$.buy(tokenId);
 			});
 		});
+		$("#goods_body").find(".btn_unlist").each(function() {
+			var _this = $(this);
+			_this.on('click', function(){
+				var tokenId = _this.attr("tokenId");
+				$.unlist(tokenId);
+			});
+		});
 	};
 	
 	$.getGoodsPage = async function(pageIdx, pageSize) {
@@ -122,6 +129,19 @@ $(function () {
 		$.tips("Buy...");
 		$.marketContract.methods
 			.buy(tokenId)
+			.send({from: $.walletAddress}, $.errorProcess)
+			.then((tx) => {
+				$.resultProcess(tx, function() {
+					$.tips("Success", 2000);
+					$.getGoodsPage($.pageIdx, $.pageSize);
+				});
+			});
+	};
+	
+	$.unlist = function(tokenId) {
+		$.tips("Unlist...");
+		$.marketContract.methods
+			.unlist(tokenId)
 			.send({from: $.walletAddress}, $.errorProcess)
 			.then((tx) => {
 				$.resultProcess(tx, function() {

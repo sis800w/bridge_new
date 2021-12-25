@@ -69,28 +69,6 @@ $(function(){
 			},
 			rpcUrls: ['https://http-testnet.hecochain.com/'],
 			blockExplorerUrls: ['https://testnet.hecoinfo.com/']
-		}],
-		518: [{
-			chainId: '0x206',
-			chainName: 'DeFi Chain',
-			nativeCurrency: {
-				name: 'DFC',
-				symbol: 'DFC',
-				decimals: 18
-			},
-			rpcUrls: ['https://mainnet.defi.dev/'],
-			blockExplorerUrls: ['https://defi.518.bi/']
-		}],
-		1000: [{
-			chainId: '0x3e8',
-			chainName: 'Routereum',
-			nativeCurrency: {
-				name: 'RDFC',
-				symbol: 'RDFC',
-				decimals: 18
-			},
-			rpcUrls: ['https://defi.518.bi/'],
-			blockExplorerUrls: ['https://defi.518.bi/']
 		}]
 	};
 	
