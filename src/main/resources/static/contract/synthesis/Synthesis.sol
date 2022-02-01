@@ -18,23 +18,23 @@ contract Synthesis is Ownable, ReentrancyGuard {
     }
 
     // 部件配置
-    mapping(ERC20 => Parts[]) public equipmentParts;
+    mapping(address => Parts[]) public equipmentParts;
     // 部件index
     mapping(address => uint) public indexs;
     // 成品地址
-    address[] public equipments;
+    address[] equipments;
 
     
     
     /* ******************* 写函数 ****************** */
 
     // 合成
-    function synthesis(ERC20 token) external nonReentrant {
+    function synthesis(address token) external nonReentrant {
         Parts[] storage parts = equipmentParts[token];
         for (uint i; i < parts.length; i++) {
             parts[i].token.safeTransferFrom(msg.sender, address(this), parts[i].num);
         }
-        token.transfer(msg.sender, 1);
+        ERC20(token).transfer(msg.sender, 1);
     }
 
 
@@ -42,7 +42,7 @@ contract Synthesis is Ownable, ReentrancyGuard {
     /* ******************* 读函数 ****************** */
 
     // 查询部件
-    function queryEquipmentParts(ERC20 token) external view returns (Parts[] memory)  {
+    function queryEquipmentParts(address token) external view returns (Parts[] memory)  {
         return equipmentParts[token];
     }
 
@@ -51,12 +51,17 @@ contract Synthesis is Ownable, ReentrancyGuard {
         return equipments.length;
     }
 
+    // 查询成品地址
+    function queryEquipmentsAddr(uint index) external view returns (address) {
+        return equipments[index];
+    }
+
 
 
     /* ******************* 写函数-owner ****************** */
 
     // 添加1个部件
-    function addParts(ERC20 token, ERC20 part, uint num) public onlyOwner {
+    function addParts(address token, ERC20 part, uint num) public onlyOwner {
         equipmentParts[token].push(Parts(part, num));
         if (equipmentParts[token].length == 1) {
             indexs[address(token)] = equipments.length;
@@ -65,20 +70,20 @@ contract Synthesis is Ownable, ReentrancyGuard {
     }
 
     // 添加2个部件
-    function addParts(ERC20 token, ERC20 partA, uint aNum, ERC20 partB, uint bNum) external onlyOwner {
+    function addParts(address token, ERC20 partA, uint aNum, ERC20 partB, uint bNum) external onlyOwner {
         addParts(token, partA, aNum);
         addParts(token, partB, bNum);
     }
 
     // 添加3个部件
-    function addParts(ERC20 token, ERC20 partA, uint aNum, ERC20 partB, uint bNum, ERC20 partC, uint cNum) external onlyOwner {
+    function addParts(address token, ERC20 partA, uint aNum, ERC20 partB, uint bNum, ERC20 partC, uint cNum) external onlyOwner {
         addParts(token, partA, aNum);
         addParts(token, partB, bNum);
         addParts(token, partC, cNum);
     }
 
     // 删除配置
-    function delEquipment(ERC20 token) external onlyOwner {
+    function delEquipment(address token) external onlyOwner {
         delete equipmentParts[token];
         uint lastIndex = equipments.length - 1;
         uint currIndex = indexs[address(token)];

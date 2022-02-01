@@ -150,4 +150,9 @@ $(function () {
 				});
 			});
 	};
+	
+	$.queryEquipment = async function(addr, callback) {
+		var parts = await $.synthesisContract.methods.queryEquipmentParts(addr).call();
+		callback(parts);
+	};
 });
