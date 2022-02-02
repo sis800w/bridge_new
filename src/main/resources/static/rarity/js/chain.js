@@ -155,4 +155,33 @@ $(function () {
 		var parts = await $.synthesisContract.methods.queryEquipmentParts(addr).call();
 		callback(parts);
 	};
+	
+	$.allowance = async function(addr, callback) {
+		var erc20Contract = $.coinContract($.chainId, addr);
+		let allowance = await erc20Contract.methods.allowance($.walletAddress, $.SYNTHESIS_ADDR).call();
+		callback(allowance);
+	};
+	
+	$.approve = function(addr) {
+		var erc20Contract = $.coinContract($.chainId, addr);
+		erc20Contract.methods
+			.approve($.SYNTHESIS_ADDR, $.toWei("1000000000"))
+			.send({from: $.walletAddress}, $.errorProcess)
+			.then((tx) => {
+				$.resultProcess(tx, function() {
+					$.equipment($("#div_equipment").children());
+				});
+			});
+	};
+	
+	$.synthesis = function(addr) {
+		$.synthesisContract.methods
+			.synthesis(addr)
+			.send({from: $.walletAddress}, $.errorProcess)
+			.then((tx) => {
+				$.resultProcess(tx, function() {
+					alert("success");
+				});
+			});
+	};
 });

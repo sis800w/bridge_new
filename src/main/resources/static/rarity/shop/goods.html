@@ -462,7 +462,7 @@
 				</div>
 				<div id="div_equipment">
 					<div addr="0x7E559579392b43F0780803a04967125f16230091">
-						<button>
+						<button title="A caltrop is a four-pronged iron spike crafted so that one prong faces up no matter how the caltrop comes to rest. You scatter caltrops on the ground in the hope that your enemies step on them or are at least forced to slow down to avoid them. One 2-pound bag of caltrops covers an area 5 feet square.">
 							<div><img src="../img/shop/blacksmith/caltrops.png"/></div>
 							<div>
 								<div>Caltrops</div>
@@ -474,7 +474,7 @@
 						</button>
 					</div>
 					<div addr="0x465cB0EFe4675C3534AB493492D5681CEF224fae">
-						<button>
+						<button title="A candle dimly illuminates a 5-foot radius and burns for 1 hour.">
 							<div><img src="../img/shop/blacksmith/candle.png"/></div>
 							<div>
 								<div>Candle</div>
@@ -486,7 +486,7 @@
 						</button>
 					</div>
 					<div addr="0xc48976B446a32C23Cb99140e5f2B31efBdf3CF15">
-						<button>
+						<button title="Chain has hardness 10 and 5 hit points. It can be burst with a DC 26 Strength check.">
 							<div><img src="../img/shop/blacksmith/chain.png"/></div>
 							<div>
 								<div>Chain</div>
@@ -518,9 +518,6 @@
 	<script type="text/javascript" src="../js/chain.js"></script>
 	<script type="text/javascript">
 		$(function () {
-			$.SYNTHESIS_ABI = [{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"contract ERC20","name":"partA","type":"address"},{"internalType":"uint256","name":"aNum","type":"uint256"},{"internalType":"contract ERC20","name":"partB","type":"address"},{"internalType":"uint256","name":"bNum","type":"uint256"},{"internalType":"contract ERC20","name":"partC","type":"address"},{"internalType":"uint256","name":"cNum","type":"uint256"}],"name":"addParts","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"contract ERC20","name":"partA","type":"address"},{"internalType":"uint256","name":"aNum","type":"uint256"},{"internalType":"contract ERC20","name":"partB","type":"address"},{"internalType":"uint256","name":"bNum","type":"uint256"}],"name":"addParts","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"contract ERC20","name":"part","type":"address"},{"internalType":"uint256","name":"num","type":"uint256"}],"name":"addParts","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract ERC20","name":"token","type":"address"}],"name":"collect","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"delEquipment","outputs":[],"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"synthesis","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"equipmentParts","outputs":[{"internalType":"contract ERC20","name":"token","type":"address"},{"internalType":"uint256","name":"num","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"indexs","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"queryEquipmentParts","outputs":[{"components":[{"internalType":"contract ERC20","name":"token","type":"address"},{"internalType":"uint256","name":"num","type":"uint256"}],"internalType":"struct Synthesis.Parts[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"queryEquipmentsAddr","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"queryEquipmentSize","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}];
-			$.SYNTHESIS_ADDR = "0x552e593C7aA048c234Bdf1a5CD7D848a460d1d4b";
-			
 			// bind: menu btn
 			var header = $("header");
 			header.find("button").first().on('click', function(){
@@ -543,6 +540,30 @@
 					$.queryEquipment(addr, function(parts){
 						that.find(".num1").text($.fromWei(parts[0].num));
 						that.find(".num2").text($.fromWei(parts[1].num));
+						that.attr("addr1", parts[0].token);
+						that.attr("addr2", parts[1].token);
+						$.allowance(parts[0].token, function(allowance) {
+							that.attr("allowance1", allowance);
+						});
+						$.allowance(parts[1].token, function(allowance) {
+							that.attr("allowance2", allowance);
+						});
+					});
+					
+					that.on('click', function(){
+						var allowance1 = Number(that.attr("allowance1"));
+						var allowance2 = Number(that.attr("allowance2"));
+						var num1 = that.find(".num1").text();
+						var num2 = that.find(".num2").text();
+						if (allowance1 < num1) {
+							$.approve(that.attr("addr1"));
+							return;
+						}
+						if (allowance2 < num2) {
+							$.approve(that.attr("addr2"));
+							return;
+						}
+						$.synthesis(addr);
 					});
 				});
 			};
