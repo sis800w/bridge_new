@@ -70,8 +70,10 @@ $(function () {
 			content.find(".div_select_item").each(function(){
 				var that = $(this);
 				that.on('click', function(){
-					$.config.to.chain = that.attr("chain");
-					$.config.to.coin = that.attr("coin");
+					$.config.to = {
+							chain: that.attr("chain"),
+							coin: that.attr("coin")
+					};
 					$.init();
 					if (Number($.config.to.chain) <= 0) {
 						$("#input_to_addr").val("");
