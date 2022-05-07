@@ -24,19 +24,19 @@ contract Sandwich is Ownable {
 
 
 
-    /* ******************* 写函数 ****************** */
+    /* ******************* 写函数-owner ****************** */
 
     // 收币函数
     receive() external payable {}
     
     // 买币
-    function swapETHForToken(uint amountIn, uint amountOut, address tokenOut, uint lastBlockNumber) external {
+    function swapETHForToken(uint amountIn, uint amountOut, address tokenOut, uint lastBlockNumber) external onlyOwner {
         swapTokenForToken(amountIn, amountOut, WETH, tokenOut, lastBlockNumber);
     }
-    function swapTokenForETH(uint amountIn, uint amountOut, address tokenIn, uint lastBlockNumber) external {
+    function swapTokenForETH(uint amountIn, uint amountOut, address tokenIn, uint lastBlockNumber) external onlyOwner {
         swapTokenForToken(amountIn, amountOut, tokenIn, WETH, lastBlockNumber);
     }
-    function swapTokenForToken(uint amountIn, uint amountOut, address tokenIn, address tokenOut, uint lastBlockNumber) public {
+    function swapTokenForToken(uint amountIn, uint amountOut, address tokenIn, address tokenOut, uint lastBlockNumber) public onlyOwner {
         require(block.number <= lastBlockNumber, "block delay");
         address[] memory path = new address[](2);
         path[0] = tokenIn;
@@ -53,25 +53,25 @@ contract Sandwich is Ownable {
     }
 
     // 卖币
-    function swapAllTokenForETH(address tokenIn) external {
+    function swapAllTokenForETH(address tokenIn) external onlyOwner {
         uint amountIn = ERC20(tokenIn).balanceOf(address(this));
         swapPartTokenForToken(tokenIn, WETH, amountIn);
     }
-    function swapAllETHForToken(address tokenOut) external {
+    function swapAllETHForToken(address tokenOut) external onlyOwner {
         uint amountIn = address(this).balance;
         swapPartTokenForToken(WETH, tokenOut, amountIn);
     }
-    function swapAllTokenForToken(address tokenIn, address tokenOut) external {
+    function swapAllTokenForToken(address tokenIn, address tokenOut) external onlyOwner {
         uint amountIn = ERC20(tokenIn).balanceOf(address(this));
         swapPartTokenForToken(tokenIn, tokenOut, amountIn);
     }
-    function swapPartTokenForETH(address tokenIn, uint amountIn) external {
+    function swapPartTokenForETH(address tokenIn, uint amountIn) external onlyOwner {
         swapPartTokenForToken(tokenIn, WETH, amountIn);
     }
-    function swapPartETHForToken(address tokenOut, uint amountIn) external {
+    function swapPartETHForToken(address tokenOut, uint amountIn) external onlyOwner {
         swapPartTokenForToken(WETH, tokenOut, amountIn);
     }
-    function swapPartTokenForToken(address tokenIn, address tokenOut, uint amountIn) public {
+    function swapPartTokenForToken(address tokenIn, address tokenOut, uint amountIn) public onlyOwner {
         require(amountIn > 0, "amountIn=0");
         address[] memory path = new address[](2);
         path[0] = tokenIn;
@@ -87,10 +87,6 @@ contract Sandwich is Ownable {
             router.swapExactTokensForTokens(amountIn, amountOut, path, address(this), block.timestamp);
         }
     }
-    
-
-
-    /* ******************* 写函数-owner ****************** */
 
     // 归集原生币（指定数量）
     function collectNative(address addr, uint amount) external onlyOwner {

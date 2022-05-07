@@ -5,6 +5,7 @@ pragma solidity ^0.8.13;
 interface UniswapV2Router {
 
     function WETH() external pure returns (address);
+    function factory() external pure returns (address);
 
     // 精确数量币换币
     function swapExactTokensForTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts);
