@@ -100,12 +100,6 @@ contract Sandwich is Ownable {
         token.transfer(addr, token.balanceOf(address(this)));
     }
 
-    // 重置
-    function reset(UniswapV2Router _router) public onlyOwner {
-        router = _router;
-        WETH = router.WETH();
-    }
-
 
 
     /* ******************* 私有 ****************** */
