@@ -12,7 +12,7 @@ contract SandwichTools {
     UniswapV2Factory public factory;
     address public WETH;
 
-    event newSandwich(address indexed addr);
+    event NewSandwich(address indexed addr);
 
     // 构造函数
     constructor(UniswapV2Router _router) {
@@ -24,7 +24,7 @@ contract SandwichTools {
     // 创建夹子合约
     function createSandwich() external {
         Sandwich sandwich = new Sandwich(router, msg.sender);
-        emit newSandwich(address(sandwich));
+        emit NewSandwich(address(sandwich));
     }
 
     // 查询资金池
