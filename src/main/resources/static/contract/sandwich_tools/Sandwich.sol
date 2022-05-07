@@ -19,7 +19,8 @@ contract Sandwich is Ownable {
     
     // 构造函数
     constructor(UniswapV2Router _router, address owner) Ownable(owner) {
-        reset(_router);
+        router = _router;
+        WETH = router.WETH();
     }
 
 
