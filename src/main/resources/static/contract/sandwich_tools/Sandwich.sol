@@ -2,99 +2,104 @@
 
 pragma solidity ^0.8.13;
 
-import "./Ownable.sol";
-import "./ERC20.sol";
 import "./UniswapV2Router.sol";
 
-contract Sandwich is Ownable {
+contract Sandwich {
 
     /* ******************* 写死 ****************** */
+    
+    address public immutable WETH;
+    address public immutable owner;
+    ChiToken public immutable chi;
+    UniswapV2Router public immutable router;
 
-    UniswapV2Router public router;
-    address public WETH;
 
 
-
-    /* ******************* 构造函数 ****************** */
+    /* ******************* 构造收币函数 ****************** */
     
     // 构造函数
-    constructor(UniswapV2Router _router, address owner) Ownable(owner) {
+    constructor(address _chi, UniswapV2Router _router, address _owner) {
+        owner = _owner;
+        chi = ChiToken(_chi);
         router = _router;
         WETH = router.WETH();
     }
 
+    // 收币函数
+    receive() external payable {}
+
 
 
     /* ******************* 写函数-owner ****************** */
-
-    // 收币函数
-    receive() external payable {}
     
-    // 买币
-    function swapETHForToken(uint amountIn, uint amountOut, address tokenOut, uint lastBlockNumber) external onlyOwner {
-        swapTokenForToken(amountIn, amountOut, WETH, tokenOut, lastBlockNumber);
+    // 买单：精确from换币
+    function buyExactETHForTokens(uint amountIn, uint amountOutMin, address tokenOut) external onlyOwner gasDiscount {
+        router.swapExactETHForTokens{value: amountIn}(amountOutMin, toPath(WETH, tokenOut), address(this), block.timestamp);
     }
-    function swapTokenForETH(uint amountIn, uint amountOut, address tokenIn, uint lastBlockNumber) external onlyOwner {
-        swapTokenForToken(amountIn, amountOut, tokenIn, WETH, lastBlockNumber);
+    function buyExactTokensForETH(uint amountIn, uint amountOutMin, address tokenIn) external onlyOwner gasDiscount {
+        approve(tokenIn, amountIn);
+        router.swapExactTokensForETH(amountIn, amountOutMin, toPath(tokenIn, WETH), address(this), block.timestamp);
     }
-    function swapTokenForToken(uint amountIn, uint amountOut, address tokenIn, address tokenOut, uint lastBlockNumber) public onlyOwner {
-        require(block.number <= lastBlockNumber, "block delay");
-        address[] memory path = new address[](2);
-        path[0] = tokenIn;
-        path[1] = tokenOut;
-        if (tokenIn == WETH) {
-            router.swapETHForExactTokens{value: amountIn}(amountOut, path, address(this), block.timestamp);
-        } else if (tokenOut == WETH) {
-            approve(tokenIn, amountIn);
-            router.swapTokensForExactETH(amountOut, amountIn, path, address(this), block.timestamp);
-        } else {
-            approve(tokenIn, amountIn);
-            router.swapTokensForExactTokens(amountOut, amountIn, path, address(this), block.timestamp);
-        }
+    function buyExactTokensForTokens(uint amountIn, uint amountOutMin, address tokenIn, address tokenOut) external onlyOwner gasDiscount {
+        approve(tokenIn, amountIn);
+        router.swapExactTokensForTokens(amountIn, amountOutMin, toPath(tokenIn, tokenOut), address(this), block.timestamp);
     }
-
-    // 卖币
-    function swapAllTokenForETH(address tokenIn) external onlyOwner {
-        uint amountIn = ERC20(tokenIn).balanceOf(address(this));
-        swapPartTokenForToken(tokenIn, WETH, amountIn);
+    
+    // 买单：精确to换币
+    function buyETHForExactTokens(uint amountInMax, uint amountOut, address tokenOut) external onlyOwner gasDiscount {
+        router.swapETHForExactTokens{value: amountInMax}(amountOut, toPath(WETH, tokenOut), address(this), block.timestamp);
     }
-    function swapAllETHForToken(address tokenOut) external onlyOwner {
-        uint amountIn = address(this).balance;
-        swapPartTokenForToken(WETH, tokenOut, amountIn);
+    function buyTokensForExactETH(uint amountInMax, uint amountOut, address tokenIn) external onlyOwner gasDiscount {
+        approve(tokenIn, amountInMax);
+        router.swapTokensForExactETH(amountOut, amountInMax, toPath(tokenIn, WETH), address(this), block.timestamp);
     }
-    function swapAllTokenForToken(address tokenIn, address tokenOut) external onlyOwner {
-        uint amountIn = ERC20(tokenIn).balanceOf(address(this));
-        swapPartTokenForToken(tokenIn, tokenOut, amountIn);
-    }
-    function swapPartTokenForETH(address tokenIn, uint amountIn) external onlyOwner {
-        swapPartTokenForToken(tokenIn, WETH, amountIn);
-    }
-    function swapPartETHForToken(address tokenOut, uint amountIn) external onlyOwner {
-        swapPartTokenForToken(WETH, tokenOut, amountIn);
-    }
-    function swapPartTokenForToken(address tokenIn, address tokenOut, uint amountIn) public onlyOwner {
-        require(amountIn > 0, "amountIn=0");
-        address[] memory path = new address[](2);
-        path[0] = tokenIn;
-        path[1] = tokenOut;
-        uint amountOut = router.getAmountsOut(amountIn, path)[1];
-        if (tokenIn == WETH) {
-            router.swapExactETHForTokens{value: amountIn}(amountOut, path, address(this), block.timestamp);
-        } else if (tokenOut == WETH) {
-            approve(tokenIn, amountIn);
-            router.swapExactTokensForETH(amountIn, amountOut, path, address(this), block.timestamp);
-        } else {
-            approve(tokenIn, amountIn);
-            router.swapExactTokensForTokens(amountIn, amountOut, path, address(this), block.timestamp);
-        }
+    function buyTokensForExactTokens(uint amountInMax, uint amountOut, address tokenIn, address tokenOut) external onlyOwner gasDiscount {
+        approve(tokenIn, amountInMax);
+        router.swapTokensForExactTokens(amountOut, amountInMax, toPath(tokenIn, tokenOut), address(this), block.timestamp);
     }
 
-    // 归集原生币（指定数量）
+    // 卖单：精确from换币
+    function sellExactETHForTokens(uint amountIn, address tokenOut) external onlyOwner {
+        address[] memory path = toPath(WETH, tokenOut);
+        uint amountOutMin = router.getAmountsOut(amountIn, path)[1];
+        router.swapExactETHForTokens{value: amountIn}(amountOutMin, path, address(this), block.timestamp);
+    }
+    function sellExactTokensForETH(uint amountIn, address tokenIn) external onlyOwner {
+        approve(tokenIn, amountIn);
+        address[] memory path = toPath(tokenIn, WETH);
+        uint amountOutMin = router.getAmountsOut(amountIn, path)[1];
+        router.swapExactTokensForETH(amountIn, amountOutMin, path, address(this), block.timestamp);
+    }
+    function sellExactTokensForTokens(uint amountIn, address tokenIn, address tokenOut) external onlyOwner {
+        approve(tokenIn, amountIn);
+        address[] memory path = toPath(tokenIn, tokenOut);
+        uint amountOutMin = router.getAmountsOut(amountIn, path)[1];
+        router.swapExactTokensForTokens(amountIn, amountOutMin, path, address(this), block.timestamp);
+    }
+
+    // 卖单：精确to换币
+    function sellETHForExactTokens(uint amountOut, address tokenOut) external onlyOwner {
+        address[] memory path = toPath(WETH, tokenOut);
+        uint amountInMax = router.getAmountsIn(amountOut, path)[1];
+        router.swapETHForExactTokens{value: amountInMax}(amountOut, path, address(this), block.timestamp);
+    }
+    function sellTokensForExactETH(uint amountOut, address tokenIn) external onlyOwner {
+        address[] memory path = toPath(tokenIn, WETH);
+        uint amountInMax = router.getAmountsIn(amountOut, path)[1];
+        approve(tokenIn, amountInMax);
+        router.swapTokensForExactETH(amountOut, amountInMax, path, address(this), block.timestamp);
+    }
+    function sellTokensForExactTokens(uint amountOut, address tokenIn, address tokenOut) external onlyOwner {
+        address[] memory path = toPath(tokenIn, tokenOut);
+        uint amountInMax = router.getAmountsIn(amountOut, path)[1];
+        approve(tokenIn, amountInMax);
+        router.swapTokensForExactTokens(amountOut, amountInMax, path, address(this), block.timestamp);
+    }
+
+    // 归集
     function collectNative(address addr, uint amount) external onlyOwner {
         payable(addr).transfer(amount);
     }
-
-    // 归集ERC20币（全部）
     function collect(address addr, address tokenAddr) external onlyOwner {
         ERC20 token = ERC20(tokenAddr);
         token.transfer(addr, token.balanceOf(address(this)));
@@ -102,13 +107,47 @@ contract Sandwich is Ownable {
 
 
 
-    /* ******************* 私有 ****************** */
+    /* ************************************** 私有 ************************************* */
 
     // 授权
     function approve(address tokenIn, uint amountIn) private {
         ERC20 token = ERC20(tokenIn);
         uint allowance = token.allowance(address(this), address(router));
-        if (allowance < amountIn) token.approve(address(router), 10 ** 50);
+        if (allowance < amountIn) token.approve(address(router), 10 ** 30); // 授权余额不足
     }
 
+    // 转换为path
+    function toPath(address tokenIn, address tokenOut) private pure returns(address[] memory path) {
+        path = new address[](2);
+        path[0] = tokenIn;
+        path[1] = tokenOut;
+    }
+
+
+
+    /* ************************************** 修饰符 ************************************* */
+
+    modifier gasDiscount {
+        uint256 gasStart = gasleft();
+        _;
+        uint256 gasSpent = 21000 + gasStart - gasleft() + 16 * msg.data.length;
+        chi.freeFromUpTo(msg.sender, (gasSpent + 14154) / 41947);
+    }
+    modifier onlyOwner() {
+        require(owner == msg.sender, "Ownable: caller is not the owner");
+        _;
+    }
+}
+
+pragma solidity ^0.8.13;
+interface ChiToken {
+    function freeFromUpTo(address from, uint256 value) external;
+}
+
+pragma solidity ^0.8.13;
+interface ERC20 {
+    function balanceOf(address account) external view returns (uint256);
+    function allowance(address owner, address spender) external view returns (uint256);
+    function approve(address spender, uint256 amount) external returns (bool);
+    function transfer(address recipient, uint256 amount) external returns (bool);
 }
