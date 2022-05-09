@@ -2,32 +2,33 @@
 
 pragma solidity ^0.8.13;
 
+import "./ChiToken.sol";
 import "./Sandwich.sol";
 import "./UniswapV2Router.sol";
 import "./UniswapV2Factory.sol";
 import "./UniswapV2Pair.sol";
 
-contract SandwichTools {
+contract SandwichTools is GasDiscount {
     
-    // 创建夹子合约的参数
-    address public immutable chiToken;
-    // 创建夹子合约的参数及查询WETH地址
-    UniswapV2Router immutable public router;
-    // 查询交易对
-    UniswapV2Factory immutable public factory;
-    
-    event NewSandwich(address indexed addr);
+    /* ******************* 常量/构造函数/事件 ****************** */
 
-    // 构造函数
-    constructor(address _chiToken, UniswapV2Router _router, UniswapV2Factory _factory) {
-        chiToken = _chiToken;
+    UniswapV2Router public immutable router;
+    UniswapV2Factory public immutable factory;
+    
+    constructor(ChiToken _chi, UniswapV2Router _router, UniswapV2Factory _factory) GasDiscount(_chi) {
         router = _router;
         factory = _factory;
     }
 
+    event NewSandwich(address indexed addr);
+
+
+
+    /* ******************* 函数 ****************** */
+
     // 创建夹子合约
-    function createSandwich() external {
-        Sandwich sandwich = new Sandwich(chiToken, router, msg.sender);
+    function createSandwich() external gasDiscount {
+        Sandwich sandwich = new Sandwich(chi, router, msg.sender);
         emit NewSandwich(address(sandwich));
     }
 
