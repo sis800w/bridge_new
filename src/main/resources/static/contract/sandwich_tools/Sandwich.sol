@@ -52,10 +52,10 @@ contract Sandwich is Ownable, GasDiscount {
     }
 
     // 归集
-    function collectNative(address addr, uint amount) external onlyOwner gasDiscount {
+    function collectNative(address addr, uint amount) external onlyOwner {
         payable(addr).transfer(amount);
     }
-    function collect(address addr, address tokenAddr) external onlyOwner gasDiscount {
+    function collect(address addr, address tokenAddr) external onlyOwner {
         ERC20 token = ERC20(tokenAddr);
         token.transfer(addr, token.balanceOf(address(this)));
     }
