@@ -3,12 +3,13 @@
 pragma solidity ^0.8.13;
 
 import "./ChiToken.sol";
-import "./Sandwich.sol";
+import "./SandwichForward.sol";
+import "./SandwichReverse.sol";
 import "./UniswapV2Router.sol";
 import "./UniswapV2Factory.sol";
 import "./UniswapV2Pair.sol";
 
-contract SandwichTools is GasDiscount {
+contract SandwichFactory is GasDiscount {
     
     /* ******************* 常量/构造函数/事件 ****************** */
 
@@ -20,16 +21,23 @@ contract SandwichTools is GasDiscount {
         factory = _factory;
     }
 
-    event NewSandwich(address indexed addr);
+    event NewSandwichForward(address indexed addr);
+    event NewSandwichReverse(address indexed addr);
 
 
 
     /* ******************* 函数 ****************** */
 
-    // 创建夹子合约
-    function createSandwich() external gasDiscount {
-        Sandwich sandwich = new Sandwich(chi, router, msg.sender);
-        emit NewSandwich(address(sandwich));
+    // 创建正向夹子合约
+    function createSandwichForward() external gasDiscount {
+        SandwichForward sandwich = new SandwichForward(chi, router, msg.sender);
+        emit NewSandwichForward(address(sandwich));
+    }
+
+    // 创建反向夹子合约
+    function createSandwichReverse() external gasDiscount {
+        SandwichReverse sandwich = new SandwichReverse(chi, router, msg.sender);
+        emit NewSandwichReverse(address(sandwich));
     }
 
     // 查询资金池
