@@ -2,64 +2,56 @@
 
 pragma solidity ^0.8.13;
 
-import "./ChiToken.sol";
-import "./SandwichForward.sol";
-import "./SandwichReverse.sol";
-import "./UniswapV2Router.sol";
-import "./UniswapV2Factory.sol";
-import "./UniswapV2Pair.sol";
+import "./Sandwich.sol";
 
-contract SandwichFactory is GasDiscount {
+contract SandwichFactory {
     
     /* ******************* 常量/构造函数/事件 ****************** */
 
-    UniswapV2Router public immutable router;
+    ChiToken public immutable chi;
+    address public immutable WETH;
     UniswapV2Factory public immutable factory;
-    
-    constructor(ChiToken _chi, UniswapV2Router _router, UniswapV2Factory _factory) GasDiscount(_chi) {
-        router = _router;
+    uint public immutable feeRate;
+
+    constructor(ChiToken _chi, address _WETH, UniswapV2Factory _factory, uint _feeRate) {
+        chi = _chi;
+        WETH = _WETH;
         factory = _factory;
+        feeRate = _feeRate;
     }
 
-    event NewSandwichForward(address indexed addr);
-    event NewSandwichReverse(address indexed addr);
+    event NewSandwich(address indexed addr);
 
 
 
     /* ******************* 函数 ****************** */
 
-    // 创建正向夹子合约
-    function createSandwichForward() external gasDiscount {
-        SandwichForward sandwich = new SandwichForward(chi, router, msg.sender);
-        emit NewSandwichForward(address(sandwich));
-    }
-
-    // 创建反向夹子合约
-    function createSandwichReverse() external gasDiscount {
-        SandwichReverse sandwich = new SandwichReverse(chi, router, msg.sender);
-        emit NewSandwichReverse(address(sandwich));
+    // 创建夹子合约
+    function createSandwich() external {
+        Sandwich sandwich = new Sandwich(chi, WETH, msg.sender, feeRate);
+        emit NewSandwich(address(sandwich));
     }
 
     // 查询资金池
     function getReservesAndNativeReserves(address tokenIn, address tokenOut) external view returns(uint reserveIn, uint reserveOut, 
             uint nativePairReserveIn, uint nativePairReserveNative) {
         (reserveIn, reserveOut) = getReserves(tokenIn, tokenOut);
-        address WETH = router.WETH();
-        if (tokenIn == WETH) {          // 原生币->ERC20，tokenIn价格为1
+        address _WETH = WETH;
+        if (tokenIn == _WETH) {          // 原生币->ERC20，tokenIn价格为1
             nativePairReserveIn = reserveIn;
             nativePairReserveNative = reserveIn;
-        } else if (tokenOut == WETH) {  // ERC20->原生币，tokenIn价格为reserveOut/reserveIn
+        } else if (tokenOut == _WETH) {  // ERC20->原生币，tokenIn价格为reserveOut/reserveIn
             nativePairReserveIn = reserveIn;
             nativePairReserveNative = reserveOut;
         } else {                        // ERC20->ERC20，需要查【tokenIn/原生币】交易对的资金池，价格为ethPairReserveETH/ethPairReserveIn
-            (nativePairReserveIn, nativePairReserveNative) = getReserves(tokenIn, WETH);
+            (nativePairReserveIn, nativePairReserveNative) = getReserves(tokenIn, _WETH);
         }
     }
 
     // 查询资金池
-    function getReserves(address tokenA, address tokenB) private view returns(uint reserveA, uint reserveB) {
+    function getReserves(address tokenA, address tokenB) public view returns(uint reserveA, uint reserveB) {
         address pairAddr = factory.getPair(tokenA, tokenB);
-        UniswapV2Pair pair = UniswapV2Pair(pairAddr);
+        UniV2Pair pair = UniV2Pair(pairAddr);
         (uint reserve0, uint reserve1, ) = pair.getReserves();
         address token0 = pair.token0();
         if (token0 == tokenA) {
@@ -68,4 +60,13 @@ contract SandwichFactory is GasDiscount {
             return (reserve1, reserve0);
         }
     }
+}
+
+interface UniswapV2Factory {
+    function getPair(address tokenA, address tokenB) external view returns (address pair);
+}
+
+interface UniV2Pair {
+    function token0() external view returns (address);
+    function getReserves() external view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast);
 }
