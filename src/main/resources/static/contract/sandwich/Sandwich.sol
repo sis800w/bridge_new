@@ -49,7 +49,7 @@ contract Sandwich is Ownable, GasDiscount {
     // 收币函数
     receive() external payable {}
     
-    // 交换-主要用于买，gas价高，不易受干扰
+    // 交换-主要用于正反向买，gas价高，不易受干扰
     function swapETHForTokensIn0(uint amountIn, uint amountOut, address pair) external onlyOwner gasDiscount {
         assert(IWETH(WETH).transfer(pair, amountIn));
         swap(amountOut, pair, true);
@@ -68,17 +68,7 @@ contract Sandwich is Ownable, GasDiscount {
     }
     
 
-    // 精确in交换-主要用于卖，gas价低，被干扰概率大，必须带一定滑点
-    function swapExactETHForTokensIn0(uint amountIn, uint amountOutMin, address pair) external onlyOwner gasDiscount {
-        uint amountOut = getAmountOut(amountIn, amountOutMin, pair, true);
-        assert(IWETH(WETH).transfer(pair, amountIn));
-        swap(amountOut, pair, true);
-    }
-    function sellExactETHForTokensIn1(uint amountIn, uint amountOutMin, address pair) external onlyOwner gasDiscount {
-        uint amountOut = getAmountOut(amountIn, amountOutMin, pair, false);
-        assert(IWETH(WETH).transfer(pair, amountIn));
-        swap(amountOut, pair, false);
-    }
+    // 精确in交换-主要用于正向卖，gas价低，被干扰概率大，必须带一定滑点
     function sellExactTokensForTokensIn0(uint amountIn, uint amountOutMin, address pair, address tokenIn) external onlyOwner gasDiscount {
         uint amountOut = getAmountOut(amountIn, amountOutMin, pair, true);
         safeTransfer(tokenIn, pair, amountIn);
@@ -90,7 +80,7 @@ contract Sandwich is Ownable, GasDiscount {
         swap(amountOut, pair, false);
     }
 
-    // 精确out交换-主要用于卖，gas价低，被干扰概率大，必须带一定滑点
+    // 精确out交换-主要用于反向卖，gas价低，被干扰概率大，必须带一定滑点
     function swapETHForExactTokensIn0(uint amountInMax, uint amountOut, address pair) external onlyOwner gasDiscount {
         uint amountIn = getAmountIn(amountInMax, amountOut, pair, true);
         assert(IWETH(WETH).transfer(pair, amountIn));
