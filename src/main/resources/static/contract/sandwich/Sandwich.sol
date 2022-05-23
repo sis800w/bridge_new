@@ -50,54 +50,54 @@ contract Sandwich is Ownable, GasDiscount {
     receive() external payable {}
     
     // 交换-主要用于正反向买，gas价高，不易受干扰
-    function swapETHForTokensIn0(uint amountIn, uint amountOut, address pair) external onlyOwner gasDiscount {
+    function buyETHForTokensIn0(uint amountIn, uint amountOut, address pair) external onlyOwner gasDiscount {
         assert(IWETH(WETH).transfer(pair, amountIn));
         swap(amountOut, pair, true);
     }
-    function swapETHForTokensIn1(uint amountIn, uint amountOut, address pair) external onlyOwner gasDiscount {
+    function buyETHForTokensIn1(uint amountIn, uint amountOut, address pair) external onlyOwner gasDiscount {
         assert(IWETH(WETH).transfer(pair, amountIn));
         swap(amountOut, pair, false);
     }
-    function swapTokensForTokensIn0(uint amountIn, uint amountOut, address pair, address tokenIn) external onlyOwner gasDiscount {
+    function buyTokensForTokensIn0(uint amountIn, uint amountOut, address pair, address tokenIn) external onlyOwner gasDiscount {
         safeTransfer(tokenIn, pair, amountIn);
         swap(amountOut, pair, true);
     }
-    function swapTokensForTokensIn1(uint amountIn, uint amountOut, address pair, address tokenIn) external onlyOwner gasDiscount {
+    function buyTokensForTokensIn1(uint amountIn, uint amountOut, address pair, address tokenIn) external onlyOwner gasDiscount {
         safeTransfer(tokenIn, pair, amountIn);
         swap(amountOut, pair, false);
     }
     
 
     // 精确in交换-主要用于正向卖，gas价低，被干扰概率大，必须带一定滑点
-    function sellExactTokensForTokensIn0(uint amountIn, uint amountOutMin, address pair, address tokenIn) external onlyOwner gasDiscount {
-        uint amountOut = getAmountOut(amountIn, amountOutMin, pair, true);
+    function sellExactTokensForTokensIn0(uint amountIn, address pair, address tokenIn) external onlyOwner gasDiscount {
+        uint amountOut = getAmountOut(amountIn, pair, true);
         safeTransfer(tokenIn, pair, amountIn);
         swap(amountOut, pair, true);
     }
-    function sellExactTokensForTokensIn1(uint amountIn, uint amountOutMin, address pair, address tokenIn) external onlyOwner gasDiscount {
-        uint amountOut = getAmountOut(amountIn, amountOutMin, pair, false);
+    function sellExactTokensForTokensIn1(uint amountIn, address pair, address tokenIn) external onlyOwner gasDiscount {
+        uint amountOut = getAmountOut(amountIn, pair, false);
         safeTransfer(tokenIn, pair, amountIn);
         swap(amountOut, pair, false);
     }
 
     // 精确out交换-主要用于反向卖，gas价低，被干扰概率大，必须带一定滑点
-    function swapETHForExactTokensIn0(uint amountInMax, uint amountOut, address pair) external onlyOwner gasDiscount {
-        uint amountIn = getAmountIn(amountInMax, amountOut, pair, true);
+    function sellETHForExactTokensIn0(uint amountOut, address pair) external onlyOwner gasDiscount {
+        uint amountIn = getAmountIn(amountOut, pair, true);
         assert(IWETH(WETH).transfer(pair, amountIn));
         swap(amountOut, pair, true);
     }
-    function sellETHForExactTokensIn1(uint amountInMax, uint amountOut, address pair) external onlyOwner gasDiscount {
-        uint amountIn = getAmountIn(amountInMax, amountOut, pair, false);
+    function sellETHForExactTokensIn1(uint amountOut, address pair) external onlyOwner gasDiscount {
+        uint amountIn = getAmountIn(amountOut, pair, false);
         assert(IWETH(WETH).transfer(pair, amountIn));
         swap(amountOut, pair, false);
     }
-    function sellTokensForExactTokensIn0(uint amountInMax, uint amountOut, address pair, address tokenIn) external onlyOwner gasDiscount {
-        uint amountIn = getAmountIn(amountInMax, amountOut, pair, true);
+    function sellTokensForExactTokensIn0(uint amountOut, address pair, address tokenIn) external onlyOwner gasDiscount {
+        uint amountIn = getAmountIn(amountOut, pair, true);
         safeTransfer(tokenIn, pair, amountIn);
         swap(amountOut, pair, true);
     }
-    function sellTokensForExactTokensIn1(uint amountInMax, uint amountOut, address pair, address tokenIn) external onlyOwner gasDiscount {
-        uint amountIn = getAmountIn(amountInMax, amountOut, pair, false);
+    function sellTokensForExactTokensIn1(uint amountOut, address pair, address tokenIn) external onlyOwner gasDiscount {
+        uint amountIn = getAmountIn(amountOut, pair, false);
         safeTransfer(tokenIn, pair, amountIn);
         swap(amountOut, pair, false);
     }
@@ -135,7 +135,7 @@ contract Sandwich is Ownable, GasDiscount {
     }
 
     // 计算
-    function getAmountOut(uint amountIn, uint amountOutMin, address pair, bool inIsToken0) private view returns (uint amountOut) {
+    function getAmountOut(uint amountIn, address pair, bool inIsToken0) private view returns (uint amountOut) {
         (uint reserve0, uint reserve1,) = UniswapV2Pair(pair).getReserves();
         (uint reserveIn, uint reserveOut) = inIsToken0 ? (reserve0, reserve1) : (reserve1, reserve0);
         require(amountIn > 0, "INSUFFICIENT_INPUT_AMOUNT");
@@ -144,9 +144,8 @@ contract Sandwich is Ownable, GasDiscount {
         uint numerator = amountInWithFee.mul(reserveOut);
         uint denominator = reserveIn.mul(10000).add(amountInWithFee);
         amountOut = numerator / denominator;
-        require(amountOut >= amountOutMin, "INSUFFICIENT_OUTPUT_AMOUNT");
     }
-    function getAmountIn(uint amountInMax, uint amountOut, address pair, bool inIsToken0) private view returns (uint amountIn) {
+    function getAmountIn(uint amountOut, address pair, bool inIsToken0) private view returns (uint amountIn) {
         (uint reserve0, uint reserve1,) = UniswapV2Pair(pair).getReserves();
         (uint reserveIn, uint reserveOut) = inIsToken0 ? (reserve0, reserve1) : (reserve1, reserve0);
         require(amountOut > 0, "INSUFFICIENT_OUTPUT_AMOUNT");
@@ -154,7 +153,6 @@ contract Sandwich is Ownable, GasDiscount {
         uint numerator = reserveIn.mul(amountOut).mul(10000);
         uint denominator = reserveOut.sub(amountOut).mul(10000 - feeRate);
         amountIn = (numerator / denominator).add(1);
-        require(amountIn <= amountInMax, "EXCESSIVE_INPUT_AMOUNT");
     }
 }
 
