@@ -70,34 +70,36 @@ contract Sandwich is Ownable, GasDiscount {
 
     // 精确in交换-主要用于正向卖，gas价低，被干扰概率大，必须带一定滑点
     function sellExactTokensForTokensIn0(uint amountIn, address pair, address tokenIn) external onlyOwner gasDiscount {
-        uint amountOut = getAmountOut(amountIn, pair, true);
+        uint amountOut = getAmountOut(amountIn, pair, tokenIn, true);
         safeTransfer(tokenIn, pair, amountIn);
         swap(amountOut, pair, true);
     }
     function sellExactTokensForTokensIn1(uint amountIn, address pair, address tokenIn) external onlyOwner gasDiscount {
-        uint amountOut = getAmountOut(amountIn, pair, false);
+        uint amountOut = getAmountOut(amountIn, pair, tokenIn, false);
         safeTransfer(tokenIn, pair, amountIn);
         swap(amountOut, pair, false);
     }
 
     // 精确out交换-主要用于反向卖，gas价低，被干扰概率大，必须带一定滑点
     function sellETHForExactTokensIn0(uint amountOut, address pair) external onlyOwner gasDiscount {
-        uint amountIn = getAmountIn(amountOut, pair, true);
-        assert(IWETH(WETH).transfer(pair, amountIn));
+        address tokenIn = WETH;
+        uint amountIn = getAmountIn(amountOut, pair, tokenIn, true);
+        assert(IWETH(tokenIn).transfer(pair, amountIn));
         swap(amountOut, pair, true);
     }
     function sellETHForExactTokensIn1(uint amountOut, address pair) external onlyOwner gasDiscount {
-        uint amountIn = getAmountIn(amountOut, pair, false);
-        assert(IWETH(WETH).transfer(pair, amountIn));
+        address tokenIn = WETH;
+        uint amountIn = getAmountIn(amountOut, pair, tokenIn, false);
+        assert(IWETH(tokenIn).transfer(pair, amountIn));
         swap(amountOut, pair, false);
     }
     function sellTokensForExactTokensIn0(uint amountOut, address pair, address tokenIn) external onlyOwner gasDiscount {
-        uint amountIn = getAmountIn(amountOut, pair, true);
+        uint amountIn = getAmountIn(amountOut, pair, tokenIn, true);
         safeTransfer(tokenIn, pair, amountIn);
         swap(amountOut, pair, true);
     }
     function sellTokensForExactTokensIn1(uint amountOut, address pair, address tokenIn) external onlyOwner gasDiscount {
-        uint amountIn = getAmountIn(amountOut, pair, false);
+        uint amountIn = getAmountIn(amountOut, pair, tokenIn, false);
         safeTransfer(tokenIn, pair, amountIn);
         swap(amountOut, pair, false);
     }
@@ -135,7 +137,8 @@ contract Sandwich is Ownable, GasDiscount {
     }
 
     // 计算
-    function getAmountOut(uint amountIn, address pair, bool inIsToken0) private view returns (uint amountOut) {
+    function getAmountOut(uint amountIn, address pair, address tokenIn, bool inIsToken0) private view returns (uint amountOut) {
+        require(ERC20(tokenIn).balanceOf(address(this)) >= amountIn);
         (uint reserve0, uint reserve1,) = UniswapV2Pair(pair).getReserves();
         (uint reserveIn, uint reserveOut) = inIsToken0 ? (reserve0, reserve1) : (reserve1, reserve0);
         require(amountIn > 0, "INSUFFICIENT_INPUT_AMOUNT");
@@ -145,7 +148,7 @@ contract Sandwich is Ownable, GasDiscount {
         uint denominator = reserveIn.mul(10000).add(amountInWithFee);
         amountOut = numerator / denominator;
     }
-    function getAmountIn(uint amountOut, address pair, bool inIsToken0) private view returns (uint amountIn) {
+    function getAmountIn(uint amountOut, address pair, address tokenIn, bool inIsToken0) private view returns (uint amountIn) {
         (uint reserve0, uint reserve1,) = UniswapV2Pair(pair).getReserves();
         (uint reserveIn, uint reserveOut) = inIsToken0 ? (reserve0, reserve1) : (reserve1, reserve0);
         require(amountOut > 0, "INSUFFICIENT_OUTPUT_AMOUNT");
@@ -153,6 +156,7 @@ contract Sandwich is Ownable, GasDiscount {
         uint numerator = reserveIn.mul(amountOut).mul(10000);
         uint denominator = reserveOut.sub(amountOut).mul(10000 - feeRate);
         amountIn = (numerator / denominator).add(1);
+        require(ERC20(tokenIn).balanceOf(address(this)) >= amountIn);
     }
 }
 
@@ -169,6 +173,11 @@ interface ChiToken {
 interface UniswapV2Pair {
     function swap(uint amount0Out, uint amount1Out, address to, bytes calldata data) external;
     function getReserves() external view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast);
+}
+
+
+interface ERC20 {
+    function balanceOf(address account) external view returns (uint256);
 }
 
 library SafeMath {
