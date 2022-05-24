@@ -3,7 +3,7 @@
 pragma solidity ^0.8.13;
 
 abstract contract Ownable {
-    address public owner;
+    address private owner;
 
     constructor(address _owner) {
         owner = _owner;
