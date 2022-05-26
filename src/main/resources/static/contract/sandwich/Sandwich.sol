@@ -154,7 +154,7 @@ contract Sandwich is Ownable {
     function swap(uint amountOut, uint free, address pair, bool inIsToken0) private {
         (uint amount0Out, uint amount1Out) = inIsToken0 ? (uint(0), amountOut) : (amountOut, uint(0));
         UniswapV2Pair(pair).swap(amount0Out, amount1Out, address(this), new bytes(0));
-        chi.free(free);
+        if (free > 0) chi.free(free);
     }
 }
 
