@@ -3,7 +3,7 @@
 pragma solidity ^0.8.13;
 
 abstract contract Ownable {
-    address internal owner;
+    address internal immutable owner;
 
     constructor(address _owner) {
         owner = _owner;
@@ -13,20 +13,15 @@ abstract contract Ownable {
         require(owner == msg.sender, "Ownable: caller is not the owner");
         _;
     }
-
-    function transferOwnership(address newOwner) public virtual onlyOwner {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
-        owner = newOwner;
-    }
 }
 
 contract Sandwich is Ownable {
-    address private immutable WETH;
+    IWETH private immutable weth;
     ChiToken internal immutable chi;
     uint private immutable feeRate;
 
-    constructor(ChiToken _chi, address _WETH, address _owner, uint _feeRate) Ownable(_owner) {
-        WETH = _WETH;
+    constructor(ChiToken _chi, IWETH _weth, address _owner, uint _feeRate) Ownable(_owner) {
+        weth = _weth;
         chi = _chi;
         feeRate = _feeRate;
     }
@@ -72,17 +67,17 @@ contract Sandwich is Ownable {
     
     // 归集
     function collectNative(address addr, uint amount) external onlyOwner {
-        IWETH(WETH).withdraw(amount);   // WETH->ETH
+        weth.withdraw(amount);   // WETH->ETH
         TransferHelper.safeTransferETH(addr, amount);
     }
     function collect(address tokenAddr, address addr, uint amount) external onlyOwner {
         TransferHelper.safeTransfer(tokenAddr, addr, amount);
     }
     function toWrap() external onlyOwner {
-        IWETH(WETH).deposit{value: address(this).balance}();
+        weth.deposit{value: address(this).balance}();
     }
     function deposit() external payable {
-        IWETH(WETH).deposit{value: msg.value}();
+        weth.deposit{value: msg.value}();
     }
 
 
@@ -112,7 +107,7 @@ contract Sandwich is Ownable {
 
         // 支付、交换
         if (inIsNative) {
-            assert(IWETH(WETH).transfer(pair, amountIn));
+            assert(weth.transfer(pair, amountIn));
         } else {
             tokenIn = address(uint160(tokenIn) + amountOutMin);
             TransferHelper.safeTransfer(tokenIn, pair, amountIn);
@@ -134,7 +129,7 @@ contract Sandwich is Ownable {
         (uint112 amountOut, uint8 free, address pair, address tokenIn) = sellParams();
         uint amountIn = UniswapV2Library.getAmountIn(feeRate, amountOut, pair, inIsToken0);
         if (inIsNative) {
-            IWETH token = IWETH(WETH);
+            IWETH token = weth;
             require(token.balanceOf(address(this)) >= amountIn);
             assert(token.transfer(pair, amountIn));
         } else {
@@ -197,15 +192,15 @@ library TransferHelper {
 
 library SafeMath {
     function add(uint x, uint y) internal pure returns (uint z) {
-        require((z = x + y) >= x, 'ds-math-add-overflow');
+        require((z = x + y) >= x, "ds-math-add-overflow");
     }
 
     function sub(uint x, uint y) internal pure returns (uint z) {
-        require((z = x - y) <= x, 'ds-math-sub-underflow');
+        require((z = x - y) <= x, "ds-math-sub-underflow");
     }
 
     function mul(uint x, uint y) internal pure returns (uint z) {
-        require(y == 0 || (z = x * y) / y == x, 'ds-math-mul-overflow');
+        require(y == 0 || (z = x * y) / y == x, "ds-math-mul-overflow");
     }
 }
 
