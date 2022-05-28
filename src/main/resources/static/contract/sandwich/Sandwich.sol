@@ -93,8 +93,8 @@ contract Sandwich is Ownable {
             amountIn := mload(add(data, 18))
             amountOutMin := mload(add(data, 32))
             free := mload(add(data, 33))
-            pair := mload(add(data, 35))
-            tokenIn := mload(add(data, 37))
+            pair := mload(add(data, 53))
+            tokenIn := mload(add(data, 73))
         }
 
         // 失败单（区块落后、竞争失利）提前结束执行，节省gas，但会增加成功单的gas
@@ -145,8 +145,8 @@ contract Sandwich is Ownable {
         assembly {
             amount := mload(add(data, 18))
             free := mload(add(data, 19))
-            pair := mload(add(data, 21))
-            tokenIn := mload(add(data, 23))
+            pair := mload(add(data, 39))
+            tokenIn := mload(add(data, 59))
         }
     }
 
