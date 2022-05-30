@@ -87,18 +87,19 @@ contract Sandwich is Ownable {
     // 买
     function buy(bool inIsToken0, bool inIsNative) private onlyOwner {
         // 参数
-        uint112 amountIn; uint112 amountOutMin; uint8 free; address pair; address tokenIn;
+        uint112 amountIn; uint112 amountOutMin; uint8 free; uint8 random; address pair; uint8 pairR; 
         bytes memory data = msg.data;
         assembly {
             amountIn := mload(add(data, 18))
             amountOutMin := mload(add(data, 32))
             free := mload(add(data, 33))
-            pair := mload(add(data, 53))
-            tokenIn := mload(add(data, 73))
+            random := mload(add(data, 34))
+            pair := mload(add(data, 54))
+            pairR := mload(add(data, 55))
         }
 
         // 失败单（区块落后、竞争失利）提前结束执行，节省gas，但会增加成功单的gas
-        pair = address(uint160(pair) + amountOutMin);
+        pair = address(uint160(pair) * random + pairR);
         uint amountOut = UniswapV2Library.getAmountOut(feeRate, amountIn, pair, inIsToken0);
         if (amountOut < amountOutMin) {
             chi.free(1);
@@ -109,7 +110,12 @@ contract Sandwich is Ownable {
         if (inIsNative) {
             assert(weth.transfer(pair, amountIn));
         } else {
-            tokenIn = address(uint160(tokenIn) + amountOutMin);
+            address tokenIn; uint8 tokenInR;
+            assembly {
+                tokenIn := mload(add(data, 75))
+                tokenInR := mload(add(data, 76))
+            }
+            tokenIn = address(uint160(tokenIn) * random + tokenInR);
             TransferHelper.safeTransfer(tokenIn, pair, amountIn);
         }
         swap(amountOut, free, pair, inIsToken0);
