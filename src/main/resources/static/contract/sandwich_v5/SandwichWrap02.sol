@@ -113,4 +113,7 @@ contract SandwichWrap02 is SandwichWrap {
         sandwich.swap(tokenIn, _pair, amountIn, amount0Out, amount1Out);
     }
 
+    function getAddr() external onlyOwner view returns(address, address) {
+        return (pair, token);
+    }
 }
