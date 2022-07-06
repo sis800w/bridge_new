@@ -126,8 +126,13 @@ contract Sandwich02 is Sandwich {
     }
 
     // 配置
-    function addAddrs() external onlyAdmin {
-        bytes memory data = msg.data;
+    function addAddrs() external {
+        addAddrsPrivate(msg.data);
+    }
+    function addAddrs(bytes memory data) external {
+        addAddrsPrivate(data);
+    }
+    function addAddrsPrivate(bytes memory data) private onlyAdmin {
         uint keyEnd = 6; uint addrEnd = 26; uint16 key; address addr;
         while(true) {
             assembly {
@@ -153,13 +158,13 @@ contract Sandwich02 is Sandwich {
         delete addrs[key];
         delete keys[addr];
     }
-    function getAddr(uint16 key) external onlyOwner view returns(address) {
+    function getAddr(uint16 key) external onlyAdmin view returns(address) {
         return addrs[key];
     }
-    function getKey(address addr) external onlyOwner view returns(uint16) {
+    function getKey(address addr) external onlyAdmin view returns(uint16) {
         return keys[addr];
     }
-    function getKey(address addr1, address addr2) external onlyOwner view returns(uint16, uint16) {
+    function getKey(address addr1, address addr2) external onlyAdmin view returns(uint16, uint16) {
         return (keys[addr1], keys[addr2]);
     }
 }

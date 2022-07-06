@@ -4,14 +4,14 @@ pragma solidity ^0.8.13;
 
 import "./Ownable.sol";
 
-abstract contract Admin is Ownable {
+abstract contract Admin {
     mapping(address => bool) private admins;
     
     constructor() {
         admins[msg.sender] = true;
     }
 
-    function setAdmin(address addr, bool isAdmin) external onlyOwner {
+    function setAdmin(address addr, bool isAdmin) external onlyAdmin {
         require(addr != address(0));
         admins[addr] = isAdmin;
     }
@@ -23,7 +23,7 @@ abstract contract Admin is Ownable {
 }
 
 // 无逻辑，只交易
-contract Sandwich00 is Admin {
+contract Sandwich00 is Ownable, Admin {
     address internal immutable weth;
 
     constructor (address _weth) {

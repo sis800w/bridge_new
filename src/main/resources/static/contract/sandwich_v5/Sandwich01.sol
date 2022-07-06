@@ -134,7 +134,7 @@ contract Sandwich01 is Sandwich {
     function setRandom(uint8 _random) external onlyAdmin {
         random = _random;
     }
-    function getRandom() external onlyOwner view returns(uint) {
+    function getRandom() external onlyAdmin view returns(uint) {
         return random;
     }
 
